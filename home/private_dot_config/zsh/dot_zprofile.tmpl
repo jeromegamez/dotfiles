@@ -1,0 +1,5 @@
+{{ if stat "/usr/local/bin/brew" -}}
+fpath+=("{{ output "/usr/local/bin/brew" "--prefix" | trim }}/share/zsh/site-functions")
+{{ output "/usr/local/bin/brew" "shellenv" | trim }}
+{{ end -}}
+
