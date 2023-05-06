@@ -19,3 +19,4 @@ for xdgdir in XDG_{CACHE,CONFIG,DATA,STATE}_HOME XDG_RUNTIME_DIR; do
   [[ -e ${(P)xdgdir} ]] || mkdir -p ${(P)xdgdir}
 done
 
+export ZDOTDIR=$XDG_CONFIG_HOME/zsh
