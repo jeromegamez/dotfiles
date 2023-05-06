@@ -1,4 +1,11 @@
 export PATH="$HOME/.local/bin${PATH+:$PATH}";
 
+export ZSH="$XDG_DATA_HOME"/oh-my-zsh
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
+export _Z_DATA="$XDG_STATE_HOME/zsh/z"
+
+plugins=(git z)
+
+source $ZSH/oh-my-zsh.sh
+
 export HISTFILE="$XDG_STATE_HOME"/zsh/history
