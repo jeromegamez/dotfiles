@@ -3,3 +3,4 @@ fpath+=("{{ output "/usr/local/bin/brew" "--prefix" | trim }}/share/zsh/site-fun
 {{ output "/usr/local/bin/brew" "shellenv" | trim }}
 {{ end -}}
 
+export SHELL_SESSIONS_DISABLE=1
