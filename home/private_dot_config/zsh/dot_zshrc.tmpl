@@ -5,7 +5,7 @@ if [[ -r "$XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "$XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export PATH="$HOME/.local/bin${PATH+:$PATH}";
+export PATH="bin:vendor/bin:$HOME/.local/bin${PATH+:$PATH}";
 
 export ZSH="$XDG_DATA_HOME"/oh-my-zsh
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
