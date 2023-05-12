@@ -4,3 +4,6 @@ fpath+=("{{ output "/usr/local/bin/brew" "--prefix" | trim }}/share/zsh/site-fun
 {{ end -}}
 
 export SHELL_SESSIONS_DISABLE=1
+
+# See https://stackoverflow.com/a/52230415/284325
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
