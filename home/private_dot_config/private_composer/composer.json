@@ -1,0 +1,13 @@
+{
+    "require": {
+        "laravel/valet": "^4.3",
+        "maglnet/composer-require-checker": "^4.7",
+        "pyrech/composer-changelogs": "^2.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "pyrech/composer-changelogs": true
+        }
+    },
+    "type": "project"
+}

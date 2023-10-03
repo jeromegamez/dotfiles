@@ -1,0 +1,22 @@
+{{- $homebrewPrefix := "/opt/homebrew" -}}
+{{- $computername := .chezmoi.hostname }}
+{{- $hostname := .chezmoi.hostname -}}
+{{- $email := "jerome@gamez.name" -}}
+
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $computername = "Kerngehäuse" }}
+{{-   $hostname = "kerngehaeuse" }}
+{{- "" -}}
+{{-   if eq .chezmoi.arch "amd64" -}}
+{{-     $homebrewPrefix = "/usr/local" -}}
+{{-   end -}}
+{{- end -}}
+
+[data]
+    email = {{ $email | quote }}
+    onepasswordAccount = "UM5PFDCXWRDOXA2MBGNTMSFJ24"
+{{- if eq .chezmoi.os "darwin" }}
+    homebrewPrefix = {{ $homebrewPrefix | quote }}
+    computername = {{ $computername | quote }}
+    hostname = {{ $hostname | quote }}
+{{ end -}}

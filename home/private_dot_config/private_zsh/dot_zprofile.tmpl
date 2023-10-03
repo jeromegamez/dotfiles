@@ -1,0 +1,22 @@
+path=("${HOME}/.local/bin" $path)
+
+{{ if eq .chezmoi.os "darwin" -}}
+# Homebrew
+fpath+=("{{ .homebrewPrefix }}/share/zsh/site-functions")
+eval "$({{ .homebrewPrefix }}/bin/brew shellenv)"
+
+# See https://stackoverflow.com/a/52230415/284325
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+if [ -f ${HOME}/.orbstack/shell/init.zsh ]; then
+    source ${HOME}/.orbstack/shell/init.zsh
+fi
+
+if [ -d ${XDG_CONFIG_HOME}/composer/vendor/bin ]; then
+    path+=("${XDG_CONFIG_HOME}/composer/vendor/bin")
+fi
+
+path=("${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" $path)
+{{ end }}
+
+export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
