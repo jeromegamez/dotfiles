@@ -1,0 +1,98 @@
+tap "common-fate/granted"
+tap "hashicorp/tap"
+tap "homebrew/bundle"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/services"
+tap "mongodb/brew"
+tap "nicoverbruggen/cask"
+tap "shivammathur/extensions"
+tap "shivammathur/php"
+
+brew "atuin" # Improved shell history for zsh, bash, fish and nushell
+brew "awscli" # Official Amazon AWS command-line interface
+brew "cookiecutter" # Utility that creates projects from templates
+brew "gh" # GitHub command-line tool
+brew "git" # Distributed revision control system
+brew "gnupg" # GNU Pretty Good Privacy (PGP) package
+brew "granted" # The easiest way to access your cloud.
+brew "jq" # Lightweight and flexible command-line JSON processor
+brew "mas" # Mac App Store command-line interface
+brew "mongodb/brew/mongodb-database-tools" # Standard utilities for interacting with MongoDB.
+brew "neovim" # Ambitious Vim-fork focused on extensibility and agility
+brew "pinentry-mac" # Pinentry for GPG on Mac
+brew "ripgrep" # Search tool like grep and The Silver Searcher
+brew "hashicorp/tap/terraform" # Tool to build, change, and version infrastructure
+brew "terragrunt" # Thin wrapper for Terraform e.g. for locking state
+brew "wget" # Internet file retriever
+
+### PHP
+
+brew "shivammathur/php/php@8.2" # General-purpose scripting language
+brew "shivammathur/extensions/amqp@8.2" # AMQP PHP extension
+brew "shivammathur/extensions/apcu@8.2" # APCU PHP extension
+brew "shivammathur/extensions/grpc@8.2" # gRPC PHP extension
+brew "shivammathur/extensions/igbinary@8.2" # IGBinary PHP extension
+brew "shivammathur/extensions/mongodb@8.2" # MongoDB PHP extension
+brew "shivammathur/extensions/msgpack@8.2" # MSGPack PHP extension
+brew "shivammathur/extensions/protobuf@8.2" # Protobuf PHP extension
+brew "shivammathur/extensions/redis@8.2" # Redis PHP extension
+brew "shivammathur/extensions/xdebug@8.2" # XDebug PHP extension
+
+brew "shivammathur/php/php@8.3" # General-purpose scripting language
+brew "shivammathur/extensions/amqp@8.3" # AMQP PHP extension
+brew "shivammathur/extensions/apcu@8.3" # APCU PHP extension
+brew "shivammathur/extensions/grpc@8.3" # gRPC PHP extension
+brew "shivammathur/extensions/igbinary@8.3" # IGBinary PHP extension
+brew "shivammathur/extensions/mongodb@8.3" # MongoDB PHP extension
+brew "shivammathur/extensions/msgpack@8.3" # MSGPack PHP extension
+brew "shivammathur/extensions/protobuf@8.3" # Protobuf PHP extension
+brew "shivammathur/extensions/redis@8.3" # Redis PHP extension
+brew "shivammathur/extensions/xdebug@8.3" # XDebug PHP extension
+
+### Casks
+
+cask "1password" # Password manager that keeps all passwords secure behind one password
+cask "1password-cli" # Command-line interface for 1Password
+cask "aws-vault" # Securely store and access AWS credentials in development environments
+cask "backblaze" # Data backup and storage service
+cask "cardhop" # Contacts manager
+cask "discord" # Voice and text chat software
+cask "droplr" # Screenshot and screen recorder
+cask "duckduckgo" # Web browser focusing on privacy
+cask "fantastical" # Calendar software
+cask "iterm2" # Terminal emulator as alternative to Apple's Terminal app
+cask "jetbrains-toolbox" # JetBrains tools manager
+cask "karabiner-elements" # Keyboard customizer
+cask "logi-options-plus" # Software for Logitech devices
+cask "mailmate" # IMAP email client
+cask "microsoft-excel" # Spreadsheet software
+cask "microsoft-word" # Word processor
+cask "mongodb-compass" # Interactive tool for analyzing MongoDB data
+cask "obsidian" # Knowledge base that works on top of a local folder of plain text Markdown files
+cask "orbstack" # Replacement for Docker Desktop
+cask "orion" # WebKit based web browser
+cask "phpmon" # PHP Monitor
+cask "prismlauncher" # PHP Monitor
+cask "raycast" # Control your tools with a few keystrokes
+cask "setapp" # Collection of apps available by subscription
+cask "signal" # Instant messaging application focusing on security
+cask "slack" # Team communication and collaboration software
+cask "spotify" # Music streaming service
+cask "sublime-merge" # Git client
+cask "sublime-text" # Text editor for code, markup and prose
+cask "telegram" # Messaging app with a focus on speed and security
+cask "tinkerwell" # Tinker tool for PHP and Laravel developers
+# cask "utm" # Virtual machines UI using QEMU
+cask "whatsapp" # Native desktop client for WhatsApp
+
+### MAS
+
+mas "1Password for Safari", id: 1569813296
+mas "Bear", id: 1091189122
+mas "Kagi Search", id: 1622835804
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "Patterns", id: 429449079
+mas "Pixelmator Pro", id: 1289583905
+mas "Things", id: 904280696

@@ -1,0 +1,39 @@
+[".local/share/oh-my-zsh"]
+    type = "archive"
+    url = "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+[".local/share/oh-my-zsh/custom/themes/powerlevel10k"]
+    type = "archive"
+    url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
+    exact = true
+    stripComponents = 1
+[".config/nvim"]
+    type = "git-repo"
+    url = "https://github.com/jeromegamez/kickstart.nvim"
+    exact = true
+    stripComponents = 1
+{{- $fontDir := "Library/Fonts" }}
+{{- range (list
+    "MesloLGS NF Regular.ttf"
+    "MesloLGS NF Bold.ttf"
+    "MesloLGS NF Italic.ttf"
+    "MesloLGS NF Bold Italic.ttf") }}
+["{{ $fontDir }}/{{ . }}"]
+    type = "file"
+    url = "https://github.com/romkatv/powerlevel10k-media/raw/master/{{ . }}"
+    refreshPeriod = "168h"
+{{- end }}
+
+{{- if eq .chezmoi.os "darwin" }}
+[".local/share/google-cloud-sdk"]
+    type = "archive"
+    {{ if eq .chezmoi.arch "arm64" -}}
+        url = "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-449.0.0-darwin-arm.tar.gz"
+    {{ else }}
+        url = "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-449.0.0-darwin-x86_64.tar.gz"
+    {{- end -}}
+    exact = false
+    stripComponents = 1
+{{- end }}

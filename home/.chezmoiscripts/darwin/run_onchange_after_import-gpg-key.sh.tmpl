@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eufxo pipefail
+
+declare key_path passphrase_path
+
+key_path=${TMPDIR}gpg_key.txt
+passphrase_path=${TMPDIR}gpg_passphrase.txt
+
+op --account {{ .onepasswordAccount  }} document get --out-file $key_path --force "GPG Key"
+op --account {{ .onepasswordAccount  }}  read --out-file $passphrase_path --force "op://Private/GPG Key/Passphrase"
+
+gpg --batch --yes --no-tty --pinentry-mode loopback --allow-secret-key-import --passphrase-file "$passphrase_path" --import "$key_path"
+
+rm "$key_path"
+rm "$passphrase_path"

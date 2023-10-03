@@ -1,0 +1,56 @@
+[user]
+    name = "Jérôme Gamez"
+    email = {{ .email }}
+    useconfigonly = true
+    signingkey = "4E902530D3BC24D1"
+
+[alias]
+    me = log --pretty=format:\"%ad (%h) %s\" --date=short --all --no-merges --author='Jérôme Gamez'
+    oneline = log --oneline --decorate --all --graph
+
+[blame]
+    markIgnoredLines = true
+    markUnblamableLines = true
+
+[commit]
+    gpgsign = true
+
+[tag]
+    forceSignAnnotated = true
+    gpgsign = true
+
+[core]
+    excludesfile = ~/.config/git/ignore
+    attributesfile = ~/.config/git/attributes
+    pager = cat
+
+[mergetool]
+    prompt = false
+    keepBackup = false
+
+[mergetool "smerge"]
+    cmd = smerge mergetool \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
+    trustExitCode = true
+
+[credential]
+{{- if eq .chezmoi.os "darwin" }}
+    helper = osxkeychain
+{{- end }}
+
+[includeIf "gitdir:~/Code/elvah/"]
+    path = ~/.config/git/elvah.inc
+
+[init]
+    defaultBranch = main
+
+[fetch]
+    prune = true
+
+[pull]
+    ff = only
+
+[push]
+    default = current
+
+[rebase]
+    autoStash = true
