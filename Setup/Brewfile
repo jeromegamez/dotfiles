@@ -18,11 +18,11 @@ brew "gnupg" # GNU Pretty Good Privacy (PGP) package
 brew "granted" # The easiest way to access your cloud.
 brew "jq" # Lightweight and flexible command-line JSON processor
 brew "mas" # Mac App Store command-line interface
-brew "mongodb/brew/mongodb-database-tools" # Standard utilities for interacting with MongoDB.
+brew "mongodb-database-tools" # Standard utilities for interacting with MongoDB.
 brew "neovim" # Ambitious Vim-fork focused on extensibility and agility
 brew "pinentry-mac" # Pinentry for GPG on Mac
 brew "ripgrep" # Search tool like grep and The Silver Searcher
-brew "hashicorp/tap/terraform" # Tool to build, change, and version infrastructure
+brew "terraform" # Tool to build, change, and version infrastructure
 brew "terragrunt" # Thin wrapper for Terraform e.g. for locking state
 brew "wget" # Internet file retriever
 
