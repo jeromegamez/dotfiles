@@ -154,6 +154,12 @@ defaults write com.apple.spaces "spans-displays" -bool "false"
 # Speed up Mission Control animations
 defaults write com.apple.dock expose-animation-duration -int 0
 
+### Accessibility
+
+# Reduce Motion
+defaults write com.apple.Accessibility ReduceMotionEnabled -bool true
+defaults write com.apple.universalaccess reduceMotion -bool true
+
 for app in Finder Dock SystemUIServer Safari; do
     killall "$app" >/dev/null 2>&1 || true
 done
