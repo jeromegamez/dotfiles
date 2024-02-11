@@ -1,0 +1,12 @@
+{
+	"ignored_packages":
+	[
+		"Rust",
+		"Vintage",
+	],
+	"index_files": true,
+	"font_face": "MesloLGS NF",
+	"font_size": 20,
+	"color_scheme": "Mariana.sublime-color-scheme",
+	"theme": "Adaptive.sublime-theme",
+}
