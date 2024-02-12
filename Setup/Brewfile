@@ -28,17 +28,6 @@ brew "wget" # Internet file retriever
 
 ### PHP
 
-brew "shivammathur/php/php@8.2" # General-purpose scripting language
-brew "shivammathur/extensions/amqp@8.2" # AMQP PHP extension
-brew "shivammathur/extensions/apcu@8.2" # APCU PHP extension
-brew "shivammathur/extensions/grpc@8.2" # gRPC PHP extension
-brew "shivammathur/extensions/igbinary@8.2" # IGBinary PHP extension
-brew "shivammathur/extensions/mongodb@8.2" # MongoDB PHP extension
-brew "shivammathur/extensions/msgpack@8.2" # MSGPack PHP extension
-brew "shivammathur/extensions/protobuf@8.2" # Protobuf PHP extension
-brew "shivammathur/extensions/redis@8.2" # Redis PHP extension
-brew "shivammathur/extensions/xdebug@8.2" # XDebug PHP extension
-
 brew "shivammathur/php/php@8.3" # General-purpose scripting language
 brew "shivammathur/extensions/amqp@8.3" # AMQP PHP extension
 brew "shivammathur/extensions/apcu@8.3" # APCU PHP extension
