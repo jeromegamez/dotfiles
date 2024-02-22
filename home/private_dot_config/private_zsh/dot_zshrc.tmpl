@@ -12,7 +12,7 @@ export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export ZSH="${XDG_DATA_HOME}/oh-my-zsh"
 export _Z_DATA="${XDG_STATE_HOME}/zsh/z"
 
-plugins=(git z zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git z)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -53,6 +53,14 @@ fi
 # The next line enables shell command completion for gcloud.
 if [ -f "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc" ]; then
     source "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc"
+fi
+
+if [ -f "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+    source "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
+fi
+
+if [ -f "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+    source "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
 # Enable Powerlevel10k
