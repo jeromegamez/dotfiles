@@ -3,4 +3,4 @@
 {{ end }}
 
 .local/share/oh-my-zsh/cache/**
-.local/share/zsh/powerlevel10k
+.local/share/zsh/**
