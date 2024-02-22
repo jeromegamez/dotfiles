@@ -3,4 +3,4 @@
 {{ end }}
 
 .local/share/oh-my-zsh/cache/**
-.local/share/oh-my-zsh/custom/themes/powerlevel10k/**/*.zwc
+.local/share/zsh/powerlevel10k
