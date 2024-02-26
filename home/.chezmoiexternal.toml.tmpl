@@ -27,6 +27,14 @@
     url = "https://github.com/jeromegamez/kickstart.nvim"
     exact = true
     stripComponents = 1
+
+{{- $lazyGitVersionTag := (gitHubLatestRelease "jesseduffield/lazygit").TagName }}
+{{- $lazyGitVersionTagWithoutV := $lazyGitVersionTag | replaceAllRegex "^v" "" }}
+[".local/bin/lazygit"]
+    type = "archive-file"
+    url = "https://github.com/jesseduffield/lazygit/releases/download/{{ $lazyGitVersionTag }}/lazygit_{{ $lazyGitVersionTagWithoutV }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz"
+    path = "lazygit"
+
 {{- $fontDir := "Library/Fonts" }}
 {{- range (list
     "MesloLGS NF Regular.ttf"
