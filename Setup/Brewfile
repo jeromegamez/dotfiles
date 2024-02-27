@@ -24,6 +24,7 @@ brew "pinentry-mac" # Pinentry for GPG on Mac
 brew "ripgrep" # Search tool like grep and The Silver Searcher
 brew "terraform" # Tool to build, change, and version infrastructure
 brew "terragrunt" # Thin wrapper for Terraform e.g. for locking state
+brew "tmux" # Terminal multiplexer
 brew "wget" # Internet file retriever
 
 ### PHP
