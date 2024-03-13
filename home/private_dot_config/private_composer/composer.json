@@ -1,7 +1,7 @@
 {
     "require": {
-        "laravel/valet": "^4.3",
-        "maglnet/composer-require-checker": "^4.7",
+        "laravel/valet": "^4.6.1",
+        "maglnet/composer-require-checker": "^4.10",
         "pyrech/composer-changelogs": "^2.1"
     },
     "config": {
