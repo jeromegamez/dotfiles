@@ -46,7 +46,6 @@ brew "shivammathur/extensions/xdebug@8.3" # XDebug PHP extension
 cask "1password" # Password manager that keeps all passwords secure behind one password
 cask "1password-cli" # Command-line interface for 1Password
 cask "aws-vault" # Securely store and access AWS credentials in development environments
-cask "backblaze" # Data backup and storage service
 cask "cardhop" # Contacts manager
 cask "discord" # Voice and text chat software
 cask "droplr" # Screenshot and screen recorder
