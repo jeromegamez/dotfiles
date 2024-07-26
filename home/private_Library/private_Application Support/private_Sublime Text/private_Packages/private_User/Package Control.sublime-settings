@@ -8,10 +8,12 @@
 		"Diffable",
 		"DiffTabs",
 		"EditorConfig",
+		"Kotlin",
 		"Package Control",
 		"Pretty JSON",
 		"Rust Enhanced",
 		"SideBarEnhancements",
 		"Terraform",
+		"TOML"
 	],
 }
