@@ -1,4 +1,5 @@
 tap "common-fate/granted"
+tap "FelixKratz/formulae"
 tap "hashicorp/tap"
 tap "homebrew/bundle"
 tap "homebrew/cask-fonts"
@@ -13,6 +14,7 @@ brew "asdf" # Extendable version manager with support for Ruby, Node.js, Erlang 
 brew "atuin" # Improved shell history for zsh, bash, fish and nushell
 brew "awscli" # Official Amazon AWS command-line interface
 brew "cookiecutter" # Utility that creates projects from templates
+brew "FelixKratz/borders" # A window border system for macOS
 brew "gh" # GitHub command-line tool
 brew "git" # Distributed revision control system
 brew "gnupg" # GNU Pretty Good Privacy (PGP) package
