@@ -61,7 +61,7 @@ defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 # Reveal IP address, hostname, OS version, etc. when clicking the clock in the login window
 sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
 
-sudo systemsetup -settimezone "Europe/Berlin" > /dev/null
+sudo systemsetup -settimezone "Europe/Berlin" > /dev/null 2>&1
 
 ### Energy saving
 
