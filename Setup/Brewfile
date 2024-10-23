@@ -82,6 +82,7 @@ cask "whatsapp" # Native desktop client for WhatsApp
 
 mas "1Password for Safari", id: 1569813296
 mas "Bear", id: 1091189122
+mas "iBar", id: 6443843900
 mas "Kagi Search", id: 1622835804
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
