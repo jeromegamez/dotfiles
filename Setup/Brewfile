@@ -10,7 +10,6 @@ tap "nicoverbruggen/cask"
 tap "shivammathur/extensions"
 tap "shivammathur/php"
 
-brew "asdf" # Extendable version manager with support for Ruby, Node.js, Erlang & more
 brew "atuin" # Improved shell history for zsh, bash, fish and nushell
 brew "awscli" # Official Amazon AWS command-line interface
 brew "cookiecutter" # Utility that creates projects from templates
