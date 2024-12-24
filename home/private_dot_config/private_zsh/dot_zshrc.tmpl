@@ -36,6 +36,8 @@ if type "assume" > /dev/null; then
   alias assume=". assume"
 fi
 
+source "${XDG_CONFIG_HOME}/tenv/completion.zsh"
+
 source "${XDG_CONFIG_HOME}/zsh/.plugins.zsh.inc"
 
 # Enable Powerlevel10k
