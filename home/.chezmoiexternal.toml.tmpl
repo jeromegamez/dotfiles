@@ -4,12 +4,6 @@
     exact = true
     stripComponents = 1
     refreshPeriod = "168h"
-{{- $powerlevel10kVersionTag := (gitHubLatestRelease "romkatv/powerlevel10k").TagName }}
-[".local/share/zsh/powerlevel10k"]
-    type = "archive"
-    url = "https://github.com/romkatv/powerlevel10k/archive/{{ $powerlevel10kVersionTag }}.tar.gz"
-    exact = true
-    stripComponents = 1
 [".local/share/zsh/zsh-autosuggestions"]
     type = "archive"
     url = "https://github.com/zsh-users/zsh-autosuggestions/archive/master.tar.gz"
@@ -34,18 +28,6 @@
     type = "archive-file"
     url = "https://github.com/jesseduffield/lazygit/releases/download/{{ $lazyGitVersionTag }}/lazygit_{{ $lazyGitVersionTagWithoutV }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz"
     path = "lazygit"
-
-{{- $fontDir := "Library/Fonts" }}
-{{- range (list
-    "MesloLGS NF Regular.ttf"
-    "MesloLGS NF Bold.ttf"
-    "MesloLGS NF Italic.ttf"
-    "MesloLGS NF Bold Italic.ttf") }}
-["{{ $fontDir }}/{{ . }}"]
-    type = "file"
-    url = "https://github.com/romkatv/powerlevel10k-media/raw/master/{{ . }}"
-    refreshPeriod = "168h"
-{{- end }}
 
 {{- if eq .chezmoi.os "darwin" }}
 [".local/share/google-cloud-sdk"]
