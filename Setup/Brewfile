@@ -24,6 +24,7 @@ brew "mongodb-database-tools" # Standard utilities for interacting with MongoDB.
 brew "neovim" # Ambitious Vim-fork focused on extensibility and agility
 brew "pinentry-mac" # Pinentry for GPG on Mac
 brew "ripgrep" # Search tool like grep and The Silver Searcher
+brew "starship" # Cross-shell prompt for astronauts
 brew "tenv" # OpenTofu / Terraform / Terragrunt / Atmos version manager
 brew "tmux" # Terminal multiplexer
 brew "wget" # Internet file retriever
@@ -40,6 +41,10 @@ brew "shivammathur/extensions/msgpack@8.3" # MSGPack PHP extension
 brew "shivammathur/extensions/protobuf@8.3" # Protobuf PHP extension
 brew "shivammathur/extensions/redis@8.3" # Redis PHP extension
 brew "shivammathur/extensions/xdebug@8.3" # XDebug PHP extension
+
+### Fonts
+
+cask "font-fira-code-nerd-font" # FiraCode Nerd Font (Fira Code)
 
 ### Casks
 
