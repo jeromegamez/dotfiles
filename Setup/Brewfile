@@ -6,7 +6,6 @@ tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/services"
 tap "mongodb/brew"
-tap "nicoverbruggen/cask"
 tap "shivammathur/extensions"
 tap "shivammathur/php"
 
@@ -63,7 +62,6 @@ cask "mongodb-compass" # Interactive tool for analyzing MongoDB data
 cask "obsidian" # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "orbstack" # Replacement for Docker Desktop
 cask "orion" # WebKit based web browser
-cask "phpmon" # PHP Monitor
 cask "prismlauncher" # PHP Monitor
 cask "raycast" # Control your tools with a few keystrokes
 cask "setapp" # Collection of apps available by subscription
@@ -73,19 +71,15 @@ cask "spotify" # Music streaming service
 cask "sublime-merge" # Git client
 cask "sublime-text" # Text editor for code, markup and prose
 cask "telegram" # Messaging app with a focus on speed and security
-cask "tinkerwell" # Tinker tool for PHP and Laravel developers
 # cask "utm" # Virtual machines UI using QEMU
 cask "whatsapp" # Native desktop client for WhatsApp
 
 ### MAS
 
 mas "1Password for Safari", id: 1569813296
-mas "Bear", id: 1091189122
-mas "iBar", id: 6443843900
+mas "iBar Pro", id: 6737150304
 mas "Kagi Search", id: 1622835804
 mas "NextDNS", id: 1464122853
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Patterns", id: 429449079
-mas "Pixelmator Pro", id: 1289583905
-mas "Things", id: 904280696
