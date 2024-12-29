@@ -56,7 +56,7 @@ cask "discord" # Voice and text chat software
 cask "droplr" # Screenshot and screen recorder
 cask "duckduckgo" # Web browser focusing on privacy
 cask "fantastical" # Calendar software
-cask "iterm2" # Terminal emulator as alternative to Apple's Terminal app
+cask "ghostty" # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "jetbrains-toolbox" # JetBrains tools manager
 cask "karabiner-elements" # Keyboard customizer
 cask "logi-options-plus" # Software for Logitech devices
