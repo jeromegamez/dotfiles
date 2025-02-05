@@ -78,6 +78,7 @@ cask "sublime-text" # Text editor for code, markup and prose
 cask "telegram" # Messaging app with a focus on speed and security
 # cask "utm" # Virtual machines UI using QEMU
 cask "whatsapp" # Native desktop client for WhatsApp
+cask "zen-browser" # Gecko based web browser
 
 ### MAS
 
