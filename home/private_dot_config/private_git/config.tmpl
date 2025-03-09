@@ -12,17 +12,31 @@
     markIgnoredLines = true
     markUnblamableLines = true
 
-[commit]
-    gpgsign = true
+[branch]
+    sort = -committerdate
 
-[tag]
-    forceSignAnnotated = true
+[column]
+    ui = auto
+
+[commit]
     gpgsign = true
 
 [core]
     excludesfile = ~/.config/git/ignore
     attributesfile = ~/.config/git/attributes
     pager = cat
+
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
+
+[help]
+    autocorrect = true
+
+[merge]
+    conflictstyle = zdiff3
 
 [mergetool]
     prompt = false
@@ -31,6 +45,10 @@
 [mergetool "smerge"]
     cmd = smerge mergetool \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
     trustExitCode = true
+
+[rerere]
+    enabled = true
+    autoupdate = true
 
 [credential]
 {{- if eq .chezmoi.os "darwin" }}
@@ -44,16 +62,28 @@
     defaultBranch = main
 
 [fetch]
+    all = true
     prune = true
+    pruneTags = true
 
 [pull]
-    ff = only
+    rebase = true
 
 [push]
-    default = current
+    autoSetupRemote = true
+    default = simple
+    followTags = true
 
 [rebase]
+    autoSquash = true
     autoStash = true
+    updateRefs = true
 
 [pack]
     allowPackReuse = multi
+
+
+[tag]
+    forceSignAnnotated = true
+    gpgsign = true
+    sort = version:refname
