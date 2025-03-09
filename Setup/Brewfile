@@ -75,6 +75,7 @@ cask "slack" # Team communication and collaboration software
 cask "spotify" # Music streaming service
 cask "sublime-merge" # Git client
 cask "sublime-text" # Text editor for code, markup and prose
+cask "tailscale" # Mesh VPN based on WireGuard
 cask "telegram" # Messaging app with a focus on speed and security
 # cask "utm" # Virtual machines UI using QEMU
 cask "whatsapp" # Native desktop client for WhatsApp
