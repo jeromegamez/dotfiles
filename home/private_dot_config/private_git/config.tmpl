@@ -37,6 +37,9 @@
 
 [merge]
     conflictstyle = zdiff3
+{{- if eq .chezmoi.os "darwin" }}
+    tool = smerge
+{{- end }}
 
 [mergetool]
     prompt = false
