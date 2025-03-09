@@ -4,4 +4,4 @@ set -eufo pipefail
 
 # Brewfile: {{ include (joinPath .chezmoi.workingTree "Setup/Brewfile") | sha256sum }}
 eval "$({{ joinPath .homebrewPrefix "bin" "brew" }} shellenv)" || true
-HOMEBREW_CASK_OPTS=--no-quarantine {{ joinPath .homebrewPrefix "bin" "brew" }} bundle --no-lock --file="{{ .chezmoi.workingTree }}/Setup/Brewfile"
+HOMEBREW_CASK_OPTS=--no-quarantine {{ joinPath .homebrewPrefix "bin" "brew" }} bundle --file="{{ .chezmoi.workingTree }}/Setup/Brewfile"
