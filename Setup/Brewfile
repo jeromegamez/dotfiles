@@ -68,6 +68,7 @@ cask "obsidian" # Knowledge base that works on top of a local folder of plain te
 cask "orbstack" # Replacement for Docker Desktop
 cask "orion" # WebKit based web browser
 cask "prismlauncher" # PHP Monitor
+cask "rapidapi" # HTTP client that helps testing and describing APIs
 cask "raycast" # Control your tools with a few keystrokes
 cask "setapp" # Collection of apps available by subscription
 cask "signal" # Instant messaging application focusing on security
