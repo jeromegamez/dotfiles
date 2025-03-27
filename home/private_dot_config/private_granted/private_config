@@ -3,6 +3,7 @@ CustomBrowserPath = "/Applications/Zen Browser.app/Contents/MacOS/zen"
 CustomSSOBrowserPath = ""
 Ordering = ""
 ExportCredentialSuffix = ""
+CredentialProcessAutoLogin = true
 
 [AWSConsoleBrowserLaunchTemplate]
   Command = "/Applications/Zen Browser.app/Contents/MacOS/zen --new-tab {{.URL}} --profile {{.Profile}}"
