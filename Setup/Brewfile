@@ -1,10 +1,6 @@
 tap "common-fate/granted"
 tap "FelixKratz/formulae"
 tap "hashicorp/tap"
-tap "homebrew/bundle"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
-tap "homebrew/services"
 tap "mongodb/brew"
 tap "shivammathur/extensions"
 tap "shivammathur/php"
@@ -78,7 +74,6 @@ cask "sublime-merge" # Git client
 cask "sublime-text" # Text editor for code, markup and prose
 cask "tailscale" # Mesh VPN based on WireGuard
 cask "telegram" # Messaging app with a focus on speed and security
-# cask "utm" # Virtual machines UI using QEMU
 cask "whatsapp" # Native desktop client for WhatsApp
 cask "zen-browser" # Gecko based web browser
 
