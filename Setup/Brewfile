@@ -6,6 +6,7 @@ tap "shivammathur/extensions"
 tap "shivammathur/php"
 
 brew "atuin" # Improved shell history for zsh, bash, fish and nushell
+brew "bash" # Bourne-Again SHell, a UNIX command interpreter
 brew "awscli" # Official Amazon AWS command-line interface
 brew "cookiecutter" # Utility that creates projects from templates
 brew "borders" # A window border system for macOS
@@ -15,6 +16,7 @@ brew "git" # Distributed revision control system
 brew "gnupg" # GNU Pretty Good Privacy (PGP) package
 brew "granted" # The easiest way to access your cloud.
 brew "jq" # Lightweight and flexible command-line JSON processor
+brew "make" # Utility for directing compilation
 brew "mas" # Mac App Store command-line interface
 brew "mongodb-database-tools" # Standard utilities for interacting with MongoDB.
 brew "neovim" # Ambitious Vim-fork focused on extensibility and agility
