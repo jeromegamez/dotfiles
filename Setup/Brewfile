@@ -4,6 +4,7 @@ tap "hashicorp/tap"
 tap "mongodb/brew"
 tap "shivammathur/extensions"
 tap "shivammathur/php"
+tap "go-task/tap"
 
 brew "atuin" # Improved shell history for zsh, bash, fish and nushell
 brew "bash" # Bourne-Again SHell, a UNIX command interpreter
@@ -12,6 +13,7 @@ brew "cookiecutter" # Utility that creates projects from templates
 brew "borders" # A window border system for macOS
 brew "cosign" # Container Signing (needed for tenv)
 brew "gh" # GitHub command-line tool
+brew "go-task/tap/go-task" # Task is a task runner/build tool that aims to be simpler and easier to use
 brew "git" # Distributed revision control system
 brew "gnupg" # GNU Pretty Good Privacy (PGP) package
 brew "granted" # The easiest way to access your cloud.
