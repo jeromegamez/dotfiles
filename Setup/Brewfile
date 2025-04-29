@@ -22,6 +22,7 @@ brew "make" # Utility for directing compilation
 brew "mas" # Mac App Store command-line interface
 brew "mongodb-database-tools" # Standard utilities for interacting with MongoDB.
 brew "neovim" # Ambitious Vim-fork focused on extensibility and agility
+brew "hashicorp/tap/packer" # https://www.packer.io/
 brew "pinentry-mac" # Pinentry for GPG on Mac
 brew "ripgrep" # Search tool like grep and The Silver Searcher
 brew "starship" # Cross-shell prompt for astronauts
