@@ -1,0 +1,34 @@
+#!/bin/bash
+# Script to exclude AI instruction files from git tracking without modifying .gitignore
+
+set -e
+
+# Check if current directory is a git repository
+if [ ! -d ".git" ]; then
+  echo "Error: Not a git repository. Please run this from the root of a git repository."
+  exit 1
+fi
+
+# Create .git/info directory if it doesn't exist
+mkdir -p .git/info
+
+# List of common AI instruction files to exclude
+AI_FILES=(
+  "CLAUDE.md"
+  "ANTHROPIC.md"
+  "AI_INSTRUCTIONS.md"
+  "GPT.md"
+  "COPILOT.md"
+  "AI_NOTES.md"
+  "LLM_INSTRUCTIONS.md"
+)
+
+# Add each file to the exclude list if not already present
+for file in "${AI_FILES[@]}"; do
+  if grep -q "^$file$" .git/info/exclude 2>/dev/null; then
+    echo "$file is already excluded from git tracking."
+  else
+    echo "$file" >> .git/info/exclude
+    echo "Successfully excluded $file from git tracking."
+  fi
+done
