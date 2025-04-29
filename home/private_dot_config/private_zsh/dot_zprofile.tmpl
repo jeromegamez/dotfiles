@@ -18,6 +18,7 @@ fi
 
 path=("{{ .homebrewPrefix }}/opt/make/libexec/gnubin" $path)
 path=("${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" $path)
+export HOMEBREW_BUNDLE_FILE_GLOBAL={{ joinPath .chezmoi.workingTree "Setup/Brewfile" }}
 {{ end }}
 
 export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
