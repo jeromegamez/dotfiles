@@ -1,33 +1,38 @@
 tap "common-fate/granted"
-tap "FelixKratz/formulae"
+tap "keidarcy/tap"
 tap "hashicorp/tap"
 tap "mongodb/brew"
 tap "shivammathur/extensions"
 tap "shivammathur/php"
 tap "go-task/tap"
 
+brew "asdf" # Extendable version manager with support for Ruby, Node.js, Erlang & more
 brew "atuin" # Improved shell history for zsh, bash, fish and nushell
-brew "bash" # Bourne-Again SHell, a UNIX command interpreter
 brew "awscli" # Official Amazon AWS command-line interface
+brew "bash" # Bourne-Again SHell, a UNIX command interpreter
+brew "common-fate/granted/granted" # The easiest way to access your cloud.
 brew "cookiecutter" # Utility that creates projects from templates
-brew "borders" # A window border system for macOS
 brew "cosign" # Container Signing (needed for tenv)
 brew "gh" # GitHub command-line tool
-brew "go-task/tap/go-task" # Task is a task runner/build tool that aims to be simpler and easier to use
 brew "git" # Distributed revision control system
+brew "glab" # Open-source GitLab command-line tool
+brew "go-task/tap/go-task" # Task is a task runner/build tool that aims to be simpler and easier to use
 brew "gnupg" # GNU Pretty Good Privacy (PGP) package
-brew "granted" # The easiest way to access your cloud.
+brew "hashicorp/tap/packer" # https://www.packer.io/
 brew "jq" # Lightweight and flexible command-line JSON processor
+brew "keidarcy/tap/e1s" # e1s is a terminal application to simply browsing and manage AWS ECS resources, with a focus on Fargate. Inspired by k9s.
 brew "make" # Utility for directing compilation
 brew "mas" # Mac App Store command-line interface
-brew "mongodb-database-tools" # Standard utilities for interacting with MongoDB.
+brew "mongodb/brew/mongodb-database-tools" # Standard utilities for interacting with MongoDB.
 brew "neovim" # Ambitious Vim-fork focused on extensibility and agility
-brew "hashicorp/tap/packer" # https://www.packer.io/
+brew "nvm" # Manage multiple Node.js version
 brew "pinentry-mac" # Pinentry for GPG on Mac
 brew "ripgrep" # Search tool like grep and The Silver Searcher
 brew "starship" # Cross-shell prompt for astronauts
 brew "tenv" # OpenTofu / Terraform / Terragrunt / Atmos version manager
+brew "tflint" # Linter for Terraform files
 brew "tmux" # Terminal multiplexer
+brew "xdg-ninja" # Check your $HOME for unwanted files and directories
 brew "wget" # Internet file retriever
 
 ### PHP
@@ -51,16 +56,17 @@ cask "font-fira-code-nerd-font" # FiraCode Nerd Font (Fira Code)
 
 cask "1password" # Password manager that keeps all passwords secure behind one password
 cask "1password-cli" # Command-line interface for 1Password
-cask "aws-vault" # Securely store and access AWS credentials in development environments
+cask "apidog-europe" # API development platform hosted in Europe
 cask "cardhop" # Contacts manager
 cask "discord" # Voice and text chat software
 cask "droplr" # Screenshot and screen recorder
 cask "duckduckgo" # Web browser focusing on privacy
 cask "fantastical" # Calendar software
 cask "ghostty" # Terminal emulator that uses platform-native UI and GPU acceleration
+cask "gpg-suite-no-mail" # GPG Suite (without GPG Mail)
 cask "jetbrains-toolbox" # JetBrains tools manager
 cask "karabiner-elements" # Keyboard customizer
-cask "logi-options-plus" # Software for Logitech devices
+cask "logi-options+" # Software for Logitech devices
 cask "mailmate" # IMAP email client
 cask "microsoft-excel" # Spreadsheet software
 cask "microsoft-word" # Word processor
@@ -79,6 +85,7 @@ cask "sublime-text" # Text editor for code, markup and prose
 cask "tailscale" # Mesh VPN based on WireGuard
 cask "telegram" # Messaging app with a focus on speed and security
 cask "whatsapp" # Native desktop client for WhatsApp
+cask "zed" # Multiplayer code editor
 cask "zen-browser" # Gecko based web browser
 
 ### MAS
@@ -89,4 +96,6 @@ mas "Kagi Search", id: 1622835804
 mas "NextDNS", id: 1464122853
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
+mas "Patterns", id: 429449079
+mas "Playlisty for Apple Music", id: 1459275972
 mas "Patterns", id: 429449079
