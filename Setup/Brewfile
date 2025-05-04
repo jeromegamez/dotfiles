@@ -32,16 +32,16 @@ brew "wget" # Internet file retriever
 
 ### PHP
 
-brew "shivammathur/php/php@8.3" # General-purpose scripting language
-brew "shivammathur/extensions/amqp@8.3" # AMQP PHP extension
-brew "shivammathur/extensions/apcu@8.3" # APCU PHP extension
-brew "shivammathur/extensions/grpc@8.3" # gRPC PHP extension
-brew "shivammathur/extensions/igbinary@8.3" # IGBinary PHP extension
-brew "shivammathur/extensions/mongodb@8.3" # MongoDB PHP extension
-brew "shivammathur/extensions/msgpack@8.3" # MSGPack PHP extension
-brew "shivammathur/extensions/protobuf@8.3" # Protobuf PHP extension
-brew "shivammathur/extensions/redis@8.3" # Redis PHP extension
-brew "shivammathur/extensions/xdebug@8.3" # XDebug PHP extension
+brew "shivammathur/php/php@8.4" # General-purpose scripting language
+brew "shivammathur/extensions/amqp@8.4" # AMQP PHP extension
+brew "shivammathur/extensions/apcu@8.4" # APCU PHP extension
+brew "shivammathur/extensions/grpc@8.4" # gRPC PHP extension
+brew "shivammathur/extensions/igbinary@8.4" # IGBinary PHP extension
+brew "shivammathur/extensions/mongodb@8.4" # MongoDB PHP extension
+brew "shivammathur/extensions/msgpack@8.4" # MSGPack PHP extension
+brew "shivammathur/extensions/protobuf@8.4" # Protobuf PHP extension
+brew "shivammathur/extensions/redis@8.4" # Redis PHP extension
+brew "shivammathur/extensions/xdebug@8.4" # XDebug PHP extension
 
 ### Fonts
 
