@@ -30,6 +30,7 @@ brew "pinentry-mac" # Pinentry for GPG on Mac
 brew "ripgrep" # Search tool like grep and The Silver Searcher
 brew "starship" # Cross-shell prompt for astronauts
 brew "tenv" # OpenTofu / Terraform / Terragrunt / Atmos version manager
+brew "terraform-docs" # Tool to generate documentation from Terraform modules
 brew "tflint" # Linter for Terraform files
 brew "tmux" # Terminal multiplexer
 brew "xdg-ninja" # Check your $HOME for unwanted files and directories
