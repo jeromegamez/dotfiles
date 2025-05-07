@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 # Script to exclude AI instruction files from git tracking without modifying .gitignore
 
 set -e
