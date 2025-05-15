@@ -88,7 +88,7 @@ cask "tailscale" # Mesh VPN based on WireGuard
 cask "telegram" # Messaging app with a focus on speed and security
 cask "whatsapp" # Native desktop client for WhatsApp
 cask "zed" # Multiplayer code editor
-cask "zen-browser" # Gecko based web browser
+cask "zen" # Gecko based web browser
 
 ### MAS
 
