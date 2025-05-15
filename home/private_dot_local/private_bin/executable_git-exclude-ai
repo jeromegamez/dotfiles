@@ -15,6 +15,7 @@ mkdir -p .git/info
 # List of common AI instruction files to exclude
 AI_FILES=(
   ".claude"
+  ".zed"
   "CLAUDE.md"
   "ANTHROPIC.md"
   "AI_INSTRUCTIONS.md"
