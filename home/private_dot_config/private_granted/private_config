@@ -1,12 +1,12 @@
 DefaultBrowser = "FIREFOX"
-CustomBrowserPath = "/Applications/Zen Browser.app/Contents/MacOS/zen"
+CustomBrowserPath = "/Applications/Zen.app/Contents/MacOS/zen"
 CustomSSOBrowserPath = ""
 Ordering = ""
 ExportCredentialSuffix = ""
 CredentialProcessAutoLogin = true
 
 [AWSConsoleBrowserLaunchTemplate]
-  Command = "/Applications/Zen Browser.app/Contents/MacOS/zen --new-tab {{.URL}} --profile {{.Profile}}"
+  Command = "/Applications/Zen.app/Contents/MacOS/zen --new-tab {{.URL}} --profile {{.Profile}}"
 
 [Keyring]
   Backend = "keychain"
