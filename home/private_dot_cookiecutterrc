@@ -1,0 +1,6 @@
+default_context:
+    full_name: "Jérôme Gamez"
+    email: "jerome@gamez.name"
+    github_username: "jeromegamez"
+abbreviations:
+    php: https://github.com/jeromegamez/cookiecutter-php
