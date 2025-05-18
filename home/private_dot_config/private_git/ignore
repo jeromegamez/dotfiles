@@ -9,6 +9,7 @@
 .envrc
 .php_cs.cache
 *.swp
+.zed
 
 # Icon must end with two \r
 Icon
@@ -65,4 +66,3 @@ terraform.rc
 # Local PHP Environment
 /test*.php
 /test_*
-
