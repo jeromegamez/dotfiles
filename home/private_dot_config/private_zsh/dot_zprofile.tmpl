@@ -21,5 +21,9 @@ path=("${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" $path)
 export HOMEBREW_BUNDLE_FILE_GLOBAL={{ joinPath .chezmoi.workingTree "Setup/Brewfile" }}
 {{ end }}
 
+if [ -f "$HOME/.cargo/env" ]; then
+    source "$HOME/.cargo/env"
+fi
+
 export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
 export GITHUB_TOKEN={{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Avoid Rate Limits" .onepasswordAccount | trim | quote }}

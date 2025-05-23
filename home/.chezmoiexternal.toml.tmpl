@@ -4,24 +4,20 @@
     exact = true
     stripComponents = 1
     refreshPeriod = "168h"
+
 [".local/share/zsh/zsh-syntax-highlighting"]
     type = "archive"
     url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
     exact = true
     stripComponents = 1
     refreshPeriod = "168h"
+
 [".config/nvim"]
     type = "git-repo"
     url = "https://github.com/jeromegamez/kickstart.nvim"
     exact = true
     stripComponents = 1
-
-{{- $lazyGitVersionTag := (gitHubLatestRelease "jesseduffield/lazygit").TagName }}
-{{- $lazyGitVersionTagWithoutV := $lazyGitVersionTag | replaceAllRegex "^v" "" }}
-[".local/bin/lazygit"]
-    type = "archive-file"
-    url = "https://github.com/jesseduffield/lazygit/releases/download/{{ $lazyGitVersionTag }}/lazygit_{{ $lazyGitVersionTagWithoutV }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz"
-    path = "lazygit"
+    refreshPeriod = "168h"
 
 {{- if eq .chezmoi.os "darwin" }}
 [".local/share/google-cloud-sdk"]
