@@ -1,24 +1,16 @@
-autoload -Uz compinit
-compinit
-
+# Environment variables
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
-export ZSH="${XDG_DATA_HOME}/oh-my-zsh"
-export _Z_DATA="${XDG_STATE_HOME}/zsh/z"
-
-plugins=(git z)
-
-source $ZSH/oh-my-zsh.sh
-
+export SHELL_SESSIONS_DISABLE=1
+export GPG_TTY=$(tty)
 unset PAGER
 
-export SHELL_SESSIONS_DISABLE=1
-
+# History configuration
 export HISTFILE="$XDG_STATE_HOME"/zsh/history
 export HISTFILESIZE=1000000000
 export HISTSIZE=1000000001 # set HISTSIZE > SAVEHIST
 
 setopt EXTENDED_HISTORY         # include timestamp
-setopt HIST_BEEP                # beep if attempting to access a history entry which isn’t there
+setopt HIST_BEEP                # beep if attempting to access a history entry which isn't there
 setopt HIST_EXPIRE_DUPS_FIRST   # trim dupes first if history is full
 setopt HIST_FIND_NO_DUPS        # do not display previously found command
 setopt HIST_IGNORE_ALL_DUPS     # remove previously found command when entering it again
@@ -26,30 +18,31 @@ setopt HIST_IGNORE_DUPS         # do not save duplicate of prior command
 setopt HIST_IGNORE_SPACE        # do not save if line starts with space
 setopt HIST_NO_STORE            # do not save history commands
 setopt HIST_REDUCE_BLANKS       # strip superfluous blanks
-setopt HIST_SAVE_NO_DUPS      # omit older duplicates of newer commands
+setopt HIST_SAVE_NO_DUPS        # omit older duplicates of newer commands
 setopt HIST_VERIFY              # expand command line without executing it
-setopt INC_APPEND_HISTORY       # don’t wait for shell to exit to save history lines
+setopt INC_APPEND_HISTORY       # don't wait for shell to exit to save history lines
 
-# setopt HIST_ALLOW_CLOBBER       # related to shell clobber setting
-# setopt HIST_IGNORE_ALL_DUPS     # remove old event if new one is a duplicate
-# setopt HIST_LEX_WORDS           # related to how white space is saved
-# setopt HIST_NO_FUNCTIONS        # do not save function commands
-# setopt HIST_SUBST_PATTERN       # use pattern matching for substitutions
+# Enable completions (after PATH is set)
+autoload -Uz compinit
+compinit
 
+# Load aliases
+source "${XDG_CONFIG_HOME}/zsh/.aliases.zsh"
 
-export GPG_TTY=$(tty)
-
-if [ -f "$HOME/.cargo/env" ]; then
-    source "$HOME/.cargo/env"
+# Directory navigation (z/zoxide)
+if command -v zoxide > /dev/null; then
+    eval "$(zoxide init zsh)"
 fi
 
-if type "assume" > /dev/null; then
-  alias assume=". assume"
-fi
-
+# Load external tools and completions
 source "${XDG_CONFIG_HOME}/tenv/completion.zsh"
-
 source "${XDG_CONFIG_HOME}/zsh/.plugins.zsh.inc"
 
+# Load nvm
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# Initialize prompt (last)
 export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
 eval "$(starship init zsh)"
