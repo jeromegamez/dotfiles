@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# NVM version to install
+NVM_VERSION="v0.40.3"
+
+# Set NVM directory to use XDG Base Directory if available
+if [ -n "${XDG_CONFIG_HOME:-}" ]; then
+    export NVM_DIR="$XDG_CONFIG_HOME/nvm"
+else
+    export NVM_DIR="$HOME/.nvm"
+fi
+
+# Check if nvm is already installed and up to date
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    # Source nvm to get current version
+    . "$NVM_DIR/nvm.sh"
+    if command -v nvm >/dev/null 2>&1; then
+        current_version=$(nvm --version 2>/dev/null || echo "unknown")
+        if [ "$current_version" = "${NVM_VERSION#v}" ]; then
+            echo "nvm $current_version is already installed and up to date"
+            exit 0
+        fi
+    fi
+fi
+
+echo "Installing nvm $NVM_VERSION..."
+
+# Download and run the nvm install script
+if command -v curl >/dev/null 2>&1; then
+    curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh" | bash
+elif command -v wget >/dev/null 2>&1; then
+    wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh" | bash
+else
+    echo "Error: Neither curl nor wget is available. Please install one of them."
+    exit 1
+fi
+
+# Verify installation
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    . "$NVM_DIR/nvm.sh"
+    if command -v nvm >/dev/null 2>&1; then
+        echo "nvm $(nvm --version) installed successfully"
+    else
+        echo "Warning: nvm installation completed but command not available in current session"
+    fi
+else
+    echo "Error: nvm installation failed"
+    exit 1
+fi
