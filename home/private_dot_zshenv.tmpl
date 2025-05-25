@@ -12,4 +12,8 @@ for xdgdir in XDG_{CACHE,CONFIG,DATA,STATE}_HOME; do
   [[ -e ${(P)xdgdir} ]] || mkdir -p ${(P)xdgdir}
 done
 
+{{ if eq .chezmoi.os "darwin" -}}
+export EDITOR={{ joinPath .homebrewPrefix "bin" "nvim" }}
+export VISUAL=$EDITOR
+{{- end }}
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh
