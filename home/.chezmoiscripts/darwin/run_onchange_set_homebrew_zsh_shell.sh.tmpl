@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -eufo pipefail
+
+TARGET_SHELL="{{ joinPath .homebrewPrefix "bin" "zsh" }}"
+
+# Check if target shell exists
+if [[ ! -x "$TARGET_SHELL" ]]; then
+    echo "Target shell $TARGET_SHELL not found or not executable"
+    exit 1
+fi
+
+# Get actual login shell (more reliable than $SHELL)
+CURRENT_SHELL=$(dscl . -read /Users/"$USER" UserShell | awk '{print $2}')
+
+# Only change shell if current shell is not the desired one
+if [[ "$CURRENT_SHELL" != "$TARGET_SHELL" ]]; then
+    if ! grep -qx "$TARGET_SHELL" /etc/shells; then
+        echo "Adding $TARGET_SHELL to /etc/shells"
+        echo "$TARGET_SHELL" | sudo tee -a /etc/shells > /dev/null
+    fi
+
+    echo "Changing login shell from $CURRENT_SHELL to $TARGET_SHELL"
+    chsh -s "$TARGET_SHELL"
+    echo "Shell changed successfully. New login sessions will use $TARGET_SHELL"
+else
+    echo "Shell is already set to $TARGET_SHELL"
+fi
