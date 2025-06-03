@@ -33,6 +33,7 @@ brew "tenv" # OpenTofu / Terraform / Terragrunt / Atmos version manager
 brew "terraform-docs" # Tool to generate documentation from Terraform modules
 brew "tflint" # Linter for Terraform files
 brew "tmux" # Terminal multiplexer
+brew "uv" # Extremely fast Python package installer and resolver, written in Rust
 brew "xdg-ninja" # Check your $HOME for unwanted files and directories
 brew "wget" # Internet file retriever
 brew "zsh" # UNIX shell (command interpreter)
