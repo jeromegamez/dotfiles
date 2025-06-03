@@ -2,8 +2,10 @@
 _init_zoxide() {
     if command -v zoxide > /dev/null; then
         eval "$(zoxide init zsh)"
-        unset -f z zi _init_zoxide
     fi
+
+    # Remove wrappers to prevent infinite recursion
+    unset -f z zi _init_zoxide
 }
 z() { _init_zoxide; z "$@"; }
 zi() { _init_zoxide; zi "$@"; }
