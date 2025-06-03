@@ -29,10 +29,9 @@ autoload -Uz compinit && compinit
 
 [[ -o interactive ]] && bindkey -e
 
-# Load aliases
+# Load aliases and tools
 source "${XDG_CONFIG_HOME}/zsh/.aliases.zsh"
-
-# Load external tools and completions
+source "${XDG_CONFIG_HOME}/zsh/.nvm.zsh"
 source "${XDG_CONFIG_HOME}/zsh/.lazy-tools.zsh"
 
 # Initialize prompt (last)
