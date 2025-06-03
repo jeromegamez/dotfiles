@@ -23,8 +23,9 @@ setopt HIST_VERIFY              # expand command line without executing it
 setopt INC_APPEND_HISTORY       # don't wait for shell to exit to save history lines
 
 # Enable completions (after PATH is set)
-autoload -Uz compinit
-compinit
+zstyle ':completion::complete:*' use-cache on
+zstyle ':completion:*' rehash true
+autoload -Uz compinit && compinit
 
 [[ -o interactive ]] && bindkey -e
 
