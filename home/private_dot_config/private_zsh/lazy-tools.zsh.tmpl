@@ -20,14 +20,10 @@ tenv() {
 }
 
 
-# Lazy load atuin
-atuin() {
-    unset -f atuin
-    if type "atuin" > /dev/null; then
-        eval "$(atuin init zsh)"
-        atuin "$@"
-    fi
-}
+# Initialize atuin (provides shell integration)
+if command -v atuin > /dev/null; then
+    eval "$(atuin init zsh)"
+fi
 
 # Lazy load 1Password CLI
 op() {
