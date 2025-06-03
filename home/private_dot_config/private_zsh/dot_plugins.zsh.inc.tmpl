@@ -21,10 +21,6 @@ if [ -f "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
     source "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
 fi
 
-if [ -f "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
-    source "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-fi
-
 if command -v uv &>/dev/null; then
   eval "$(uv generate-shell-completion zsh)"
 fi
@@ -35,4 +31,9 @@ fi
 
 if command -v chezmoi &>/dev/null; then
   eval "$(chezmoi completion zsh)"
+fi
+
+# Syntax highlighting needs to be last
+if [ -f "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+    source "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
