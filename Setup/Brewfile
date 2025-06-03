@@ -35,6 +35,7 @@ brew "tflint" # Linter for Terraform files
 brew "tmux" # Terminal multiplexer
 brew "xdg-ninja" # Check your $HOME for unwanted files and directories
 brew "wget" # Internet file retriever
+brew "zsh" # UNIX shell (command interpreter)
 brew "zoxide" # Shell extension to navigate your filesystem faster
 
 ### PHP
