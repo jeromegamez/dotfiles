@@ -30,10 +30,10 @@ autoload -Uz compinit && compinit
 [[ -o interactive ]] && bindkey -e
 
 # Load aliases and tools
-source "${XDG_CONFIG_HOME}/zsh/.aliases.zsh"
-source "${XDG_CONFIG_HOME}/zsh/.git-aliases.zsh"
-source "${XDG_CONFIG_HOME}/zsh/.nvm.zsh"
-source "${XDG_CONFIG_HOME}/zsh/.lazy-tools.zsh"
+source "${XDG_CONFIG_HOME}/zsh/aliases.zsh"
+source "${XDG_CONFIG_HOME}/zsh/git-aliases.zsh"
+source "${XDG_CONFIG_HOME}/zsh/nvm.zsh"
+source "${XDG_CONFIG_HOME}/zsh/lazy-tools.zsh"
 
 # Initialize prompt (last)
 export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
