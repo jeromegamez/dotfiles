@@ -1,22 +1,35 @@
 # Lazy load zoxide
-_init_zoxide() {
+z() {
+    unset -f z zi
     if command -v zoxide > /dev/null; then
         eval "$(zoxide init zsh)"
+        z "$@"
+    else
+        echo "zoxide not found" >&2
+        return 1
     fi
-
-    # Remove wrappers to prevent infinite recursion
-    unset -f z zi _init_zoxide
 }
-z() { _init_zoxide; z "$@"; }
-zi() { _init_zoxide; zi "$@"; }
+zi() {
+    unset -f z zi
+    if command -v zoxide > /dev/null; then
+        eval "$(zoxide init zsh)"
+        zi "$@"
+    else
+        echo "zoxide not found" >&2
+        return 1
+    fi
+}
 
 # Lazy load tenv completion
 tenv() {
     unset -f tenv
     if [ -f "${XDG_CONFIG_HOME}/tenv/completion.zsh" ]; then
         source "${XDG_CONFIG_HOME}/tenv/completion.zsh"
+        tenv "$@"
+    else
+        echo "tenv not found" >&2
+        return 1
     fi
-    tenv "$@"
 }
 
 
@@ -40,10 +53,13 @@ fi
 # Lazy load 1Password CLI
 op() {
     unset -f op
-    if type "op" > /dev/null; then
+    if command -v op > /dev/null; then
         eval "$(op completion zsh)"; compdef _op op
         source "${XDG_CONFIG_HOME}/op/plugins.sh"
         op "$@"
+    else
+        echo "1Password CLI not found" >&2
+        return 1
     fi
 }
 
@@ -57,8 +73,11 @@ gcloud() {
     unset -f gcloud
     if [ -f "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc" ]; then
         source "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc"
+        gcloud "$@"
+    else
+        echo "Google Cloud SDK not found" >&2
+        return 1
     fi
-    gcloud "$@"
 }
 
 # Lazy load uv completion
@@ -67,6 +86,9 @@ uv() {
     if command -v uv &>/dev/null; then
         eval "$(uv generate-shell-completion zsh)"
         uv "$@"
+    else
+        echo "uv not found" >&2
+        return 1
     fi
 }
 
@@ -76,6 +98,9 @@ uvx() {
     if command -v uvx &>/dev/null; then
         eval "$(uvx --generate-shell-completion zsh)"
         uvx "$@"
+    else
+        echo "uvx not found" >&2
+        return 1
     fi
 }
 
@@ -85,6 +110,9 @@ chezmoi() {
     if command -v chezmoi &>/dev/null; then
         eval "$(chezmoi completion zsh)"
         chezmoi "$@"
+    else
+        echo "chezmoi not found" >&2
+        return 1
     fi
 }
 
