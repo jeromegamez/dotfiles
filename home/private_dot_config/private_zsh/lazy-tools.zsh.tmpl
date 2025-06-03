@@ -53,10 +53,6 @@ gcloud() {
     gcloud "$@"
 }
 
-if [ -f "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
-    source "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
-fi
-
 # Lazy load uv completion
 uv() {
     unset -f uv
@@ -84,7 +80,14 @@ chezmoi() {
     fi
 }
 
-# Syntax highlighting needs to be last
-if [ -f "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
-    source "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-fi
+# Load ZSH plugins
+_zsh_plugins=(
+    "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"  # Must be last
+)
+
+# Load plugins in order
+for plugin in "${_zsh_plugins[@]}"; do
+    [ -f "$plugin" ] && source "$plugin"
+done
+unset _zsh_plugins plugin
