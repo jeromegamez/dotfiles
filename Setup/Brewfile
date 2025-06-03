@@ -27,7 +27,6 @@ brew "make" # Utility for directing compilation
 brew "mas" # Mac App Store command-line interface
 brew "mongodb/brew/mongodb-database-tools" # Standard utilities for interacting with MongoDB.
 brew "neovim" # Ambitious Vim-fork focused on extensibility and agility
-brew "ollama" # Create, run, and share large language models (LLMs)
 brew "pinentry-mac" # Pinentry for GPG on Mac
 brew "posting" # Modern API client that lives in your terminal
 brew "ripgrep" # Search tool like grep and The Silver Searcher
