@@ -25,6 +25,18 @@ if command -v atuin > /dev/null; then
     eval "$(atuin init zsh)"
 fi
 
+# Initialize fzf (provides shell integration)
+if command -v fzf > /dev/null; then
+    # Use fd if available (respects .gitignore by default)
+    if command -v fd > /dev/null; then
+        export FZF_DEFAULT_COMMAND='fd --type f'
+        export FZF_CTRL_T_COMMAND='fd --type f'
+        export FZF_ALT_C_COMMAND='fd --type d'
+    fi
+    
+    source <(fzf --zsh)
+fi
+
 # Lazy load 1Password CLI
 op() {
     unset -f op
