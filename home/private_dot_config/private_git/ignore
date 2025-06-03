@@ -63,6 +63,9 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+# Ignore AI stuff
+**/.claude/settings.local.json
+
 # Local PHP Environment
 /test*.php
 /test_*
