@@ -26,4 +26,3 @@ if [ -f "$HOME/.cargo/env" ]; then
 fi
 
 export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
-export GITHUB_TOKEN={{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Avoid Rate Limits" .onepasswordAccount | trim | quote }}
