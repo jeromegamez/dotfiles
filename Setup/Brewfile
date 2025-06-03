@@ -13,6 +13,8 @@ brew "bash" # Bourne-Again SHell, a UNIX command interpreter
 brew "common-fate/granted/granted" # The easiest way to access your cloud.
 brew "cookiecutter" # Utility that creates projects from templates
 brew "cosign" # Container Signing (needed for tenv)
+brew "fd" # Simple, fast and user-friendly alternative to find
+brew "fzf" # Command-line fuzzy finder written in Go
 brew "gh" # GitHub command-line tool
 brew "git" # Distributed revision control system
 brew "glab" # Open-source GitLab command-line tool
