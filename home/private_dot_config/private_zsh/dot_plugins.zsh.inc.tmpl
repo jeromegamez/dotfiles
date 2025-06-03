@@ -1,37 +1,112 @@
-if type "atuin" > /dev/null; then
-  eval "$(atuin init zsh)"
-fi
+# Lazy load zoxide
+_init_zoxide() {
+    if command -v zoxide > /dev/null; then
+        eval "$(zoxide init zsh)"
+        unset -f z zi _init_zoxide
+    fi
+}
+z() { _init_zoxide; z "$@"; }
+zi() { _init_zoxide; zi "$@"; }
 
-if type "op" > /dev/null; then
-  eval "$(op completion zsh)"; compdef _op op
-  source "${XDG_CONFIG_HOME}/op/plugins.sh"
-fi
+# Lazy load tenv completion
+tenv() {
+    unset -f tenv
+    if [ -f "${XDG_CONFIG_HOME}/tenv/completion.zsh" ]; then
+        source "${XDG_CONFIG_HOME}/tenv/completion.zsh"
+    fi
+    tenv "$@"
+}
+
+# Lazy load NVM
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+
+nvm() {
+    unset -f nvm
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    nvm "$@"
+}
+
+node() {
+    unset -f nvm node npm npx
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    node "$@"
+}
+
+npm() {
+    unset -f nvm node npm npx
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    npm "$@"
+}
+
+npx() {
+    unset -f nvm node npm npx
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    npx "$@"
+}
+
+# Lazy load atuin
+atuin() {
+    unset -f atuin
+    if type "atuin" > /dev/null; then
+        eval "$(atuin init zsh)"
+        atuin "$@"
+    fi
+}
+
+# Lazy load 1Password CLI
+op() {
+    unset -f op
+    if type "op" > /dev/null; then
+        eval "$(op completion zsh)"; compdef _op op
+        source "${XDG_CONFIG_HOME}/op/plugins.sh"
+        op "$@"
+    fi
+}
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc" ]; then
     source "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc"
 fi
 
-# The next line enables shell command completion for gcloud.
-if [ -f "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc" ]; then
-    source "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc"
-fi
+# Lazy load gcloud completion
+gcloud() {
+    unset -f gcloud
+    if [ -f "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc" ]; then
+        source "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc"
+    fi
+    gcloud "$@"
+}
 
 if [ -f "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
     source "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
 fi
 
-if command -v uv &>/dev/null; then
-  eval "$(uv generate-shell-completion zsh)"
-fi
+# Lazy load uv completion
+uv() {
+    unset -f uv
+    if command -v uv &>/dev/null; then
+        eval "$(uv generate-shell-completion zsh)"
+        uv "$@"
+    fi
+}
 
-if command -v uvx &>/dev/null; then
-  eval "$(uvx --generate-shell-completion zsh)"
-fi
+# Lazy load uvx completion
+uvx() {
+    unset -f uvx
+    if command -v uvx &>/dev/null; then
+        eval "$(uvx --generate-shell-completion zsh)"
+        uvx "$@"
+    fi
+}
 
-if command -v chezmoi &>/dev/null; then
-  eval "$(chezmoi completion zsh)"
-fi
+# Lazy load chezmoi completion
+chezmoi() {
+    unset -f chezmoi
+    if command -v chezmoi &>/dev/null; then
+        eval "$(chezmoi completion zsh)"
+        chezmoi "$@"
+    fi
+}
 
 # Syntax highlighting needs to be last
 if [ -f "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
