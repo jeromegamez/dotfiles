@@ -26,6 +26,8 @@ setopt INC_APPEND_HISTORY       # don't wait for shell to exit to save history l
 autoload -Uz compinit
 compinit
 
+[[ -o interactive ]] && bindkey -e
+
 # Load aliases
 source "${XDG_CONFIG_HOME}/zsh/.aliases.zsh"
 
