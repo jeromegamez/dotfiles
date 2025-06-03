@@ -27,6 +27,7 @@ brew "mongodb/brew/mongodb-database-tools" # Standard utilities for interacting 
 brew "neovim" # Ambitious Vim-fork focused on extensibility and agility
 brew "ollama" # Create, run, and share large language models (LLMs)
 brew "pinentry-mac" # Pinentry for GPG on Mac
+brew "posting" # Modern API client that lives in your terminal
 brew "ripgrep" # Search tool like grep and The Silver Searcher
 brew "starship" # Cross-shell prompt for astronauts
 brew "tenv" # OpenTofu / Terraform / Terragrunt / Atmos version manager
