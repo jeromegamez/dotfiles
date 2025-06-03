@@ -9,4 +9,4 @@ cursor-style = block
 cursor-style-blink = false
 
 window-padding-x = 6
-keybind = shift+Enter=text:\n
+keybind = shift+enter=text:\n
