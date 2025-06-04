@@ -4,9 +4,11 @@
 # Additionally, each config option is also explained in detail
 # on Ghostty's website, at https://ghostty.org/docs/config.
 
-shell-integration-features = no-cursor
 cursor-style = block
 cursor-style-blink = false
+bold-is-bright = true
 
 window-padding-x = 6
+window-inherit-font-size = true
+
 keybind = shift+enter=text:\n
