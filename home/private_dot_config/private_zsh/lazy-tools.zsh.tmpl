@@ -23,7 +23,7 @@ zi() {
 # Lazy load tenv completion
 tenv() {
     unset -f tenv
-    if [ -f "${XDG_CONFIG_HOME}/tenv/completion.zsh" ]; then
+    if [[ -f "${XDG_CONFIG_HOME}/tenv/completion.zsh" ]]; then
         source "${XDG_CONFIG_HOME}/tenv/completion.zsh"
         tenv "$@"
     else
@@ -63,15 +63,13 @@ op() {
     fi
 }
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc" ]; then
-    source "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc"
-fi
+# Google Cloud SDK path setup
+[[ -f "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc" ]] && source "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc"
 
 # Lazy load gcloud completion
 gcloud() {
     unset -f gcloud
-    if [ -f "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc" ]; then
+    if [[ -f "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc" ]]; then
         source "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc"
         gcloud "$@"
     else
@@ -126,7 +124,7 @@ if [[ $- == *i* ]]; then
 
     # Load plugins in order
     for plugin in "${_zsh_plugins[@]}"; do
-        [ -f "$plugin" ] && source "$plugin"
+        [[ -f "$plugin" ]] && source "$plugin"
     done
     unset _zsh_plugins plugin
 fi
