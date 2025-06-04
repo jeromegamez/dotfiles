@@ -46,7 +46,7 @@ if command -v fzf &>/dev/null; then
         export FZF_CTRL_T_COMMAND='fd --type f'
         export FZF_ALT_C_COMMAND='fd --type d'
     fi
-    
+
     source <(fzf --zsh)
 fi
 
@@ -116,14 +116,17 @@ chezmoi() {
     fi
 }
 
-# Load ZSH plugins
-_zsh_plugins=(
-    "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
-    "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"  # Must be last
-)
+# Load ZSH plugins (only in interactive shells)
+# The $- variable contains shell options, and *i* checks if interactive mode is enabled.
+if [[ $- == *i* ]]; then
+    _zsh_plugins=(
+        "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
+        "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"  # Must be last
+    )
 
-# Load plugins in order
-for plugin in "${_zsh_plugins[@]}"; do
-    [ -f "$plugin" ] && source "$plugin"
-done
-unset _zsh_plugins plugin
+    # Load plugins in order
+    for plugin in "${_zsh_plugins[@]}"; do
+        [ -f "$plugin" ] && source "$plugin"
+    done
+    unset _zsh_plugins plugin
+fi
