@@ -8,6 +8,7 @@ unset PAGER
 export HISTFILE="$XDG_STATE_HOME"/zsh/history
 export HISTFILESIZE=1000000000
 export HISTSIZE=1000000001 # set HISTSIZE > SAVEHIST
+export SAVEHIST=$HISTSIZE  # ensure SAVEHIST matches HISTSIZE
 
 setopt EXTENDED_HISTORY         # include timestamp
 setopt HIST_BEEP                # beep if attempting to access a history entry which isn't there
@@ -18,9 +19,11 @@ setopt HIST_IGNORE_DUPS         # do not save duplicate of prior command
 setopt HIST_IGNORE_SPACE        # do not save if line starts with space
 setopt HIST_NO_STORE            # do not save history commands
 setopt HIST_REDUCE_BLANKS       # strip superfluous blanks
+setopt HIST_SAVE_BY_COPY        # write to temp file then move to avoid corruption
 setopt HIST_SAVE_NO_DUPS        # omit older duplicates of newer commands
 setopt HIST_VERIFY              # expand command line without executing it
 setopt INC_APPEND_HISTORY       # don't wait for shell to exit to save history lines
+setopt SHARE_HISTORY            # share history between sessions
 
 # Enable completions (after PATH is set)
 zstyle ':completion::complete:*' use-cache on
