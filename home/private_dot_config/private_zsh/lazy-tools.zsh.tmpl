@@ -1,7 +1,7 @@
 # Lazy load zoxide
 z() {
     unset -f z zi
-    if command -v zoxide > /dev/null; then
+    if command -v zoxide &>/dev/null; then
         eval "$(zoxide init zsh)"
         z "$@"
     else
@@ -11,7 +11,7 @@ z() {
 }
 zi() {
     unset -f z zi
-    if command -v zoxide > /dev/null; then
+    if command -v zoxide &>/dev/null; then
         eval "$(zoxide init zsh)"
         zi "$@"
     else
@@ -34,14 +34,14 @@ tenv() {
 
 
 # Initialize atuin (provides shell integration)
-if command -v atuin > /dev/null; then
+if command -v atuin &>/dev/null; then
     eval "$(atuin init zsh)"
 fi
 
 # Initialize fzf (provides shell integration)
-if command -v fzf > /dev/null; then
+if command -v fzf &>/dev/null; then
     # Use fd if available (respects .gitignore by default)
-    if command -v fd > /dev/null; then
+    if command -v fd &>/dev/null; then
         export FZF_DEFAULT_COMMAND='fd --type f'
         export FZF_CTRL_T_COMMAND='fd --type f'
         export FZF_ALT_C_COMMAND='fd --type d'
@@ -53,7 +53,7 @@ fi
 # Lazy load 1Password CLI
 op() {
     unset -f op
-    if command -v op > /dev/null; then
+    if command -v op &>/dev/null; then
         eval "$(op completion zsh)"; compdef _op op
         source "${XDG_CONFIG_HOME}/op/plugins.sh"
         op "$@"
