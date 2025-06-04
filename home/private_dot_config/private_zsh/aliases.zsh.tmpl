@@ -1,10 +1,17 @@
-if command -v assume > /dev/null; then
-  alias assume=". assume"
-fi
-
 # Navigate up directories with dots
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
+
+if command -v assume > /dev/null; then
+  alias assume=". assume"
+fi
+
+if command -v eza > /dev/null; then
+  alias ls='eza --icons'
+  alias ll='eza -l --icons'
+  alias la='eza -la --icons'
+  alias lt='eza --tree --icons'
+fi
