@@ -1,28 +1,30 @@
-path=("${HOME}/.local/bin" $path)
+# Core PATH setup
+typeset -U path  # Remove duplicates automatically
+
+# Essential paths (needed early)
+[[ -d "${HOME}/.local/bin" ]] && path=("${HOME}/.local/bin" $path)
+{{ if eq .chezmoi.os "darwin" -}}
+path=("{{ .homebrewPrefix }}/opt/make/libexec/gnubin" $path)
+[[ -d "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" ]] && path=("${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" $path)
+{{ end }}
 
 {{ if eq .chezmoi.os "darwin" -}}
 # Homebrew
 fpath+=("{{ .homebrewPrefix }}/share/zsh/site-functions")
 eval "$({{ .homebrewPrefix }}/bin/brew shellenv)"
 
-# See https://stackoverflow.com/a/52230415/284325
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-
-if [ -f ${HOME}/.orbstack/shell/init.zsh ]; then
+if [[ -f ${HOME}/.orbstack/shell/init.zsh ]]; then
     source ${HOME}/.orbstack/shell/init.zsh
 fi
 
-if [ -d ${XDG_CONFIG_HOME}/composer/vendor/bin ]; then
-    path+=("${XDG_CONFIG_HOME}/composer/vendor/bin")
-fi
-
-path=("{{ .homebrewPrefix }}/opt/make/libexec/gnubin" $path)
-path=("${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" $path)
 export HOMEBREW_BUNDLE_FILE_GLOBAL={{ joinPath .chezmoi.workingTree "Setup/Brewfile" }}
 {{ end }}
 
-if [ -f "$HOME/.cargo/env" ]; then
-    source "$HOME/.cargo/env"
-fi
+# Tool-specific paths
+[[ -d "${XDG_CONFIG_HOME}/composer/vendor/bin" ]] && path+=("${XDG_CONFIG_HOME}/composer/vendor/bin")
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
 export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
+
+# See https://stackoverflow.com/a/52230415/284325
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
