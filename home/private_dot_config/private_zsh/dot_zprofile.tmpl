@@ -18,6 +18,9 @@ if [[ -f ${HOME}/.orbstack/shell/init.zsh ]]; then
 fi
 
 export HOMEBREW_BUNDLE_FILE_GLOBAL={{ joinPath .chezmoi.workingTree "Setup/Brewfile" }}
+
+# 1Password SSH Agent
+export SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 {{ end }}
 
 # Tool-specific paths
