@@ -43,6 +43,11 @@ zstyle ':completion:*' group-name ''                  # group completions by cat
 
 [[ -o interactive ]] && bindkey -e
 
+bindkey "\e[3~" delete-char        # Plain Delete
+bindkey "\e[3;2~" delete-char      # Shift+Delete
+bindkey "\e[3;3~" delete-char      # Alt+Delete
+bindkey "\e[3;5~" delete-char      # Ctrl+Delete
+
 # Load aliases and tools
 source "${XDG_CONFIG_HOME}/zsh/aliases.zsh"
 source "${XDG_CONFIG_HOME}/zsh/git-aliases.zsh"
