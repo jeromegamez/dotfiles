@@ -26,9 +26,20 @@ setopt INC_APPEND_HISTORY       # don't wait for shell to exit to save history l
 setopt SHARE_HISTORY            # share history between sessions
 
 # Enable completions (after PATH is set)
-zstyle ':completion::complete:*' use-cache on
-zstyle ':completion:*' rehash true
 autoload -Uz compinit && compinit
+
+# Completion configuration
+zstyle ':completion::complete:*' use-cache on          # cache completions for better performance
+zstyle ':completion:*' rehash true                     # automatically find new executables in $PATH
+zstyle ':completion:*' menu select                     # enable interactive menu selection
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'  # case-insensitive + partial matching
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}  # colorize completion listings
+zstyle ':completion:*' completer _complete _match _approximate  # enable fuzzy matching
+zstyle ':completion:*:match:*' original only          # show only original matches
+zstyle ':completion:*:approximate:*' max-errors 2     # allow up to 2 typos in fuzzy matching  
+zstyle ':completion:*' list-prompt '%S%M matches%s'   # show match count at bottom
+zstyle ':completion:*' format ''                     # hide completion category headers
+zstyle ':completion:*' group-name ''                  # group completions by category
 
 [[ -o interactive ]] && bindkey -e
 
