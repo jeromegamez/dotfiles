@@ -31,3 +31,7 @@ export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
 
 # See https://stackoverflow.com/a/52230415/284325
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+export GITHUB_TOKEN="{{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Avoid Rate Limits" .onepasswordAccount | trim | quote }}"
+export GH_TOKEN="$GITHUB_TOKEN"
+export TENV_GITHUB_TOKEN="$GITHUB_TOKEN"
