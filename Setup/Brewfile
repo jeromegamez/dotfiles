@@ -77,8 +77,6 @@ cask "jetbrains-toolbox" # JetBrains tools manager
 cask "karabiner-elements" # Keyboard customizer
 cask "logi-options+" # Software for Logitech devices
 cask "mailmate" # IMAP email client
-cask "microsoft-excel" # Spreadsheet software
-cask "microsoft-word" # Word processor
 cask "mongodb-compass" # Interactive tool for analyzing MongoDB data
 cask "obsidian" # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "orbstack" # Replacement for Docker Desktop
