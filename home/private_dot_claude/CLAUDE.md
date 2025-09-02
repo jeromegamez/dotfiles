@@ -23,7 +23,7 @@ The `/commands/` directory contains specialized command files for specific tasks
 ### Detection Patterns
 - **Laravel**: `artisan` file or `composer.json` with `laravel/framework`
 - **Node.js**: `package.json` file
-- **Terraform**: `.tf` files
+- **Terraform**: `.tf` files or `terragrunt.hcl`/`root.hcl` files
 - **Docker**: `Dockerfile`, `compose.yml`, or `docker-compose.yml`
 
 ## Core Principles
