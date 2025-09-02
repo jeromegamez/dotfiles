@@ -11,6 +11,7 @@ brew "asdf" # Extendable version manager with support for Ruby, Node.js, Erlang 
 brew "atuin" # Improved shell history for zsh, bash, fish and nushell
 brew "awscli" # Official Amazon AWS command-line interface
 brew "bash" # Bourne-Again SHell, a UNIX command interpreter
+brew "bat" # Clone of cat(1) with syntax highlighting and Git integration
 brew "common-fate/granted/granted" # The easiest way to access your cloud.
 brew "cookiecutter" # Utility that creates projects from templates
 brew "cosign" # Container Signing (needed for tenv)
@@ -39,6 +40,7 @@ brew "tflint" # Linter for Terraform files
 brew "tmux" # Terminal multiplexer
 brew "uv" # Extremely fast Python package installer and resolver, written in Rust
 brew "xdg-ninja" # Check your $HOME for unwanted files and directories
+brew "viddy" # Modern watch command
 brew "wget" # Internet file retriever
 brew "zsh" # UNIX shell (command interpreter)
 brew "zoxide" # Shell extension to navigate your filesystem faster
