@@ -30,3 +30,10 @@ Load additional instructions based on project type:
 ## Required Tools
 - Use `rg` (ripgrep) instead of `grep` for text search
 - Standard tools: `ls`, `cat`, `cd`, `rg`
+
+## Never do
+- Add "Co-authored-by" or any Claude signatures
+- Include "Generated with Claude Code" or similar messages
+- Modify git config or user credentials
+- Add any AI/assistant attribution to the commit
+- Use emojis in commits, PRs, or git-related content
