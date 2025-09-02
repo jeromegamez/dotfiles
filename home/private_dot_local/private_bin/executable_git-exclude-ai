@@ -17,12 +17,13 @@ AI_FILES=(
   ".aiignore"
   ".claude"
   ".zed"
-  "CLAUDE.md"
-  "ANTHROPIC.md"
+  "AGENTS.md"
   "AI_INSTRUCTIONS.md"
-  "GPT.md"
-  "COPILOT.md"
   "AI_NOTES.md"
+  "ANTHROPIC.md"
+  "CLAUDE.md"
+  "COPILOT.md"
+  "GPT.md"
   "LLM_INSTRUCTIONS.md"
 )
 
