@@ -21,7 +21,7 @@ The `/commands/` directory contains specialized command files for specific tasks
 - **Utilities**: `commit.md`, `contributing.md`, `remove-comments.md`, `undo.md`
 
 ### Detection Patterns
-- **Laravel**: `artisan` file or `composer.json` with `laravel/framework`
+- **PHP**: `.php` files or `composer.json` file
 - **Node.js**: `package.json` file
 - **Terraform**: `.tf` files or `terragrunt.hcl`/`root.hcl` files
 - **Docker**: `Dockerfile`, `compose.yml`, or `docker-compose.yml`
