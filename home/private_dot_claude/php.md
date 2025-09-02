@@ -6,6 +6,9 @@ Load additional instructions based on project type:
 
 - **Laravel**: Apply `~/.claude/laravel.md` (Laravel takes priority)
 
+### Detection Patterns
+- **Laravel**: `artisan` file or `composer.json` with `laravel/framework`
+
 ## Core Principles
 - Use dependency injection over static methods
 - Keep methods under 20 lines with single responsibility
