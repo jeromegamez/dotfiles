@@ -30,3 +30,11 @@
     exact = false
     stripComponents = 1
 {{- end }}
+
+[".claude/commands"]
+    type = "archive"
+    url = "https://github.com/brennercruvinel/CCPlugins/archive/main.tar.gz"
+    exact = false
+    stripComponents = 2
+    include = ["*/commands/*"]
+    refreshPeriod = "168h"
