@@ -1,20 +1,25 @@
 # Docker Guidelines
 
-## Dockerfile Best Practices
-
-### Structure
+## Core Principles
 - Use official base images when possible
 - Use specific tags, not `latest`
+- Run as non-root user for security
+- Minimize layers and attack surface
+
+## Conventions
+
+### Dockerfile Best Practices
+
+#### Structure
 - Multi-stage builds for production images
 - Order instructions by change frequency (least to most)
 
-### Security
-- Run as non-root user
+#### Security
 - Use `.dockerignore` to exclude unnecessary files
 - Scan images for vulnerabilities
 - Minimize attack surface with distroless/alpine images
 
-### Optimization
+#### Optimization
 - Combine RUN commands to reduce layers
 - Use build cache effectively
 - Copy only what's needed
@@ -26,7 +31,7 @@
    && rm -rf /var/lib/apt/lists/*
   ```
 
-### Example Structure
+#### Example Structure
 ```dockerfile
 # Use specific version
 FROM node:18-alpine
@@ -56,9 +61,9 @@ EXPOSE 3000
 CMD ["npm", "start"]
 ```
 
-## Docker Compose
+### Docker Compose
 
-### Best Practices
+#### Best Practices
 - Use version 3.8+ for compose files
 - Define networks explicitly
 - Use environment files for configuration
@@ -66,7 +71,7 @@ CMD ["npm", "start"]
 - Use health checks
 - Pin service versions
 
-### Structure
+#### Structure
 ```yaml
 version: '3.8'
 
@@ -122,14 +127,16 @@ networks:
     name: myapp_network
 ```
 
-## Development Workflow
+## Best Practices
 
-### Local Development
+### Development Workflow
+
+#### Local Development
 - Use bind mounts for live code reloading
 - Separate development and production compose files
 - Use override files: `docker-compose.override.yml`
 
-### Commands
+#### Commands
 ```bash
 # Development
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
@@ -142,22 +149,22 @@ docker system prune -af
 docker volume prune -f
 ```
 
-## Production Considerations
+### Production Considerations
 
-### Image Management
+#### Image Management
 - Tag images with semantic versions
 - Use private registries for production
 - Implement image scanning in CI/CD
 - Regular security updates
 
-### Deployment
+#### Deployment
 - Use orchestration (Kubernetes, Docker Swarm)
 - Implement proper logging and monitoring
 - Set up backup strategies for volumes
 - Use secrets management
 - Configure restart policies
 
-### Resource Management
+#### Resource Management
 - Set memory and CPU limits
 - Monitor resource usage
 - Use appropriate restart policies

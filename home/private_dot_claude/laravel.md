@@ -1,69 +1,9 @@
 # Laravel Guidelines
 
-## Core Principle
+## Core Principles
 **Follow Laravel conventions first.** Use Laravel's documented approach unless you have clear justification to deviate.
 
-## PHP Standards
-- Follow PSR-1, PSR-2, PSR-12, and PER standards
-- Use camelCase for internal strings
-- Short nullable syntax: `?string` not `string|null`
-- Always specify `void` return types
-
-## Class Structure
-- Use typed properties over docblocks
-- Use constructor property promotion when all properties can be promoted
-- One trait per line
-
-## Type Declarations & Docblocks
-- Use typed properties over docblocks
-- Specify return types including `void`
-- Short nullable syntax: `?Type` not `Type|null`
-- Document iterables with generics: `/** @return Collection<int, User> */`
-
-### Docblock Rules
-- Skip docblocks for fully type-hinted methods (unless description needed)
-- **Always import classnames** - never use fully qualified names in docblocks
-- Use one-line format when possible: `/** @var string */`
-- Put most common type first in unions: `/** @var Collection|SomeWeirdCollection */`
-- If one parameter needs docblock, add for all parameters
-- Specify key/value types for iterables: `@param array<int, MyObject> $items`
-- Use array shapes for fixed keys (one key per line):
-  ```php
-  /** @return array{
-     first: SomeClass,
-     second: SomeClass
-  } */
-  ```
-
-## Control Flow
-- **Happy path last**: Handle errors first, success last
-- **Avoid else**: Use early returns over nested conditions
-- **Separate conditions**: Multiple if statements over compound conditions
-- **Always use curly brackets** even for single statements
-- **Ternary operators**: Multi-line unless very short
-
-```php
-// Happy path last
-if (! $user) {
-    return null;
-}
-
-if (! $user->isActive()) {
-    return null;
-}
-
-// Process active user...
-
-// Short ternary
-$name = $isFoo ? 'foo' : 'bar';
-
-// Multi-line ternary
-$result = $object instanceof Model
-    ? $object->name
-    : 'A default value';
-```
-
-## Laravel Conventions
+## Conventions
 
 ### Routes
 - URLs: kebab-case (`/open-source`)
@@ -97,7 +37,9 @@ $result = $object instanceof Model
   $this->comment("Processed {$items->count()} items.");
   ```
 
-## Formatting
+## Best Practices
+
+### Formatting
 
 ### Strings
 - Use string interpolation over concatenation
