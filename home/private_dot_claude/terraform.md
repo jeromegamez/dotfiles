@@ -1,5 +1,11 @@
 # Terraform Guidelines
 
+## Project Detection & Rules
+
+Load additional instructions based on project type:
+
+- **Terragrunt**: Apply `~/.claude/terragrunt.md` (Terragrunt takes priority)
+
 ## Core Principles
 - Infrastructure as Code: All infrastructure should be version-controlled and reproducible
 - Immutable infrastructure: Replace rather than modify resources when possible
