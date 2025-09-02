@@ -68,7 +68,6 @@ cask "1password" # Password manager that keeps all passwords secure behind one p
 cask "1password-cli" # Command-line interface for 1Password
 cask "apidog-europe" # API development platform hosted in Europe
 cask "cardhop" # Contacts manager
-cask "claude" # Anthropic's official Claude AI desktop app
 cask "discord" # Voice and text chat software
 cask "droplr" # Screenshot and screen recorder
 cask "duckduckgo" # Web browser focusing on privacy
