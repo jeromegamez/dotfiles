@@ -92,6 +92,10 @@ EOF
 }
 ```
 
+## Recommended MCPs
+- **Serena**: Excellent for navigating complex terragrunt hierarchies, understanding module relationships across environments, and semantic analysis of HCL configurations
+- **Sequential Thinking**: Essential for debugging terragrunt dependency chains and planning infrastructure rollouts
+
 ## Best Practices
 
 ### Configuration Management

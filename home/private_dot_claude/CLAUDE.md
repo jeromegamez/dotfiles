@@ -7,6 +7,8 @@ Load additional instructions based on project type:
 - **PHP**: Apply `~/.claude/php.md`
 - **Terraform**: Apply `~/.claude/terraform.md`
 - **Docker**: Apply `~/.claude/docker.md` when working with containers
+- **Large Codebases**: Suggest sequential-thinking MCP for complex refactoring tasks
+- **Data Analysis**: Suggest specific MCPs for data processing workflows
 
 ## Available Commands
 
@@ -40,15 +42,23 @@ When multiple project types are detected, apply rules in this order:
 3. **Language-specific** (PHP, Node.js, etc.)
 4. **Infrastructure** (Terraform) - when infrastructure is primary focus
 
-## Response Guidelines
-- Use `<thinking>` only for complex problem-solving
-- Respond naturally to casual conversation
-- Don't over-analyze simple statements
+ ## Response Guidelines
+- Use `<thinking>` only when a task involves:
+  - Multiple interconnected steps that need planning
+  - Analyzing trade-offs between different approaches
+  - Breaking down complex technical problems
+  - Do NOT use for simple questions or casual "thinking" references
 
 ## Tool Usage Guidelines
 - **Text Search**: Always use `rg` (ripgrep) instead of `grep` for better performance
 - **File Operations**: Use `ls`, `cat`, `cd` for basic file system operations
 - **Code Search**: Prefer Grep tool over direct `rg` commands when available
+
+## MCP Usage
+- **Sequential Thinking**: Only use when explicitly requested, but proactively suggest when tasks involve complex multi-step analysis, hypothesis testing, or problems that may
+ need iterative revision
+- **Serena**: Only use when explicitly requested, but proactively suggest when appropriate for the task
+- **MCP Recommendations**: Suggest relevant MCPs when they would be helpful, but wait for user approval before using them
 
 ## Never do
 - Modify git config or user credentials
