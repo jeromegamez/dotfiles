@@ -37,6 +37,10 @@
   $this->comment("Processed {$items->count()} items.");
   ```
 
+## Recommended MCPs
+- **Serena**: Excellent for navigating large Laravel applications, understanding Eloquent relationships, analyzing controller/service dependencies, and semantic PHP code analysis
+- **Sequential Thinking**: Perfect for complex application architecture decisions and debugging multi-step processes
+
 ## Best Practices
 
 ### Formatting

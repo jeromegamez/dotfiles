@@ -133,6 +133,10 @@ variable "subnets" {
 - Test changes in development environment first
 - Use `import` to bring existing resources under Terraform management
 
+## Recommended MCPs
+- **Serena**: Excellent for navigating large terraform codebases, understanding module dependencies, and semantic code analysis across HCL files
+- **Sequential Thinking**: Helpful for multi-environment deployments and debugging terraform state issues
+
 ## Quick Reference
 
 ### Common Commands

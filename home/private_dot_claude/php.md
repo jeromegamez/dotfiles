@@ -73,6 +73,10 @@ $result = $object instanceof MyObject
     : 'A default value';
 ```
 
+## Recommended MCPs
+- **Serena**: Excellent for navigating large PHP codebases, understanding class relationships, and semantic code analysis with full PHP LSP support
+- **Sequential Thinking**: Useful for complex refactoring tasks and debugging performance issues
+
 ## Best Practices
 
 ### Tools Integration

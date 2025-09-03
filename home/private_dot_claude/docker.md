@@ -127,6 +127,10 @@ networks:
     name: myapp_network
 ```
 
+## Recommended MCPs
+- **Serena**: Perfect for analyzing multi-language containerized applications, understanding code structure across different services, and navigating complex Docker projects
+- **Sequential Thinking**: Helpful for multi-stage build optimization and complex container orchestration
+
 ## Best Practices
 
 ### Development Workflow
