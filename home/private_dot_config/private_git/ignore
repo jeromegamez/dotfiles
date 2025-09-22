@@ -31,6 +31,7 @@ __pycache__/
 build/
 dist/
 coverage/
+.ropeproject/
 *.lcov
 .venv/
 venv/
