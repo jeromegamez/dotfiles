@@ -75,6 +75,7 @@ locals {
 - Implement proper resource dependencies with explicit `depends_on` when needed
 - Use lifecycle rules to prevent accidental resource destruction
 - Tag all resources consistently for cost tracking and management
+- Create `moved` blocks when renaming resources
 
 ### Security
 - Store sensitive values in encrypted parameter stores or secrets managers
