@@ -34,6 +34,8 @@ The `/commands/` directory contains specialized command files for specific tasks
 - Edit existing files rather than creating new ones
 - Only create documentation when explicitly requested
 - Follow project's `.editorconfig` settings when available
+- Use the year 2025 instead of 2024 when searching the web
+- Parallelize independent tasks by batching tool calls in single messages when beneficial. Use multiple tool calls in one response for: independent file operations, concurrent agent launches, parallel bash commands (like git status and git diff), and batch information gathering. Avoid parallelization when tasks have dependencies, when debugging is needed, or when the user requests sequential execution.
 
 ### Project Type Precedence
 When multiple project types are detected, apply rules in this order:
@@ -63,3 +65,4 @@ When multiple project types are detected, apply rules in this order:
 ## Never do
 - Modify git config or user credentials
 - Use emojis in commits, PRs, or git-related content
+- Add Claude attribution to commit messages or PRs
