@@ -26,7 +26,13 @@ setopt INC_APPEND_HISTORY       # don't wait for shell to exit to save history l
 setopt SHARE_HISTORY            # share history between sessions
 
 # Enable completions (after PATH is set)
-autoload -Uz compinit && compinit
+# Regenerate completion cache once per day
+autoload -Uz compinit
+if [[ -f "$XDG_CACHE_HOME/zsh/zcompdump" && ! $(find "$XDG_CACHE_HOME/zsh/zcompdump" -mtime +1 2>/dev/null) ]]; then
+    compinit -C -d "$XDG_CACHE_HOME/zsh/zcompdump"
+else
+    compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
+fi
 
 # Completion configuration
 zstyle ':completion::complete:*' use-cache on          # cache completions for better performance
@@ -36,7 +42,7 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*' 
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}  # colorize completion listings
 zstyle ':completion:*' completer _complete _match _approximate  # enable fuzzy matching
 zstyle ':completion:*:match:*' original only          # show only original matches
-zstyle ':completion:*:approximate:*' max-errors 2     # allow up to 2 typos in fuzzy matching  
+zstyle ':completion:*:approximate:*' max-errors 2     # allow up to 2 typos in fuzzy matching
 zstyle ':completion:*' list-prompt '%S%M matches%s'   # show match count at bottom
 zstyle ':completion:*' format ''                     # hide completion category headers
 zstyle ':completion:*' group-name ''                  # group completions by category
@@ -50,9 +56,8 @@ bindkey "\e[3;5~" delete-char      # Ctrl+Delete
 
 # Load aliases and tools
 source "${XDG_CONFIG_HOME}/zsh/aliases.zsh"
-source "${XDG_CONFIG_HOME}/zsh/git-aliases.zsh"
 source "${XDG_CONFIG_HOME}/zsh/nvm.zsh"
-source "${XDG_CONFIG_HOME}/zsh/lazy-tools.zsh"
+source "${XDG_CONFIG_HOME}/zsh/tools.zsh"
 
 # Initialize prompt (last)
 export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
