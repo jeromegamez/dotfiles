@@ -3,6 +3,8 @@
 ## Core Principles
 **Follow Laravel conventions first.** Use Laravel's documented approach unless you have clear justification to deviate.
 
+*Note: This file contains Laravel-specific overrides. For general PHP guidelines, see `php.md`.*
+
 ## Conventions
 
 ### Routes
@@ -37,30 +39,13 @@
   $this->comment("Processed {$items->count()} items.");
   ```
 
-## Recommended MCPs
-- **Serena**: Excellent for navigating large Laravel applications, understanding Eloquent relationships, analyzing controller/service dependencies, and semantic PHP code analysis
-- **Sequential Thinking**: Perfect for complex application architecture decisions and debugging multi-step processes
 
 ## Best Practices
 
-### Formatting
-
-### Strings
-- Use string interpolation over concatenation
-
-### Enums
-- Use PascalCase for enum values
-
-### Comments
-- Avoid comments - write expressive code instead
-- When needed: `// Single line` or `/* Multi-line */`
-- Refactor comments into descriptive function names
-
-### Whitespace
-- Add blank lines between statements for readability
-- Exception: sequences of equivalent single-line operations
-- No extra empty lines between `{}` brackets
-- Let code "breathe" - avoid cramped formatting
+### Laravel-Specific Formatting
+- Use string interpolation in Blade: `{{ $user->name }}`
+- Blade directives: no spaces after `@`: `@if($condition)`
+- Method chaining: one method per line for Eloquent queries
 
 ## Validation
 - Use array notation for multiple rules:
@@ -73,18 +58,15 @@
   ```
 - Custom validation rules use snake_case: `organisation_type`
 
-## Templates & Views
-
-### Blade
+### Blade Templates
 - Indent with 4 spaces
 - No spaces after control structures: `@if($condition)`
+- Use `__()` function over `@lang`
+- Component naming: kebab-case (`<x-user-card />`)
 
 ### Authorization
 - Policies use camelCase: `Gate::define('editPost', ...)`
 - Use CRUD words, but `view` instead of `show`
-
-### Translations
-- Use `__()` function over `@lang`
 
 ## API Design
 - Plural resource names: `/errors`
@@ -95,39 +77,19 @@
   /errors/1/occurrences
   ```
 
-## Testing
-- Keep test classes in same file when possible
-- Use descriptive test method names
-- Follow arrange-act-assert pattern
-
-## Quick Reference
-
-### Naming Conventions
-- **Classes**: PascalCase (`UserController`, `OrderStatus`)
-- **Methods/Variables**: camelCase (`getUserName`, `$firstName`) 
-- **Routes**: kebab-case (`/open-source`)
-- **Config files**: kebab-case (`pdf-generator.php`)
-- **Config keys**: snake_case (`chrome_path`)
-- **Commands**: kebab-case (`delete-old-records`)
-
-### File Structure
+## Laravel-Specific File Structure
 - **Controllers**: `PostsController` (plural + Controller)
+- **Models**: `User` (singular)
 - **Views**: `openSource.blade.php` (camelCase)
 - **Jobs**: `CreateUser` (action-based)
 - **Events**: `UserRegistered` (past tense)
-- **Listeners**: `SendInvitationMailListener` (action + Listener)
+- **Listeners**: `SendInvitationListener` (action + Listener)
 - **Commands**: `PublishScheduledPostsCommand` (action + Command)
 - **Mailables**: `AccountActivatedMail` (purpose + Mail)
 - **Resources**: `UsersResource` (plural + Resource)
-- **Enums**: `OrderStatus` (descriptive, no prefix)
+- **Migrations**: Only write `up()` methods, no `down()` methods
 
-### Migrations
-- Only write `up()` methods, no `down()` methods
-
-### Code Quality Checklist
-- Use typed properties over docblocks
-- Prefer early returns over nested if/else
-- Use constructor property promotion when possible
-- Avoid `else` statements
-- Use string interpolation over concatenation
-- Always use curly braces for control structures
+## Laravel-Specific Testing
+- Use Feature tests for HTTP endpoints
+- Use Unit tests for isolated logic
+- Use `RefreshDatabase` trait for database tests

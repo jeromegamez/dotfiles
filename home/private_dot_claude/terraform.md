@@ -1,10 +1,12 @@
-# Terraform Guidelines
+# Terraform & Terragrunt Guidelines
 
-## Project Detection & Rules
-
-Load additional instructions based on project type:
-
-- **Terragrunt**: Apply `~/.claude/terragrunt.md` (Terragrunt takes priority)
+## Core Principles
+- Infrastructure as Code: All infrastructure should be version-controlled and reproducible
+- Immutable infrastructure: Replace rather than modify resources when possible
+- DRY (Don't Repeat Yourself): Use Terragrunt to eliminate code duplication across environments
+- Use snake_case for resource names and consistent naming conventions
+- Group related resources in logical modules for reusability
+- Always include meaningful descriptions for variables and outputs
 
 ## Core Principles
 - Infrastructure as Code: All infrastructure should be version-controlled and reproducible
@@ -17,7 +19,7 @@ Load additional instructions based on project type:
 
 ### Module Structure
 - `main.tf` - primary resource definitions
-- `variables.tf` - input variables with descriptions and validation
+- `variables.tf` - input variables with descriptions but no validation for internal modules
 - `outputs.tf` - output values for module consumers
 - `versions.tf` - provider versions and Terraform version requirements
 - `locals.tf` - local values for computed expressions (optional)
@@ -134,9 +136,70 @@ variable "subnets" {
 - Test changes in development environment first
 - Use `import` to bring existing resources under Terraform management
 
-## Recommended MCPs
-- **Serena**: Excellent for navigating large terraform codebases, understanding module dependencies, and semantic code analysis across HCL files
-- **Sequential Thinking**: Helpful for multi-environment deployments and debugging terraform state issues
+## Terragrunt Integration
+
+### When to Use Terragrunt
+- Managing multiple environments (dev, staging, prod)
+- Eliminating code duplication across environments
+- Centralized backend configuration
+- Complex dependency management between components
+- Hierarchical configuration inheritance
+
+### Directory Structure with Terragrunt
+```
+project/
+├── infrastructure/
+│   ├── root.hcl                # Root configuration
+│   ├── environments/
+│   ├── dev/
+│   │   ├── terragrunt.hcl      # Environment config
+│   │   ├── vpc/
+│   │   │   └── terragrunt.hcl  # Component config
+│   │   └── database/
+│   │       └── terragrunt.hcl
+│   ├── staging/ └── prod/
+└── modules/
+    ├── vpc/ └── database/
+```
+
+### Terragrunt Configuration
+```hcl
+# infrastructure/root.hcl
+remote_state {
+  backend = "s3"
+  generate = {
+    path      = "backend.tf"
+    if_exists = "overwrite"
+  }
+  config = {
+    bucket         = "my-terraform-state"
+    key            = "${path_relative_to_include()}/terraform.tfstate"
+    region         = "eu-central-1"
+    encrypt        = true
+    dynamodb_table = "terraform-locks"
+  }
+}
+
+# Component terragrunt.hcl
+include "root" {
+  path = find_in_parent_folders()
+}
+
+terraform {
+  source = "../../../modules/vpc"
+}
+
+dependency "prerequisite" {
+  config_path = "../prerequisite"
+  mock_outputs = {
+    vpc_id = "vpc-12345"
+  }
+}
+
+inputs = {
+  vpc_id = dependency.prerequisite.outputs.vpc_id
+}
+```
 
 ## Quick Reference
 
@@ -162,7 +225,7 @@ terraform workspace new production
 terraform workspace select production
 ```
 
-### File Structure
+### Standard Terraform Structure
 ```
 project/
 ├── environments/
@@ -178,6 +241,29 @@ project/
 ├── outputs.tf
 ├── versions.tf
 └── terraform.tfvars.example
+```
+
+### Terragrunt Commands
+```bash
+# Initialize and plan all components
+terragrunt init
+terragrunt plan-all
+
+# Apply specific component
+cd environments/prod/vpc
+terragrunt apply
+
+# Apply all components with dependencies
+terragrunt apply-all
+
+# Validate all configurations
+terragrunt validate-all
+
+# Format all files
+terragrunt hclfmt
+
+# View dependency graph
+terragrunt graph-dependencies | dot -Tpng > deps.png
 ```
 
 ### Resource Lifecycle
