@@ -9,7 +9,9 @@ set -euo pipefail
 echo "Installing uv..."
 
 # Install uv using the official standalone installer
-curl -fsSL https://astral.sh/uv/install.sh | sh
+# UV_NO_MODIFY_PATH=1 prevents the installer from modifying shell config
+# (PATH is already managed via zsh configuration)
+curl -fsSL https://astral.sh/uv/install.sh | env UV_NO_MODIFY_PATH=1 sh
 
 echo "uv installation completed!"
 
