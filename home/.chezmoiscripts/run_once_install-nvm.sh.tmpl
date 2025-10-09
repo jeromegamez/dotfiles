@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# Install nvm via official install script
+# This script runs once via chezmoi to install nvm
+#
+# To update nvm later, use the git-based update method:
+#   cd "$NVM_DIR"
+#   git fetch --tags origin
+#   git checkout $(git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1))
+#   . "$NVM_DIR/nvm.sh"
+
+set -euo pipefail
+
+# Set NVM directory to use XDG Base Directory if available
+if [ -n "${XDG_CONFIG_HOME:-}" ]; then
+    export NVM_DIR="$XDG_CONFIG_HOME/nvm"
+else
+    export NVM_DIR="$HOME/.nvm"
+fi
+
+echo "Installing nvm..."
+
+# Download and run the nvm install script
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+
+echo "nvm installation completed!"
+
+# Verify installation
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    . "$NVM_DIR/nvm.sh"
+    if command -v nvm >/dev/null 2>&1; then
+        echo "✓ nvm installed successfully"
+        echo "Location: $NVM_DIR"
+        echo "Version: $(nvm --version)"
+    else
+        echo "✗ nvm installation completed but command not available in current session"
+    fi
+else
+    echo "✗ nvm installation failed"
+    exit 1
+fi
