@@ -11,17 +11,15 @@
 
 set -euo pipefail
 
-# Set NVM directory to use XDG Base Directory if available
-if [ -n "${XDG_CONFIG_HOME:-}" ]; then
-    export NVM_DIR="$XDG_CONFIG_HOME/nvm"
-else
-    export NVM_DIR="$HOME/.nvm"
-fi
+# Set NVM directory
+export NVM_DIR="$XDG_CONFIG_HOME/nvm"
 
 echo "Installing nvm..."
 
 # Download and run the nvm install script
-curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+# PROFILE=/dev/null prevents the installer from modifying shell config
+# (nvm loading is managed via zsh configuration)
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | env PROFILE=/dev/null bash
 
 echo "nvm installation completed!"
 
