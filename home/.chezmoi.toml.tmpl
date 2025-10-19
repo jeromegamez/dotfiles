@@ -20,3 +20,11 @@
     computername = {{ $computername | quote }}
     hostname = {{ $hostname | quote }}
 {{ end -}}
+
+[data.claude]
+    marketplaces = [
+        "obra/superpowers-marketplace"
+    ]
+    plugins = [
+        "superpowers@superpowers-marketplace"
+    ]

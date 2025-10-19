@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# Install and update Claude Code plugins
+# Runs on every chezmoi apply to keep plugins up-to-date
+
+set -euo pipefail
+
+# Check if Claude Code is installed
+if ! command -v claude >/dev/null 2>&1; then
+    exit 0
+fi
+
+changes_made=false
+
+# Add marketplaces
+{{- range .claude.marketplaces }}
+if ! claude plugin marketplace list 2>/dev/null | grep -q "{{ . }}"; then
+    echo "✔ Claude Code marketplace '{{ . }}' added"
+    claude plugin marketplace add "{{ . }}" >/dev/null 2>&1
+    changes_made=true
+fi
+{{- end }}
+
+# Update all marketplaces to get latest plugins
+if claude plugin marketplace update >/dev/null 2>&1; then
+    echo "✔ Claude Code marketplaces updated"
+    changes_made=true
+fi
+
+# Install/update plugins
+{{- range .claude.plugins }}
+if claude plugin install "{{ . }}" >/dev/null 2>&1; then
+    echo "✔ Claude Code plugin '{{ . }}' installed/updated"
+    changes_made=true
+fi
+{{- end }}
+
+# Only show this if nothing happened (should be rare)
+if [ "$changes_made" = false ]; then
+    echo "✔ Claude Code plugins up-to-date"
+fi
