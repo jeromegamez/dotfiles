@@ -93,6 +93,7 @@ cask "sublime-text" # Text editor for code, markup and prose
 cask "tailscale-app" # Mesh VPN based on WireGuard
 cask "telegram" # Messaging app with a focus on speed and security
 cask "whatsapp" # Native desktop client for WhatsApp
+cask "yaak" # REST, GraphQL and gRPC client
 cask "zed" # Multiplayer code editor
 cask "zen" # Gecko based web browser
 
