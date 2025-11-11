@@ -13,7 +13,7 @@ fi
 changes_made=false
 
 # Add marketplaces
-{{- range .claude.marketplaces }}
+{{- range .ai.claude.marketplaces }}
 if ! claude plugin marketplace list 2>/dev/null | grep -q "{{ . }}"; then
     echo "✔ Claude Code marketplace '{{ . }}' added"
     claude plugin marketplace add "{{ . }}" >/dev/null 2>&1
@@ -28,7 +28,7 @@ if claude plugin marketplace update >/dev/null 2>&1; then
 fi
 
 # Install/update plugins
-{{- range .claude.plugins }}
+{{- range .ai.claude.plugins }}
 if claude plugin install "{{ . }}" >/dev/null 2>&1; then
     echo "✔ Claude Code plugin '{{ . }}' installed/updated"
     changes_made=true
