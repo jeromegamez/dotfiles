@@ -1,12 +1,12 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code when working in this chezmoi-managed macOS/Linux dotfiles repo.
 
 ## Overview
 
 This is a personal dotfiles repository managed with [chezmoi](https://www.chezmoi.io/), containing configuration files and setup scripts for macOS development environments. The repository uses chezmoi's templating system to manage sensitive data via 1Password CLI and handle platform-specific configurations.
 
-## Platform Support
+## Guardrails
 
 **Target platforms**: macOS and Linux only
 - Primary platform: macOS (darwin)
@@ -26,8 +26,7 @@ When making changes:
     - `private_*` → files/directories with restrictive permissions
     - `dot_*` → files starting with `.`
     - `*.tmpl` → Go templates processed by chezmoi
-- **`Setup/`**: Installation configuration
-  - `Brewfile`: Homebrew packages, casks, and Mac App Store applications
+- **`Setup/`**: Installation configuration (`Brewfile` lists Homebrew packages, casks, and Mac App Store applications)
 - **`.chezmoiscripts/`**: Automated setup scripts
   - `darwin/run_onchange_before_1-install-homebrew-packages.sh.tmpl`: Installs Homebrew packages
   - `darwin/run_onchange_after_*.sh*`: Post-installation configuration scripts
@@ -74,7 +73,7 @@ chezmoi edit ~/.zshrc
 chezmoi diff
 
 # Apply changes to home directory
-chezmoi apply
+chezmoi apply --verbose
 
 # Or edit and apply in one step
 chezmoi edit --apply ~/.zshrc
@@ -110,11 +109,7 @@ chezmoi update
 ### Adding New Packages
 
 1. Edit `Setup/Brewfile`
-2. Apply changes:
-   ```bash
-   chezmoi apply
-   # This triggers run_onchange script that runs: brew bundle --file=Setup/Brewfile
-   ```
+2. Apply changes with `chezmoi apply --verbose` (triggers `brew bundle --file=Setup/Brewfile`)
 
 ## Naming Conventions
 
