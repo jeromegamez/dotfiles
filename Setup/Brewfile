@@ -7,7 +7,6 @@ tap "shivammathur/php"
 tap "go-task/tap"
 
 brew "actionlint" # Static checker for GitHub Actions workflow files
-brew "asdf" # Extendable version manager with support for Ruby, Node.js, Erlang & more
 brew "atuin" # Improved shell history for zsh, bash, fish and nushell
 brew "awscli" # Official Amazon AWS command-line interface
 brew "bash" # Bourne-Again SHell, a UNIX command interpreter
