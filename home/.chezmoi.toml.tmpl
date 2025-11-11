@@ -21,7 +21,34 @@
     hostname = {{ $hostname | quote }}
 {{ end -}}
 
-[data.claude]
+[data.credentials]
+    githubToken = {{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Avoid Rate Limits" .onepasswordAccount | trim | quote }}
+    githubComposerToken = {{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Composer" .onepasswordAccount | trim | quote }}
+    gitlabToken = {{ onepasswordRead "op://private/Gitlab read_api token/credential" .onepasswordAccount | trim | quote }}
+    awsConfig = {{ onepasswordRead "op://private/awscli/notesPlain" .onepasswordAccount | trim | quote }}
+    sshConfig = {{ onepasswordRead "op://private/SSH Config/notesPlain" .onepasswordAccount | trim | quote }}
+    context7ApiKey = {{ onepasswordRead "op://private/Context7/API Key" .onepasswordAccount | trim | quote }}
+
+[data.git]
+    name = "Jérôme Gamez"
+    email = "jerome@gamez.name"
+    signingKey = "4E902530D3BC24D1"
+
+[data.git.work]
+    email = "jerome@elvah.de"
+    directory = "~/Code/elvah/"
+
+[data.versions]
+    googleCloudSdk = "464.0.0"
+    php = "8.4"
+
+[data.macos]
+    timezone = "Europe/Berlin"
+
+[data.external]
+    refreshPeriod = "168h"
+
+[data.ai.claude]
     marketplaces = [
         "obra/superpowers-marketplace",
         "wshobson/agents"
@@ -45,4 +72,13 @@
         "framework-migration@claude-code-workflows",
         "codebase-cleanup@claude-code-workflows",
         "web-scripting@claude-code-workflows"
+    ]
+
+[data.ai.claude.mcp]
+    servers = [
+        "sequential-thinking",
+        "context7",
+        "aws-knowledge",
+        "terraform",
+        "terraform-aws"
     ]
