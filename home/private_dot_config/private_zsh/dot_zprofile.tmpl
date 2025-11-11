@@ -33,3 +33,13 @@ export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 export TENV_GITHUB_TOKEN="{{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Avoid Rate Limits" .onepasswordAccount | trim | quote }}"
+
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+export NODE_REPL_HISTORY="$XDG_STATE_HOME"/node_repl_history
+export NPM_CONFIG_CACHE="$XDG_CACHE_HOME"/npm
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
+export NPM_CONFIG_TMP="$XDG_RUNTIME_DIR"/npm
+export PHP_HISTFILE="$XDG_STATE_HOME"/php/history
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
