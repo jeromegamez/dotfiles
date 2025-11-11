@@ -56,6 +56,7 @@ Pause and confirm before acting when:
 - Track every non-trivial change in git and commit frequently throughout the development process in small, reviewable slices, even if your high-level tasks are not yet done. Commit your journal updates as well.
 - Never skip, evade, or disable pre-commit hooks.
 - Never use `git add -A` unless you've just run `git status`—don't add random test files to the repo.
+- Keep commit messages human: Summarize intent, not implementation. Stay out of them yourself; you're helping, not applying for credit.
 
 ## Issue tracking and tooling
 
