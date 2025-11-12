@@ -5,7 +5,6 @@ typeset -U path  # Remove duplicates automatically
 [[ -d "${HOME}/.local/bin" ]] && path=("${HOME}/.local/bin" $path)
 {{ if eq .chezmoi.os "darwin" -}}
 path=("{{ .homebrewPrefix }}/opt/make/libexec/gnubin" $path)
-[[ -d "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" ]] && path=("${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" $path)
 {{ end }}
 
 {{ if eq .chezmoi.os "darwin" -}}
@@ -32,7 +31,7 @@ export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
 # See https://stackoverflow.com/a/52230415/284325
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
-export TENV_GITHUB_TOKEN="{{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Avoid Rate Limits" .onepasswordAccount | trim | quote }}"
+export TENV_GITHUB_TOKEN={{ .credentials.githubToken | quote }}
 
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
