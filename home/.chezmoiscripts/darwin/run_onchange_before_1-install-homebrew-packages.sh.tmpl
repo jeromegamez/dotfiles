@@ -2,15 +2,9 @@
 
 set -eufo pipefail
 
-# Brewfile hash: {{ include (joinPath .chezmoi.workingTree "Setup/Brewfile") | sha256sum }}
-
 eval "$({{ joinPath .homebrewPrefix "bin" "brew" }} shellenv)" || true
 
-# Generate Brewfile inline
-BREWFILE=$(mktemp)
-trap 'rm -f "$BREWFILE"' EXIT
-
-cat > "$BREWFILE" <<'BREWFILE_CONTENT'
+HOMEBREW_CASK_OPTS=--no-quarantine {{ joinPath .homebrewPrefix "bin" "brew" }} bundle --file=- <<'BREWFILE'
 tap "common-fate/granted"
 tap "keidarcy/tap"
 tap "hashicorp/tap"
@@ -114,12 +108,14 @@ cask "zen" # Gecko based web browser
 mas "1Password for Safari", id: 1569813296
 mas "iBar Pro", id: 6737150304
 mas "Kagi Search", id: 1622835804
-mas "NextDNS", id: 1464122853
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Patterns", id: 429449079
 mas "Playlisty for Apple Music", id: 1459275972
 mas "Patterns", id: 429449079
-BREWFILE_CONTENT
+BREWFILE
 
-HOMEBREW_CASK_OPTS=--no-quarantine {{ joinPath .homebrewPrefix "bin" "brew" }} bundle --file="$BREWFILE"
+echo "Cleaning up Homebrew..."
+{{ joinPath .homebrewPrefix "bin" "brew" }} autoremove
+{{ joinPath .homebrewPrefix "bin" "brew" }} cleanup
+echo "✓ Homebrew setup completed"
