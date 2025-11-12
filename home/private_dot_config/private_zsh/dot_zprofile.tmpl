@@ -11,6 +11,7 @@ path=("{{ .homebrewPrefix }}/opt/make/libexec/gnubin" $path)
 # Homebrew
 fpath+=("{{ .homebrewPrefix }}/share/zsh/site-functions")
 eval "$({{ .homebrewPrefix }}/bin/brew shellenv)"
+export HOMEBREW_USE_INTERNAL_API=true
 
 if [[ -f ${HOME}/.orbstack/shell/init.zsh ]]; then
     source ${HOME}/.orbstack/shell/init.zsh
