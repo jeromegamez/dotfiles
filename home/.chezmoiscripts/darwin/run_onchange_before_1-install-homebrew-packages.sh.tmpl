@@ -116,6 +116,6 @@ mas "Patterns", id: 429449079
 BREWFILE
 
 echo "Cleaning up Homebrew..."
-{{ joinPath .homebrewPrefix "bin" "brew" }} autoremove
-{{ joinPath .homebrewPrefix "bin" "brew" }} cleanup
+{{ joinPath .homebrewPrefix "bin" "brew" }} autoremove || echo "Warning: autoremove had issues (non-fatal)"
+{{ joinPath .homebrewPrefix "bin" "brew" }} cleanup || echo "Warning: cleanup had issues (non-fatal)"
 echo "✓ Homebrew setup completed"
