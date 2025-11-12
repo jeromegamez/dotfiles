@@ -11,4 +11,4 @@ Host gitlab.com
     User git
     HostName gitlab.com
 
-{{ onepasswordRead "op://private/SSH Config/notesPlain" .onepasswordAccount -}}
+{{ .credentials.sshConfig -}}
