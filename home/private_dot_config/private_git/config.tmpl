@@ -1,11 +1,11 @@
 [user]
-    name = "Jérôme Gamez"
-    email = {{ .email }}
+    name = {{ .git.name | quote }}
+    email = {{ .git.email | quote }}
     useconfigonly = true
-    signingkey = "4E902530D3BC24D1"
+    signingkey = {{ .git.signingKey | quote }}
 
 [alias]
-    me = log --pretty=format:\"%ad (%h) %s\" --date=short --all --no-merges --author='Jérôme Gamez'
+    me = log --pretty=format:\"%ad (%h) %s\" --date=short --all --no-merges --author={{ .git.name | quote }}
     oneline = log --oneline --decorate --all --graph
 
 [blame]
@@ -58,7 +58,7 @@
     helper = osxkeychain
 {{- end }}
 
-[includeIf "gitdir:~/Code/elvah/"]
+[includeIf "gitdir:{{ .git.work.directory }}"]
     path = ~/.config/git/elvah.inc
 
 [init]
