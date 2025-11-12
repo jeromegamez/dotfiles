@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-# Brewfile: {{ include (joinPath .chezmoi.workingTree "Setup/Brewfile") | sha256sum }}
-
 echo "Cleaning up Homebrew..."
 
 eval "$({{ joinPath .homebrewPrefix "bin" "brew" }} shellenv)" || true
