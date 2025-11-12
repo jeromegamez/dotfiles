@@ -1,0 +1,33 @@
+{
+  "sequential-thinking": {
+    "type": "stdio",
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+    "env": {}
+  },
+  "context7": {
+    "type": "http",
+    "url": "https://mcp.context7.com/mcp",
+    "headers": {
+      "CONTEXT7_API_KEY": {{ .credentials.context7ApiKey | quote }}
+    }
+  },
+  "aws-knowledge": {
+    "type": "http",
+    "url": "https://knowledge-mcp.global.api.aws"
+  },
+  "terraform": {
+    "type": "stdio",
+    "command": "docker",
+    "args": ["run", "-i", "--rm", "hashicorp/terraform-mcp-server"],
+    "env": {}
+  },
+  "terraform-aws": {
+    "type": "stdio",
+    "command": "uvx",
+    "args": ["awslabs.terraform-mcp-server@latest"],
+    "env": {
+      "FASTMCP_LOG_LEVEL": "error"
+    }
+  }
+}
