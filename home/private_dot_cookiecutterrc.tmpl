@@ -1,6 +1,6 @@
 default_context:
-    full_name: "Jérôme Gamez"
-    email: "jerome@gamez.name"
+    full_name: {{ .git.name | quote }}
+    email: {{ .git.email | quote }}
     github_username: "jeromegamez"
 abbreviations:
     php: https://github.com/jeromegamez/cookiecutter-php
