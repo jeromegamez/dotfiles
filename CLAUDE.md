@@ -1,130 +1,68 @@
 # CLAUDE.md
 
-Guidance for Claude Code when working in this chezmoi-managed macOS/Linux dotfiles repo.
+Personal chezmoi-managed dotfiles repository for macOS.
 
-## Overview
+## Platform
 
-This is a personal dotfiles repository managed with [chezmoi](https://www.chezmoi.io/), containing configuration files and setup scripts for macOS development environments. The repository uses chezmoi's templating system to manage sensitive data via 1Password CLI and handle platform-specific configurations.
-
-## Guardrails
-
-**Target platforms**: macOS and Linux only
-- Primary platform: macOS (darwin)
-- Secondary platform: Linux (for server/container environments)
-- **Windows is explicitly out of scope and should never be considered**
-
-When making changes:
-- Do not add Windows-specific code paths or conditions
-- Do not suggest Windows compatibility layers (WSL, Git Bash, etc.)
-- Focus solutions on macOS/Linux-compatible approaches
-- Scripts should target bash/zsh on Unix-like systems
+**macOS only** (darwin). No Windows support - don't suggest Windows-specific solutions or compatibility layers.
 
 ## Repository Structure
 
-- **`home/`**: Source directory for dotfiles (maps to `~/` due to `.chezmoiroot`)
-  - Configuration files use chezmoi naming conventions:
-    - `private_*` → files/directories with restrictive permissions
-    - `dot_*` → files starting with `.`
-    - `*.tmpl` → Go templates processed by chezmoi
-- **`Setup/`**: Installation configuration (`Brewfile` lists Homebrew packages, casks, and Mac App Store applications)
-- **`.chezmoiscripts/`**: Automated setup scripts
-  - `darwin/run_onchange_before_1-install-homebrew-packages.sh.tmpl`: Installs Homebrew packages
-  - `darwin/run_onchange_after_*.sh*`: Post-installation configuration scripts
-  - `run_once_*.sh`: One-time installation scripts
+```
+home/                    # Source files (maps to ~/ via .chezmoiroot)
+├── private_dot_config/  # ~/.config/ (private files)
+├── .chezmoi.toml.tmpl   # Template variables & data
+└── .chezmoiscripts/     # Automated setup scripts
+```
 
-## Key Configurations
+### Chezmoi Naming Conventions
 
-### Templates & Data Sources
+- `private_*` → restrictive permissions (0600)
+- `dot_*` → dotfiles (`.filename`)
+- `*.tmpl` → Go templates (processed by chezmoi)
+- Combine as needed: `private_dot_ssh/config.tmpl` → `~/.ssh/config`
 
-- **`.chezmoi.toml.tmpl`**: Defines template variables (email, hostname, Homebrew prefix)
-- **`.chezmoiexternal.toml.tmpl`**: Manages external resources:
-  - zsh plugins (autosuggestions, syntax-highlighting)
-  - Neovim config from kickstart.nvim
-  - Google Cloud SDK
-  - Claude Code commands and agents from community repositories
+## Key Details
 
-### Managed Applications
+### Secrets Management
+- Uses 1Password CLI for secrets
+- Account ID: `UM5PFDCXWRDOXA2MBGNTMSFJ24`
+- Template references: `{{ onepasswordRead "op://..." }}`
 
-- **Development Tools**: neovim, tmux, zsh, git, gh, glab, jq, ripgrep
-- **Version Managers**: asdf, tenv (Terraform/OpenTofu), nvm (via script)
-- **Cloud Tools**: awscli, gcloud SDK, granted (AWS access)
-- **PHP**: PHP 8.4 with extensions (amqp, apcu, grpc, mongodb, redis, xdebug)
-- **Infrastructure**: tenv, terraform-docs, tflint, packer
-- **Terminals**: ghostty, starship prompt
-- **Other**: 1Password CLI (for secrets), atuin (shell history)
+### Template Data
+Defined in `.chezmoi.toml.tmpl`:
+- `{{ .email }}` - email address
+- `{{ .data.git.name }}` - git username
+- `{{ .data.credentials.* }}` - various API tokens
+- `{{ .data.versions.* }}` - version pins
 
-### Configuration Files
-
-- **Shell**: `~/.config/zsh/` (zshrc, zprofile, aliases, git-aliases, lazy-tools)
-- **Editor**: neovim config sourced from external kickstart.nvim repo
-- **Starship**: Custom prompt configuration in `~/.config/starship/`
-- **Git**: Configuration in `~/.config/git/`
-- **Claude Code**: Commands and agents in `~/.config/claude/` (auto-synced from community repos; `~/.claude` is a symlink for compatibility)
+### External Resources
+Managed in `.chezmoiexternal.toml.tmpl` (auto-refresh every 168h):
+- zsh plugins
+- neovim config (kickstart.nvim)
+- Claude Code plugins/commands
 
 ## Common Workflows
 
-### Making Configuration Changes
-
+### Edit and apply configuration
 ```bash
-# Edit files in chezmoi source directory
-chezmoi edit ~/.zshrc
-
-# See what changes will be applied
-chezmoi diff
-
-# Apply changes to home directory
-chezmoi apply --verbose
-
-# Or edit and apply in one step
 chezmoi edit --apply ~/.zshrc
 ```
 
-### Managing Secrets
-
-- Secrets are managed via 1Password CLI
-- Must authenticate before applying configurations:
-  ```bash
-  eval $(op signin)
-  ```
-- Template files use 1Password references (account ID: `UM5PFDCXWRDOXA2MBGNTMSFJ24`)
-
-### Testing Changes
-
+### Preview changes
 ```bash
-# Dry run to see what would change
+chezmoi diff
+```
+
+### Dry run
+```bash
 chezmoi apply --dry-run --verbose
-
-# View source state without applying
-chezmoi source path
 ```
 
-### Updating External Dependencies
+## Working with Files
 
-External resources (zsh plugins, nvim config, Claude commands) auto-refresh every 168 hours. To force update:
-
-```bash
-chezmoi update
-```
-
-### Adding New Packages
-
-1. Edit `Setup/Brewfile`
-2. Apply changes with `chezmoi apply --verbose` (triggers `brew bundle --file=Setup/Brewfile`)
-
-## Naming Conventions
-
-When working with chezmoi files:
-
-- Use `private_` prefix for sensitive/private files (sets 0600 permissions)
-- Use `dot_` prefix for dotfiles (e.g., `dot_zshrc` → `.zshrc`)
-- Use `.tmpl` suffix for files requiring template processing
-- Combine prefixes as needed: `private_dot_ssh/config.tmpl` → `~/.ssh/config`
-
-## Important Notes
-
-- This repository is macOS-focused (darwin-specific scripts and configurations)
-- The `.chezmoiroot` file sets `home/` as the root for target directory
-- Template variables are defined in `.chezmoi.toml.tmpl`
-- Scripts in `.chezmoiscripts/` run automatically based on chezmoi lifecycle hooks
-- Never commit 1Password credentials or sensitive data directly
-- Follow `.editorconfig` settings (4 spaces, LF line endings, UTF-8)
+When editing files in this repo:
+1. Edit in chezmoi source: `chezmoi edit <target-path>`
+2. Or edit directly: files are in `home/` with chezmoi naming
+3. Apply: `chezmoi apply --verbose`
+4. Never commit secrets directly - use 1Password references
