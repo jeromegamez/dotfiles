@@ -36,7 +36,6 @@ defaults write NSGlobalDomain WebAutomaticSpellingCorrectionEnabled -bool false
 defaults write NSGlobalDomain NSSpellCheckerAutomaticallyIdentifiesLanguages -bool true
 defaults write NSGlobalDomain NSAutomaticTextCompletionEnabled -bool true
 # disable popups
-defaults write com.apple.LaunchServices LSQuarantine -bool false
 defaults write com.apple.CrashReporter DialogType none
 
 # Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
@@ -46,6 +45,10 @@ defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+
+# Trackpad: enable three-finger drag
+defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true
 
 # Expand save panel by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
@@ -68,16 +71,37 @@ sudo systemsetup -settimezone {{ .macos.timezone | quote }} > /dev/null 2>&1
 # Enable lid wakeup
 sudo pmset -a lidwake 1
 
+### Security
+
+# Enable firewall
+sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
+
+# Require password immediately after sleep/screensaver
+defaults write com.apple.screensaver askForPassword -int 1
+defaults write com.apple.screensaver askForPasswordDelay -int 0
+
+### Screenshots
+
+mkdir -p "${HOME}/Desktop/Screenshots"
+defaults write com.apple.screencapture location -string "${HOME}/Desktop/Screenshots"
+defaults write com.apple.screencapture type -string "png"
+defaults write com.apple.screencapture disable-shadow -bool true
+
 ### Finder
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv" # List view
 defaults write com.apple.finder ShowPathbar -bool true
+defaults write com.apple.finder ShowStatusBar -bool true
 defaults write com.apple.finder _FXSortFoldersFirst -bool true
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf" # Current folder
 defaults write NSGlobalDomain NSToolbarTitleViewRolloverDelay -float 0
 defaults write com.apple.finder QuitMenuItem -bool true
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 defaults write com.apple.finder WarnOnEmptyTrash -bool false
+defaults write com.apple.finder NewWindowTarget -string "PfHm"
+defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
 # Avoid creating .DS_Store files on network or USB volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
@@ -98,6 +122,7 @@ defaults write com.apple.finder _FXSortFoldersFirstOnDesktop -bool true
 defaults write com.apple.dock show-recents -bool false
 defaults write com.apple.dock tilesize -int 36
 defaults write com.apple.dock minimize-to-application -bool false
+defaults write com.apple.dock autohide -bool true
 # Remove the auto-hiding Dock delay
 defaults write com.apple.dock autohide-delay -float 0
 # Remove the animation when hiding/showing the Dock
