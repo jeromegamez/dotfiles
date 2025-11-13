@@ -1,22 +1,16 @@
-{{- $homebrewPrefix := "/opt/homebrew" -}}
-{{- $computername := .chezmoi.hostname }}
-{{- $hostname := .chezmoi.hostname -}}
+{{- $name := "Jérôme Gamez" -}}
 {{- $email := "jerome@gamez.name" -}}
-
-{{- if eq .chezmoi.os "darwin" -}}
-{{-   $computername = "Kerngehäuse" }}
-{{-   $hostname = "kerngehaeuse" }}
-{{- "" -}}
-{{- end -}}
+{{- $workEmail := "jerome@elvah.de" -}}
 
 [data]
+    name = {{ $name | quote }}
     email = {{ $email | quote }}
     onepasswordAccount = "UM5PFDCXWRDOXA2MBGNTMSFJ24"
 {{- if eq .chezmoi.os "darwin" }}
-    homebrewPrefix = {{ $homebrewPrefix | quote }}
-    computername = {{ $computername | quote }}
-    hostname = {{ $hostname | quote }}
-{{ end -}}
+    computername = "Kerngehäuse"
+    hostname = "kerngehaeuse"
+    homebrewPrefix = "/opt/homebrew"
+{{- end }}
 
 [data.credentials]
     githubToken = {{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Avoid Rate Limits" .onepasswordAccount | trim | quote }}
@@ -27,12 +21,12 @@
     context7ApiKey = {{ onepasswordRead "op://private/Context7/API Key" .onepasswordAccount | trim | quote }}
 
 [data.git]
-    name = "Jérôme Gamez"
-    email = "jerome@gamez.name"
+    name = {{ $name | quote }}
+    email = {{ $email | quote }}
     signingKey = "4E902530D3BC24D1"
 
 [data.git.work]
-    email = "jerome@elvah.de"
+    email = {{ $workEmail | quote }}
     directory = "~/Code/elvah/"
 
 [data.versions]
