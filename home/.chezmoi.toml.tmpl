@@ -17,7 +17,6 @@
     githubComposerToken = {{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Composer" .onepasswordAccount | trim | quote }}
     gitlabToken = {{ onepasswordRead "op://private/Gitlab read_api token/credential" .onepasswordAccount | trim | quote }}
     awsConfig = {{ onepasswordRead "op://private/awscli/notesPlain" .onepasswordAccount | trim | quote }}
-    sshConfig = {{ onepasswordRead "op://private/SSH Config/notesPlain" .onepasswordAccount | trim | quote }}
     context7ApiKey = {{ onepasswordRead "op://private/Context7/API Key" .onepasswordAccount | trim | quote }}
 
 [data.git]
