@@ -54,16 +54,19 @@ brew "zoxide" # Shell extension to navigate your filesystem faster
 
 ### PHP
 
-brew "shivammathur/php/php@{{ .versions.php }}" # General-purpose scripting language
-brew "shivammathur/extensions/amqp@{{ .versions.php }}" # AMQP PHP extension
-brew "shivammathur/extensions/apcu@{{ .versions.php }}" # APCU PHP extension
-brew "shivammathur/extensions/grpc@{{ .versions.php }}" # gRPC PHP extension
-brew "shivammathur/extensions/igbinary@{{ .versions.php }}" # IGBinary PHP extension
-brew "shivammathur/extensions/mongodb@{{ .versions.php }}" # MongoDB PHP extension
-brew "shivammathur/extensions/msgpack@{{ .versions.php }}" # MSGPack PHP extension
-brew "shivammathur/extensions/protobuf@{{ .versions.php }}" # Protobuf PHP extension
-brew "shivammathur/extensions/redis@{{ .versions.php }}" # Redis PHP extension
-brew "shivammathur/extensions/xdebug@{{ .versions.php }}" # XDebug PHP extension
+{{- range .versions.phpVersions }}
+brew "shivammathur/php/php@{{ . }}" # General-purpose scripting language
+brew "shivammathur/extensions/amqp@{{ . }}" # AMQP PHP extension
+brew "shivammathur/extensions/apcu@{{ . }}" # APCU PHP extension
+brew "shivammathur/extensions/grpc@{{ . }}" # gRPC PHP extension
+brew "shivammathur/extensions/igbinary@{{ . }}" # IGBinary PHP extension
+brew "shivammathur/extensions/mongodb@{{ . }}" # MongoDB PHP extension
+brew "shivammathur/extensions/msgpack@{{ . }}" # MSGPack PHP extension
+brew "shivammathur/extensions/protobuf@{{ . }}" # Protobuf PHP extension
+brew "shivammathur/extensions/redis@{{ . }}" # Redis PHP extension
+brew "shivammathur/extensions/xdebug@{{ . }}" # XDebug PHP extension
+
+{{- end }}
 
 ### Fonts
 
