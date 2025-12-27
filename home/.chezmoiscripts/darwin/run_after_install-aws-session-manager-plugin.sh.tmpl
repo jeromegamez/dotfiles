@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+set -eufo pipefail
+
+PLUGIN_BINARY="${HOME}/.local/bin/session-manager-plugin"
+
+# Architecture detection in template
+{{ if eq .chezmoi.arch "arm64" }}
+PKG_URL="https://s3.amazonaws.com/session-manager-downloads/plugin/latest/mac_arm64/session-manager-plugin.pkg"
+{{ else }}
+PKG_URL="https://s3.amazonaws.com/session-manager-downloads/plugin/latest/mac/session-manager-plugin.pkg"
+{{ end }}
+
+get_latest_version() {
+    local version
+    version=$(curl -s "https://api.github.com/repos/aws/session-manager-plugin/releases/latest" | \
+              grep -oE '"tag_name": "[^"]*"' | cut -d'"' -f4 | sed 's/^v//' 2>/dev/null)
+    echo "$version"
+}
+
+get_installed_version() {
+    if command -v session-manager-plugin >/dev/null 2>&1; then
+        session-manager-plugin --version 2>/dev/null
+    fi
+}
+
+LATEST_VERSION=$(get_latest_version)
+INSTALLED_VERSION=$(get_installed_version)
+
+install_plugin() {
+    local message="$1"
+    local temp_dir=$(mktemp -d)
+    echo "$message"
+
+    echo "Downloading plugin..."
+    curl "${PKG_URL}" -o "${temp_dir}/session-manager-plugin.pkg"
+
+    echo "Installing package..."
+    sudo installer -pkg "${temp_dir}/session-manager-plugin.pkg" -target /
+
+    echo "Creating symlink..."
+    mkdir -p "${HOME}/.local/bin"
+    ln -s /usr/local/sessionmanagerplugin/bin/session-manager-plugin "${PLUGIN_BINARY}"
+}
+
+if [[ "$INSTALLED_VERSION" != "$LATEST_VERSION" ]]; then
+    install_plugin "Installing AWS Session Manager Plugin (latest: $LATEST_VERSION, installed: $INSTALLED_VERSION)..."
+    echo "✓ AWS Session Manager Plugin updated successfully to $LATEST_VERSION"
+else
+    echo "✓ AWS Session Manager Plugin is up to date ($INSTALLED_VERSION)"
+fi
