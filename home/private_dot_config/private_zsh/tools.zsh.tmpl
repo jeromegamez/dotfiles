@@ -18,9 +18,13 @@ if command -v op &>/dev/null; then
     [[ -f "${XDG_CONFIG_HOME}/op/plugins.sh" ]] && source "${XDG_CONFIG_HOME}/op/plugins.sh"
 fi
 
-# if [[ -f "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc" ]]; then
-#     source "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc"
-# fi
+if [[ -f "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc" ]]; then
+    source "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc"
+fi
+
+if [[ -f "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc" ]]; then
+    source "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc"
+fi
 
 if command -v chezmoi &>/dev/null; then
     eval "$(chezmoi completion zsh)"
@@ -51,9 +55,6 @@ if command -v fzf &>/dev/null; then
 
     source <(fzf --zsh)
 fi
-
-# Google Cloud SDK path setup
-[[ -f "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc" ]] && source "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc"
 
 # Load ZSH plugins (only in interactive shells)
 # The $- variable contains shell options, and *i* checks if interactive mode is enabled.

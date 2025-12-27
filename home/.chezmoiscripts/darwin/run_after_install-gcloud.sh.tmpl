@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -eufo pipefail
+
+SDK_DIR="${XDG_DATA_HOME}/google-cloud-sdk"
+
+# Architecture detection in template
+{{ if eq .chezmoi.arch "arm64" }}
+DOWNLOAD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-darwin-arm.tar.gz"
+{{ else }}
+DOWNLOAD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-darwin-x86_64.tar.gz"
+{{ end }}
+
+if ! command -v gcloud >/dev/null 2>&1; then
+    echo "Installing Google Cloud CLI..."
+    temp_dir=$(mktemp -d)
+    
+    # Download to temp directory
+    echo "Downloading Google Cloud SDK..."
+    curl "${DOWNLOAD_URL}" -o "${temp_dir}/google-cloud-cli.tar.gz"
+    
+    # Extract directly to SDK directory
+    echo "Extracting archive..."
+    tar -xzf "${temp_dir}/google-cloud-cli.tar.gz" -C "${XDG_DATA_HOME}"
+    
+    echo "Running installation script..."
+    "${SDK_DIR}/install.sh" \
+        --usage-reporting false \
+        --path-update false \
+        --command-completion false \
+        --install-python false \
+        > /dev/null 2>&1
+    
+    echo "✓ Google Cloud CLI installed successfully"
+fi
+
+echo "Updating Google Cloud CLI and components..."
+gcloud components update --quiet
