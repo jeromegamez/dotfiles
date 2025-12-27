@@ -6,12 +6,12 @@ eval "$({{ joinPath .homebrewPrefix "bin" "brew" }} shellenv)" || true
 
 HOMEBREW_CASK_OPTS=--no-quarantine {{ joinPath .homebrewPrefix "bin" "brew" }} bundle --file=- <<'BREWFILE'
 tap "common-fate/granted"
-tap "keidarcy/tap"
+tap "go-task/tap"
 tap "hashicorp/tap"
+tap "keidarcy/tap"
 tap "mongodb/brew"
 tap "shivammathur/extensions"
 tap "shivammathur/php"
-tap "go-task/tap"
 
 brew "actionlint" # Static checker for GitHub Actions workflow files
 brew "atuin" # Improved shell history for zsh, bash, fish and nushell
@@ -114,8 +114,6 @@ mas "Kagi Search", id: 1622835804
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Pixelmator Pro", id: 1289583905
-mas "Patterns", id: 429449079
-mas "Playlisty for Apple Music", id: 1459275972
 mas "Things", id: 904280696
 BREWFILE
 
