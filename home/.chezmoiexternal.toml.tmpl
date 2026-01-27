@@ -18,13 +18,3 @@
     exact = true
     stripComponents = 1
     refreshPeriod = {{ .external.refreshPeriod | quote }}
-
-
-
-[".config/claude/commands"]
-    type = "archive"
-    url = "https://github.com/brennercruvinel/CCPlugins/archive/main.tar.gz"
-    exact = false
-    stripComponents = 2
-    include = ["*/commands/*"]
-    refreshPeriod = {{ .external.refreshPeriod | quote }}
