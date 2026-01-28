@@ -1,0 +1,9 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $cfg := dict -}}
+{{- if (trim .chezmoi.stdin) -}}
+  {{- $cfg = fromJson .chezmoi.stdin -}}
+{{- end -}}
+{{- $cfg = setValueAtPath "enabledPlugins.frontend-design@claude-plugins-official" true $cfg -}}
+{{- $cfg = setValueAtPath "enabledPlugins.php-lsp@claude-plugins-official" true $cfg -}}
+{{- $cfg = setValueAtPath "enabledPlugins.context7@claude-plugins-official" true $cfg -}}
+{{- $cfg | toPrettyJson -}}

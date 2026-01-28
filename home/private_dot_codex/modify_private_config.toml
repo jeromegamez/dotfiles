@@ -1,0 +1,14 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $cfg := dict -}}
+{{- if (trim .chezmoi.stdin) -}}
+  {{- $cfg = fromToml .chezmoi.stdin -}}
+{{- end -}}
+{{- $cfg = setValueAtPath "model" "gpt-5.2-codex" $cfg -}}
+{{- $cfg = setValueAtPath "model_reasoning_effort" "high" $cfg -}}
+{{- $cfg = setValueAtPath "suppress_unstable_features_warning" true $cfg -}}
+{{- $cfg = setValueAtPath "tool_output_token_limit" 25000 $cfg -}}
+{{- $cfg = setValueAtPath "features.apply_patch_freeform" true $cfg -}}
+{{- $cfg = setValueAtPath "features.shell_snapshot" true $cfg -}}
+{{- $cfg = setValueAtPath "features.unified_exec" true $cfg -}}
+{{- $cfg = setValueAtPath "features.web_search_request" true $cfg -}}
+{{- $cfg | toToml -}}
