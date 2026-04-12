@@ -40,7 +40,7 @@ install_plugin() {
 
     echo "Creating symlink..."
     mkdir -p "${HOME}/.local/bin"
-    ln -s /usr/local/sessionmanagerplugin/bin/session-manager-plugin "${PLUGIN_BINARY}"
+    ln -sfv /usr/local/sessionmanagerplugin/bin/session-manager-plugin "${PLUGIN_BINARY}"
 }
 
 if [[ "$INSTALLED_VERSION" != "$LATEST_VERSION" ]]; then
