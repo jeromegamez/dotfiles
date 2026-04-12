@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+account="{{ .onepasswordAccount }}"
+out="${HOME}/.ssh/1Password/generated-hosts.conf"
+tmp="$(mktemp "${TMPDIR:-/tmp}/generated-hosts.XXXXXX")"
+helper="{{ .chezmoi.sourceDir }}/private_dot_config/chezmoi/scripts/generate_ssh_hosts.py"
+trap 'rm -f "$tmp"' EXIT
+
+op --account "$account" --format json item list --categories "SSH Key" \
+  | op --account "$account" item get - --format json \
+  | jq -s '.' \
+  | python3 "$helper" > "$tmp"
+
+install -m 600 "$tmp" "$out"
