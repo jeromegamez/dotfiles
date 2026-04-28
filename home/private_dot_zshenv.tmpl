@@ -1,4 +1,5 @@
-{{- if eq .chezmoi.os "darwin" -}}
+export XDG_BIN_DIR=$HOME/.local/bin
+{{ if eq .chezmoi.os "darwin" -}}
 export XDG_CACHE_HOME="$HOME/Library/Caches"
 {{ else -}}
 export XDG_CACHE_HOME=$HOME/.cache
@@ -6,11 +7,6 @@ export XDG_CACHE_HOME=$HOME/.cache
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
-
-# Ensure XDG dirs exist.
-for xdgdir in XDG_{CACHE,CONFIG,DATA,STATE}_HOME; do
-  [[ -e ${(P)xdgdir} ]] || mkdir -p ${(P)xdgdir}
-done
 
 {{ if eq .chezmoi.os "darwin" -}}
 export EDITOR={{ joinPath .homebrewPrefix "bin" "nvim" }}
