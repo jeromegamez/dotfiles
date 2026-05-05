@@ -1,10 +1,10 @@
 # Core PATH setup
-typeset -U path  # Remove duplicates automatically
+# path uniqueness initialized in ~/.zshenv
 
 # Essential paths (needed early)
-[[ -d "${HOME}/.local/bin" ]] && path=("${HOME}/.local/bin" $path)
 {{ if eq .chezmoi.os "darwin" -}}
-path=("{{ .homebrewPrefix }}/opt/make/libexec/gnubin" $path)
+HOMEBREW_GNUBIN_DIR="{{ .homebrewPrefix }}/opt/make/libexec/gnubin"
+path=("$HOMEBREW_GNUBIN_DIR" $path)
 {{ end }}
 
 {{ if eq .chezmoi.os "darwin" -}}
@@ -22,7 +22,8 @@ export SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/
 {{ end }}
 
 # Tool-specific paths
-[[ -d "${XDG_CONFIG_HOME}/composer/vendor/bin" ]] && path+=("${XDG_CONFIG_HOME}/composer/vendor/bin")
+COMPOSER_BIN_DIR="${XDG_CONFIG_HOME}/composer/vendor/bin"
+[[ -d "$COMPOSER_BIN_DIR" ]] && path+=("$COMPOSER_BIN_DIR")
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
 export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg

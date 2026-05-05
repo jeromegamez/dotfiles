@@ -1,4 +1,6 @@
-export XDG_BIN_DIR=$HOME/.local/bin
+typeset -U path
+export XDG_BIN_DIR="$HOME/.local/bin"
+path=("$XDG_BIN_DIR" $path)
 {{ if eq .chezmoi.os "darwin" -}}
 export XDG_CACHE_HOME="$HOME/Library/Caches"
 {{ else -}}
@@ -7,6 +9,9 @@ export XDG_CACHE_HOME=$HOME/.cache
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
+
+# opencode
+[[ -d "${HOME}/.opencode/bin" ]] && path=("${HOME}/.opencode/bin" $path)
 
 {{ if eq .chezmoi.os "darwin" -}}
 export EDITOR={{ joinPath .homebrewPrefix "bin" "nvim" }}
