@@ -1,28 +1,89 @@
 #!/usr/bin/env bash
 
-set -eufo pipefail
+set -euo pipefail
 
 TARGET_SHELL="{{ joinPath .homebrewPrefix "bin" "zsh" }}"
+SHELLS_FILE="/etc/shells"
+USER_NAME="$(id -un)"
+TTY_AVAILABLE=false
+
+if [[ -t 0 && -t 1 ]]; then
+	TTY_AVAILABLE=true
+fi
+
+require_sudo() {
+	if sudo -n true 2>/dev/null; then
+		return 0
+	fi
+
+	if [[ "$TTY_AVAILABLE" == true ]]; then
+		echo "Need sudo to update $SHELLS_FILE"
+		sudo -v
+		return 0
+	fi
+
+	echo "Need sudo to update $SHELLS_FILE, but no TTY available"
+	exit 1
+}
+
+prompt_confirm() {
+	local reply
+
+	if [[ "$TTY_AVAILABLE" != true ]]; then
+		return 0
+	fi
+
+	printf 'Update login shell to %s and /etc/shells if needed? [y/N] ' "$TARGET_SHELL"
+	read -r reply
+	case "$reply" in
+	y | Y | yes | YES)
+		return 0
+		;;
+	*)
+		echo "Aborted"
+		exit 0
+		;;
+	esac
+}
 
 # Check if target shell exists
 if [[ ! -x "$TARGET_SHELL" ]]; then
-    echo "Target shell $TARGET_SHELL not found or not executable"
-    exit 1
+	echo "Target shell $TARGET_SHELL not found or not executable"
+	exit 1
 fi
 
 # Get actual login shell (more reliable than $SHELL)
-CURRENT_SHELL=$(dscl . -read /Users/"$USER" UserShell | awk '{print $2}')
+CURRENT_SHELL="$(dscl . -read "/Users/$USER_NAME" UserShell | awk '{print $2}')"
 
-# Only change shell if current shell is not the desired one
+if [[ -z "$CURRENT_SHELL" ]]; then
+	echo "Could not read current login shell for $USER_NAME"
+	exit 1
+fi
+
+SHELLS_HAS_TARGET=false
+if grep -qxF "$TARGET_SHELL" "$SHELLS_FILE"; then
+	SHELLS_HAS_TARGET=true
+fi
+
+if [[ "$CURRENT_SHELL" == "$TARGET_SHELL" && "$SHELLS_HAS_TARGET" == true ]]; then
+	echo "Shell already set to $TARGET_SHELL"
+	exit 0
+fi
+
+if [[ "$CURRENT_SHELL" != "$TARGET_SHELL" || "$SHELLS_HAS_TARGET" != true ]]; then
+	prompt_confirm
+fi
+
+if [[ "$SHELLS_HAS_TARGET" != true ]]; then
+	require_sudo
+	echo "Adding $TARGET_SHELL to $SHELLS_FILE"
+	printf '%s\n' "$TARGET_SHELL" | sudo tee -a "$SHELLS_FILE" >/dev/null
+fi
+
 if [[ "$CURRENT_SHELL" != "$TARGET_SHELL" ]]; then
-    if ! grep -qx "$TARGET_SHELL" /etc/shells; then
-        echo "Adding $TARGET_SHELL to /etc/shells"
-        echo "$TARGET_SHELL" | sudo tee -a /etc/shells > /dev/null
-    fi
-
-    echo "Changing login shell from $CURRENT_SHELL to $TARGET_SHELL"
-    chsh -s "$TARGET_SHELL"
-    echo "Shell changed successfully. New login sessions will use $TARGET_SHELL"
+	echo "Changing login shell from $CURRENT_SHELL to $TARGET_SHELL"
+	chsh -s "$TARGET_SHELL"
+	echo "Shell changed successfully. New login sessions use $TARGET_SHELL"
 else
-    echo "Shell is already set to $TARGET_SHELL"
+	echo "Login shell already set to $TARGET_SHELL"
 fi

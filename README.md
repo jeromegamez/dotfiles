@@ -26,3 +26,11 @@ eval $(op signin)
 ```bash
 ./scripts/check-external-updates.sh
 ```
+
+## Bootstrap side effects
+
+- `home/.chezmoiscripts/darwin/run_onchange_set_homebrew_zsh_shell.sh.tmpl` may:
+  - touch `/etc/shells`
+  - change login shell with `chsh`
+  - require `sudo` when adding Homebrew zsh to `/etc/shells`
+- Expect prompt during `chezmoi apply` when shell setup needs changes
