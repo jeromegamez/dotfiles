@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
 
-set -eufo pipefail
+set -euo pipefail
 
-SDK_DIR="${XDG_DATA_HOME}/google-cloud-sdk"
+SDK_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/google-cloud-sdk"
+gcloud_bin=""
+
+cleanup() {
+    if [[ -n "${temp_dir:-}" && -d "$temp_dir" ]]; then
+        rm -rf "$temp_dir"
+    fi
+}
+
+trap cleanup EXIT INT TERM
 
 # Architecture detection in template
 {{ if eq .chezmoi.arch "arm64" }}
@@ -11,28 +20,44 @@ DOWNLOAD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-
 DOWNLOAD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-darwin-x86_64.tar.gz"
 {{ end }}
 
-if ! command -v gcloud >/dev/null 2>&1; then
+if command -v gcloud >/dev/null 2>&1; then
+    gcloud_bin="$(command -v gcloud)"
+else
     echo "Installing Google Cloud CLI..."
     temp_dir=$(mktemp -d)
-    
-    # Download to temp directory
+    archive_path="${temp_dir}/google-cloud-cli.tar.gz"
+
     echo "Downloading Google Cloud SDK..."
-    curl "${DOWNLOAD_URL}" -o "${temp_dir}/google-cloud-cli.tar.gz"
-    
-    # Extract directly to SDK directory
+    curl -fsSL "$DOWNLOAD_URL" -o "$archive_path"
+
+    echo "Verifying archive..."
+    tar -tzf "$archive_path" >/dev/null
+
     echo "Extracting archive..."
-    tar -xzf "${temp_dir}/google-cloud-cli.tar.gz" -C "${XDG_DATA_HOME}"
-    
+    tar -xzf "$archive_path" -C "$temp_dir"
+
+    sdk_source_dir=$(find "$temp_dir" -maxdepth 1 -type d -name 'google-cloud-*' | head -n 1)
+    if [[ -z "$sdk_source_dir" ]]; then
+        echo "✗ Google Cloud SDK archive missing expected directory"
+        exit 1
+    fi
+
     echo "Running installation script..."
-    "${SDK_DIR}/install.sh" \
+    bash "$sdk_source_dir/install.sh" \
         --usage-reporting false \
         --path-update false \
         --command-completion false \
         --install-python false \
         > /dev/null 2>&1
-    
+
+    gcloud_bin="${SDK_DIR}/bin/gcloud"
+    if [[ ! -x "$gcloud_bin" ]]; then
+        echo "✗ Google Cloud CLI install failed"
+        exit 1
+    fi
+
     echo "✓ Google Cloud CLI installed successfully"
 fi
 
 echo "Updating Google Cloud CLI and components..."
-gcloud components update --quiet
+"$gcloud_bin" components update --quiet

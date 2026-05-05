@@ -11,20 +11,36 @@
 
 set -euo pipefail
 
+cleanup() {
+    [[ -n "${tmp_dir:-}" && -d "$tmp_dir" ]] && rm -rf "$tmp_dir"
+}
+
+trap cleanup EXIT INT TERM
+
 # Set NVM directory
-export NVM_DIR="$XDG_CONFIG_HOME/nvm"
+export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
 
 echo "Installing nvm..."
 
-# Download and run the nvm install script
-# PROFILE=/dev/null prevents the installer from modifying shell config
+tmp_dir=$(mktemp -d)
+installer="$tmp_dir/nvm-install.sh"
+
+# Download installer first, then run it from disk.
+# PROFILE=/dev/null prevents installer from modifying shell config
 # (nvm loading is managed via zsh configuration)
-curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | env PROFILE=/dev/null bash
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh -o "$installer"
+
+if [[ ! -s "$installer" ]]; then
+    echo "✗ nvm installer download failed"
+    exit 1
+fi
+
+env PROFILE=/dev/null bash "$installer"
 
 echo "nvm installation completed!"
 
 # Verify installation
-if [ -s "$NVM_DIR/nvm.sh" ]; then
+if [[ -s "$NVM_DIR/nvm.sh" ]]; then
     . "$NVM_DIR/nvm.sh"
     if command -v nvm >/dev/null 2>&1; then
         echo "✓ nvm installed successfully"
@@ -32,6 +48,7 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
         echo "Version: $(nvm --version)"
     else
         echo "✗ nvm installation completed but command not available in current session"
+        exit 1
     fi
 else
     echo "✗ nvm installation failed"
