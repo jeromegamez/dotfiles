@@ -16,3 +16,13 @@ chezmoi init jeromegamez
 ```bash
 eval $(op signin)
 ```
+
+## Updates
+
+- External deps live in `home/.chezmoiexternal.toml.tmpl`
+- Pinned refs keep installs stable
+- Check for newer upstream versions:
+
+```bash
+./scripts/check-external-updates.sh
+```
