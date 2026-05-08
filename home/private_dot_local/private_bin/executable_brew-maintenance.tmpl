@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+brew_bin="{{ joinPath .homebrewPrefix "bin" "brew" }}"
+brewfile="${XDG_CONFIG_HOME:-$HOME/.config}/brew/Brewfile"
+
+if [[ ! -f "$brewfile" ]]; then
+    echo "✗ Missing Brewfile: $brewfile"
+    exit 1
+fi
+
+eval "$($brew_bin shellenv)" || true
+
+echo "==> brew update"
+$brew_bin update
+
+echo "==> brew bundle install"
+HOMEBREW_CASK_OPTS=--no-quarantine $brew_bin bundle install --file="$brewfile"
+
+echo "==> brew upgrade"
+$brew_bin upgrade
+
+echo "==> brew autoremove"
+$brew_bin autoremove
+
+cellar="$($brew_bin --cellar)"
+if find "$cellar" -mindepth 2 -maxdepth 2 ! -user "$(id -un)" -print -quit | grep -q .; then
+    echo "==> Fix Homebrew cellar ownership"
+    sudo chown -R "$(id -un):$(id -gn)" "$cellar"
+fi
+
+fix_cleanup_permissions() {
+    local cleanup_output cleanup_paths cleanup_path
+
+    cleanup_output="$($brew_bin cleanup 2>&1)" && {
+        printf '%s\n' "$cleanup_output"
+        return 0
+    }
+
+    printf '%s\n' "$cleanup_output"
+
+    cleanup_paths="$(printf '%s\n' "$cleanup_output" | awk '
+        /Fix your permissions on:/ { flag = 1; next }
+        flag && /^  / { sub(/^  /, ""); print; next }
+        flag && !/^  / { flag = 0 }
+    ')"
+
+    if [[ -z "$cleanup_paths" ]]; then
+        return 1
+    fi
+
+    while IFS= read -r cleanup_path; do
+        [[ -n "$cleanup_path" ]] || continue
+        echo "==> Fix Homebrew permissions: $cleanup_path"
+        sudo chown -R "$(id -un):$(id -gn)" "$cleanup_path"
+    done <<< "$cleanup_paths"
+
+    return 2
+}
+
+for _attempt in 1 2 3; do
+    echo "==> brew cleanup"
+    if fix_cleanup_permissions; then
+        echo "✓ Homebrew maintenance done"
+        exit 0
+    fi
+
+done
+
+echo "✗ brew cleanup failed after permission repair attempts"
+exit 1

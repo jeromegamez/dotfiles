@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eufo pipefail
+
+eval "$({{ joinPath .homebrewPrefix "bin" "brew" }} shellenv)" || true
+
+# Brewfile hash: {{ include (joinPath .chezmoi.sourceDir "private_dot_config/brew/Brewfile.tmpl") | sha256sum }}
+
+brewfile="${XDG_CONFIG_HOME:-$HOME/.config}/brew/Brewfile"
+HOMEBREW_CASK_OPTS=--no-quarantine {{ joinPath .homebrewPrefix "bin" "brew" }} bundle install --file="$brewfile"
+
+echo "✓ Homebrew setup completed"

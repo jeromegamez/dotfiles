@@ -1,10 +1,3 @@
-#!/usr/bin/env bash
-
-set -eufo pipefail
-
-eval "$({{ joinPath .homebrewPrefix "bin" "brew" }} shellenv)" || true
-
-HOMEBREW_CASK_OPTS=--no-quarantine {{ joinPath .homebrewPrefix "bin" "brew" }} bundle --file=- <<'BREWFILE'
 tap "common-fate/granted"
 tap "go-task/tap"
 tap "hashicorp/tap"
@@ -48,12 +41,14 @@ brew "starship" # Cross-shell prompt for astronauts
 brew "tenv" # OpenTofu / Terraform / Terragrunt / Atmos version manager
 brew "terraform-docs" # Tool to generate documentation from Terraform modules
 brew "tflint" # Linter for Terraform files
+brew "tree-sitter-cli" # Parser generator tool
 brew "tmux" # Terminal multiplexer
-brew "xdg-ninja" # Check your $HOME for unwanted files and directories
 brew "viddy" # Modern watch command
 brew "wget" # Internet file retriever
-brew "zsh" # UNIX shell (command interpreter)
+brew "xdg-ninja" # Check your $HOME for unwanted files and directories
 brew "zoxide" # Shell extension to navigate your filesystem faster
+brew "yt-dlp" # Feature-rich command-line audio/video downloader
+brew "zsh" # UNIX shell (command interpreter)
 
 ### PHP
 
@@ -79,14 +74,13 @@ cask "font-fira-code-nerd-font" # FiraCode Nerd Font (Fira Code)
 
 cask "1password" # Password manager that keeps all passwords secure behind one password
 cask "1password-cli" # Command-line interface for 1Password
-cask "ausweisapp" # Official eID-Client of the Federal Government of Germany
 cask "apidog-europe" # API development platform hosted in Europe
+cask "ausweisapp" # Official eID-Client of the Federal Government of Germany
 cask "cardhop" # Contacts manager
 cask "discord" # Voice and text chat software
 cask "droplr" # Screenshot and screen recorder
 cask "duckduckgo" # Web browser focusing on privacy
 cask "fantastical" # Calendar software
-cask "xykong/tap/flux-markdown" # Markdown previews in Finder QuickLook with diagrams and math
 cask "ghostty" # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "gpg-suite-no-mail" # GPG Suite (without GPG Mail)
 cask "jetbrains-toolbox" # JetBrains tools manager
@@ -120,9 +114,3 @@ mas "Numbers", id: 361304891
 mas "Pages", id: 361309726
 mas "Pixelmator Pro", id: 1289583905
 mas "Things", id: 904280696
-BREWFILE
-
-echo "Cleaning up Homebrew..."
-{{ joinPath .homebrewPrefix "bin" "brew" }} autoremove || echo "Warning: autoremove had issues (non-fatal)"
-{{ joinPath .homebrewPrefix "bin" "brew" }} cleanup || echo "Warning: cleanup had issues (non-fatal)"
-echo "✓ Homebrew setup completed"
