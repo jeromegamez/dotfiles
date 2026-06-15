@@ -16,7 +16,6 @@
     githubToken = {{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Avoid Rate Limits" .onepasswordAccount | trim | quote }}
     githubComposerToken = {{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Composer" .onepasswordAccount | trim | quote }}
     gitlabToken = {{ onepasswordRead "op://private/Gitlab read_api token/credential" .onepasswordAccount | trim | quote }}
-    context7ApiKey = {{ onepasswordRead "op://private/Context7/API Key" .onepasswordAccount | trim | quote }}
 
 [data.git]
     name = {{ $name | quote }}
