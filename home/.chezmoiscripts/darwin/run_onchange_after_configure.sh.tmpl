@@ -64,7 +64,7 @@ defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 # Reveal IP address, hostname, OS version, etc. when clicking the clock in the login window
 sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
 
-sudo systemsetup -settimezone {{ .macos.timezone | quote }} > /dev/null 2>&1
+sudo systemsetup -settimezone {{ .macos.timezone | quote }} >/dev/null 2>&1
 
 ### Energy saving
 
@@ -175,6 +175,9 @@ defaults write com.apple.dock expose-animation-duration -int 0
 
 # Move windows by dragging any part of the window
 defaults write -g NSWindowShouldDragOnGesture -bool true
+
+# Sidebars default to an inline/integrated appearance - they take up space in the layout and push content aside rather than floating over it
+defaults write -g NSSplitViewItemSidebarDefaultsToFloatingAppearance -bool false
 
 ### Accessibility
 
