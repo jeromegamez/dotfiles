@@ -30,6 +30,8 @@ export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
 # See https://stackoverflow.com/a/52230415/284325
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
+export DISABLE_TELEMETRY=1
+
 export TENV_GITHUB_TOKEN={{ .credentials.githubToken | quote }}
 export GITHUB_AUTH_TOKEN={{ .credentials.githubToken | quote }}
 export MISE_GITHUB_TOKEN={{ .credentials.githubToken | quote }}
