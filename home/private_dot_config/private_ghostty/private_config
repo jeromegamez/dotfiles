@@ -8,6 +8,8 @@ cursor-style = block
 cursor-style-blink = false
 bold-is-bright = true
 
+theme = ember
+
 window-padding-x = 6
 window-inherit-font-size = true
 
