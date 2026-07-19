@@ -4,7 +4,7 @@ set -eufo pipefail
 
 eval "$({{ joinPath .homebrewPrefix "bin" "brew" }} shellenv)" || true
 
-# Brewfile hash: {{ include (joinPath .chezmoi.sourceDir "private_dot_config/private_homebrew/Brewfile.tmpl") | sha256sum }}
+# Brewfile hash: {{ includeTemplate "homebrew/Brewfile.tmpl" . | sha256sum }}
 # chezmoi.toml hash: {{ include (joinPath .chezmoi.sourceDir ".chezmoi.toml.tmpl") | sha256sum }}
 
 brewfile="${XDG_CONFIG_HOME:-$HOME/.config}/homebrew/Brewfile"

@@ -1,0 +1,9 @@
+{{ includeTemplate "homebrew/common.rb" . }}
+{{- if (get . "personal") }}
+
+{{ includeTemplate "homebrew/personal.rb" . }}
+{{- end }}
+{{- if (get . "work") }}
+
+{{ includeTemplate "homebrew/work.rb" . }}
+{{- end }}
