@@ -1,6 +1,26 @@
+{{- $work := false -}}{{/* true if this machine is a work machine */}}
+{{- $personal := false -}}{{/* true if this machine should have personal secrets */}}
+
+{{/* work around unreliable hostname on darwin */}}
+{{- $hostname := .chezmoi.hostname -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $hostname := output "scutil" "--get" "LocalHostName" | trim -}}
+{{- end -}}
+
+{{- if eq $hostname "***REMOVED***" -}}
+{{-   $work = true -}}
+{{- else if eq $hostname "kerngehaeuse" -}}
+{{-   $personal = true -}}
+{{- end -}}
+
 {{- $name := "Jérôme Gamez" -}}
+
 {{- $email := "jerome@gamez.name" -}}
-{{- $workEmail := "jerome@elvah.de" -}}
+{{- $workEmail := "***REMOVED***" -}}
+
+{{- if $work -}}
+{{-   $email = $workEmail -}}
+{{- end -}}
 
 [data]
     name = {{ $name | quote }}
@@ -24,11 +44,10 @@
 
 [data.git.work]
     email = {{ $workEmail | quote }}
-    directory = "~/Code/elvah/"
+    directory = "~/Code/work/"
 
 [data.versions]
     phpVersions = ["8.4", "8.5"]
 
 [data.macos]
     timezone = "Europe/Berlin"
-
