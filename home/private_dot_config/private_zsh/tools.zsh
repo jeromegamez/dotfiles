@@ -1,33 +1,41 @@
 # Initialize shell tools and integrations
 
-# Initialize completions
-if command -v uv &>/dev/null; then
-    eval "$(uv generate-shell-completion zsh)"
-fi
+# Cache generated completions until the corresponding executable changes.
+_load_completion_cache() {
+    local cache_name=$1 command_name=$2
+    shift 2
 
-if command -v uvx &>/dev/null; then
-    eval "$(uvx --generate-shell-completion zsh)"
-fi
+    local executable=${commands[$command_name]}
+    [[ -n "$executable" ]] || return
 
-# if [[ -f "${XDG_CONFIG_HOME}/tenv/completion.zsh" ]]; then
-#     source "${XDG_CONFIG_HOME}/tenv/completion.zsh"
-# fi
+    local cache_dir="$XDG_CACHE_HOME/zsh/completions"
+    local cache_file="$cache_dir/$cache_name.zsh"
+    local cache_tmp="$cache_file.$$"
+    mkdir -p "$cache_dir"
+
+    if [[ ! -s "$cache_file" || "$executable" -nt "$cache_file" ]]; then
+        if command "$@" >| "$cache_tmp"; then
+            mv "$cache_tmp" "$cache_file"
+        else
+            rm -f "$cache_tmp"
+        fi
+    fi
+
+    [[ -s "$cache_file" ]] && source "$cache_file"
+}
+
+_load_completion_cache uv uv uv generate-shell-completion zsh
+_load_completion_cache uvx uvx uvx --generate-shell-completion zsh
+_load_completion_cache chezmoi chezmoi chezmoi completion zsh
+unfunction _load_completion_cache
 
 if command -v op &>/dev/null; then
     # eval "$(op completion zsh)"; compdef _op op
     [[ -f "${XDG_CONFIG_HOME}/op/plugins.sh" ]] && source "${XDG_CONFIG_HOME}/op/plugins.sh"
 fi
 
-if [[ -f "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc" ]]; then
-    source "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc"
-fi
-
 if [[ -f "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc" ]]; then
     source "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc"
-fi
-
-if command -v chezmoi &>/dev/null; then
-    eval "$(chezmoi completion zsh)"
 fi
 
 if command -v direnv &>/dev/null; then
@@ -54,19 +62,4 @@ if command -v fzf &>/dev/null; then
     fi
 
     source <(fzf --zsh)
-fi
-
-# Load ZSH plugins (only in interactive shells)
-# The $- variable contains shell options, and *i* checks if interactive mode is enabled.
-if [[ $- == *i* ]]; then
-    _zsh_plugins=(
-        "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
-        "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"  # Must be last
-    )
-
-    # Load plugins in order
-    for plugin in "${_zsh_plugins[@]}"; do
-        [[ -f "$plugin" ]] && source "$plugin"
-    done
-    unset _zsh_plugins plugin
 fi

@@ -1,14 +1,14 @@
-# Environment variables
-export LESSHISTFILE="$XDG_STATE_HOME"/less/history
-export SHELL_SESSIONS_DISABLE=1
-export GPG_TTY=$(tty)
-unset PAGER
+# Interactive environment
+if [[ -t 0 ]]; then
+    export GPG_TTY="$(tty)"
+else
+    unset GPG_TTY
+fi
 
 # History configuration
-export HISTFILE="$XDG_STATE_HOME"/zsh/history
-export HISTFILESIZE=1000000000
-export HISTSIZE=1000000001 # set HISTSIZE > SAVEHIST
-export SAVEHIST=$HISTSIZE  # ensure SAVEHIST matches HISTSIZE
+HISTFILE="$XDG_STATE_HOME"/zsh/history
+HISTSIZE=200000 # Keep larger than SAVEHIST so duplicate expiry has room
+SAVEHIST=100000
 
 setopt EXTENDED_HISTORY         # include timestamp
 setopt HIST_BEEP                # beep if attempting to access a history entry which isn't there
@@ -22,27 +22,25 @@ setopt HIST_REDUCE_BLANKS       # strip superfluous blanks
 setopt HIST_SAVE_BY_COPY        # write to temp file then move to avoid corruption
 setopt HIST_SAVE_NO_DUPS        # omit older duplicates of newer commands
 setopt HIST_VERIFY              # expand command line without executing it
-setopt INC_APPEND_HISTORY       # don't wait for shell to exit to save history lines
 setopt SHARE_HISTORY            # share history between sessions
 
 # Enable completions (after PATH is set)
 # Regenerate completion cache once per day, track freshness via stamp file.
+zmodload zsh/datetime
 autoload -Uz compinit
-_zcompdump="$XDG_CACHE_HOME/zsh/zcompdump"
+_zcompdump="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 _zcompdump_stamp="$_zcompdump.lastcheck"
 mkdir -p "${_zcompdump:h}"
 
-mtime=0
-[[ -f "$_zcompdump_stamp" ]] && mtime=$(stat -f %m "$_zcompdump_stamp" 2>/dev/null || printf '0')
+_zcompdump_mtime=0
+[[ -f "$_zcompdump_stamp" ]] && _zcompdump_mtime=$(stat -f %m "$_zcompdump_stamp" 2>/dev/null || printf '0')
 
-if (( EPOCHSECONDS - mtime < 86400 )); then
+if [[ -f "$_zcompdump" ]] && (( EPOCHSECONDS - _zcompdump_mtime < 86400 )); then
     compinit -C -d "$_zcompdump"
 else
-    compinit -d "$_zcompdump"
-    touch "$_zcompdump_stamp"
+    compinit -d "$_zcompdump" && touch "$_zcompdump_stamp"
 fi
-unset mtime
-unset _zcompdump _zcompdump_stamp
+unset _zcompdump_mtime _zcompdump _zcompdump_stamp
 
 # Completion configuration
 zstyle ':completion::complete:*' use-cache on          # cache completions for better performance
@@ -69,6 +67,14 @@ source "${XDG_CONFIG_HOME}/zsh/mise.zsh"
 source "${XDG_CONFIG_HOME}/zsh/aliases.zsh"
 source "${XDG_CONFIG_HOME}/zsh/tools.zsh"
 
-# Initialize prompt (last)
-export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
-eval "$(starship init zsh)"
+# Initialize prompt
+if command -v starship &>/dev/null; then
+    export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
+    eval "$(starship init zsh)"
+fi
+
+# Load widget-wrapping plugins last; syntax highlighting must be the final one.
+[[ -f "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
+    source "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[[ -f "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && \
+    source "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

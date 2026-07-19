@@ -14,7 +14,14 @@ export XDG_STATE_HOME=$HOME/.local/state
 [[ -d "${HOME}/.opencode/bin" ]] && path=("${HOME}/.opencode/bin" $path)
 
 {{ if eq .chezmoi.os "darwin" -}}
+typeset -U fpath
+fpath=(
+    "{{ .homebrewPrefix }}/share/zsh/site-functions"
+    "{{ .homebrewPrefix }}/opt/zsh/share/zsh/functions"
+    ${fpath:#{{ .homebrewPrefix }}/Cellar/zsh/*/share/zsh/functions}
+)
+
 export EDITOR={{ joinPath .homebrewPrefix "bin" "nvim" }}
 export VISUAL=$EDITOR
 {{- end }}
-export ZDOTDIR=$XDG_CONFIG_HOME/zsh
+ZDOTDIR=$XDG_CONFIG_HOME/zsh

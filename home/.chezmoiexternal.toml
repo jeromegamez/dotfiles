@@ -1,11 +1,15 @@
 [".local/share/zsh/zsh-autosuggestions"]
     type = "archive"
-    url = "https://github.com/zsh-users/zsh-autosuggestions/archive/refs/tags/v0.7.1.tar.gz"
+    # v0.7.1
+    url = "https://github.com/zsh-users/zsh-autosuggestions/archive/e52ee8ca55bcc56a17c828767a3f98f22a68d4eb.tar.gz"
+    checksum.sha256 = "166fad9326c99904fd3b16b5d770efb4f5df39a674599e72bba8fc41636ab065"
     exact = true
     stripComponents = 1
 
 [".local/share/zsh/zsh-syntax-highlighting"]
     type = "archive"
-    url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/refs/tags/0.8.0.tar.gz"
+    # 0.8.0
+    url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/db085e4661f6aafd24e5acb5b2e17e4dd5dddf3e.tar.gz"
+    checksum.sha256 = "874999413d147b7ad6776077e1b756d31d68284f9ef2ef240b33a4c842f0e1d8"
     exact = true
     stripComponents = 1

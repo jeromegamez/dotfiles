@@ -9,7 +9,6 @@ path=("$HOMEBREW_GNUBIN_DIR" $path)
 
 {{ if eq .chezmoi.os "darwin" -}}
 # Homebrew
-fpath+=("{{ .homebrewPrefix }}/share/zsh/site-functions")
 eval "$({{ .homebrewPrefix }}/bin/brew shellenv)"
 
 if [[ -f ${HOME}/.orbstack/shell/init.zsh ]]; then
@@ -24,6 +23,7 @@ export SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/
 COMPOSER_BIN_DIR="${XDG_CONFIG_HOME}/composer/vendor/bin"
 [[ -d "$COMPOSER_BIN_DIR" ]] && path+=("$COMPOSER_BIN_DIR")
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+[[ -f "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc" ]] && source "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc"
 
 export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
 
@@ -31,8 +31,10 @@ export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 export DISABLE_TELEMETRY=1
+export LESSHISTFILE="$XDG_STATE_HOME"/less/history
+export SHELL_SESSIONS_DISABLE=1
+unset PAGER
 
-export TENV_GITHUB_TOKEN={{ .credentials.githubToken | quote }}
 export GITHUB_AUTH_TOKEN={{ .credentials.githubToken | quote }}
 export MISE_GITHUB_TOKEN={{ .credentials.githubToken | quote }}
 
@@ -42,6 +44,5 @@ export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export NODE_REPL_HISTORY="$XDG_STATE_HOME"/node_repl_history
 export NPM_CONFIG_CACHE="$XDG_CACHE_HOME"/npm
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
-export NPM_CONFIG_TMP="$XDG_RUNTIME_DIR"/npm
 export PHP_HISTFILE="$XDG_STATE_HOME"/php/history
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
