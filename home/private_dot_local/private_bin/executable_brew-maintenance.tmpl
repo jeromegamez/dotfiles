@@ -3,7 +3,7 @@
 set -euo pipefail
 
 brew_bin="{{ joinPath .homebrewPrefix "bin" "brew" }}"
-brewfile="${XDG_CONFIG_HOME:-$HOME/.config}/brew/Brewfile"
+brewfile="${XDG_CONFIG_HOME:-$HOME/.config}/homebrew/Brewfile"
 
 if [[ ! -f "$brewfile" ]]; then
     echo "✗ Missing Brewfile: $brewfile"
