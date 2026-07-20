@@ -3,6 +3,7 @@
 set -euo pipefail
 
 PLUGIN_BINARY="${HOME}/.local/bin/session-manager-plugin"
+AWS_INSTALLER_IDENTITY="Developer ID Installer: AMZN Mobile LLC (94KV3E626L)"
 temp_dir=""
 
 # Architecture detection in template
@@ -32,17 +33,44 @@ get_installed_version() {
     fi
 }
 
+verify_package() {
+    local package_path="$1"
+    local signature
+
+    if ! signature=$(pkgutil --check-signature "$package_path"); then
+        echo "✗ AWS Session Manager package has no trusted Apple signature"
+        exit 1
+    fi
+
+    if [[ "$signature" != *"$AWS_INSTALLER_IDENTITY"* ]]; then
+        echo "✗ AWS Session Manager package has an unexpected signing identity"
+        exit 1
+    fi
+
+    if ! spctl --assess --type install "$package_path"; then
+        echo "✗ AWS Session Manager package failed the macOS security assessment"
+        exit 1
+    fi
+
+    echo "✓ AWS Session Manager package signature verified"
+}
+
 install_plugin() {
     local message="$1"
+    local package_path
 
     temp_dir=$(mktemp -d)
+    package_path="${temp_dir}/session-manager-plugin.pkg"
     echo "$message"
 
     echo "Downloading plugin..."
-    curl -fsSL "$PKG_URL" -o "${temp_dir}/session-manager-plugin.pkg"
+    curl -fsSL "$PKG_URL" -o "$package_path"
+
+    echo "Verifying package signature..."
+    verify_package "$package_path"
 
     echo "Installing package..."
-    sudo installer -pkg "${temp_dir}/session-manager-plugin.pkg" -target /
+    sudo installer -pkg "$package_path" -target /
 
     echo "Creating symlink..."
     mkdir -p "${HOME}/.local/bin"
