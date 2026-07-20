@@ -13,4 +13,6 @@ theme = ember
 window-padding-x = 6
 window-inherit-font-size = true
 
+macos-option-as-alt = left
+
 keybind = shift+enter=text:\n
