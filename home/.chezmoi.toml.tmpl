@@ -7,13 +7,7 @@
 {{- $personal := eq $profile "personal" -}}
 
 {{- $name := "Jérôme Gamez" -}}
-
-{{- $email := "jerome@gamez.name" -}}
-{{- $workEmail := "***REMOVED***" -}}
-
-{{- if $work -}}
-{{-   $email = $workEmail -}}
-{{- end -}}
+{{- $email := promptStringOnce . "email" "Git commit email" -}}
 
 [data]
     profile = {{ $profile | quote }}
@@ -35,10 +29,6 @@
     name = {{ $name | quote }}
     email = {{ $email | quote }}
     signingKey = "4E902530D3BC24D1"
-
-[data.git.work]
-    email = {{ $workEmail | quote }}
-    directory = "~/Code/work/"
 
 [data.versions]
     phpVersions = ["8.4", "8.5"]

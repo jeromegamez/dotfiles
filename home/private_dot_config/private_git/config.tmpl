@@ -58,9 +58,6 @@
     helper = osxkeychain
 {{- end }}
 
-[includeIf "gitdir:{{ .git.work.directory }}"]
-    path = ~/.config/git/work.inc
-
 [init]
     defaultBranch = main
 

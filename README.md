@@ -44,8 +44,10 @@ during initialization. The selected profile controls identity, secrets, and
 parts of the generated Brewfile.
 
 The choice is stored in the generated chezmoi configuration and reused by
-subsequent initialization. To select a different profile, force the prompt and
-then review the resulting target state before applying:
+subsequent initialization. The Git commit email is also prompted once and kept
+in the machine-local configuration instead of this repository. To select a
+different profile or email, force the prompts and then review the resulting
+target state before applying:
 
 ```bash
 chezmoi init --prompt
