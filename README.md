@@ -95,9 +95,9 @@ A full apply can:
 - Install Rosetta on Apple Silicon.
 - Generate the managed Brewfile at `~/.config/homebrew/Brewfile`, then install
   and upgrade its formulae, casks, and applications.
-- Install uv and mise through Homebrew; install Node LTS through mise; install
-  or update Google Cloud CLI, AWS Session Manager Plugin, Composer, and global
-  Composer packages.
+- Install uv and mise through Homebrew; install Node LTS, Node 25, and Python
+  3.14 through mise; install Pi with Node 25; install or update Google Cloud
+  CLI, AWS Session Manager Plugin, Composer, and global Composer packages.
 - Retrieve the GPG private key and passphrase from 1Password and import the key
   into GnuPG.
 - Generate SSH host configuration from SSH items in 1Password.
@@ -111,6 +111,32 @@ Commands that install system packages, update `/etc/shells`, change NVRAM,
 configure power management, or modify system-wide preferences can request
 administrator privileges. Some applications and macOS services are restarted
 after their preferences change.
+
+## Runtime ownership
+
+Homebrew owns system tools and may retain Node and Python as dependencies of
+its formulae. Their generic command links are unlinked after Homebrew bootstrap
+and maintenance, while formulae can continue using versioned paths under
+`/opt/homebrew/opt`.
+
+mise owns the language runtimes used from the shell:
+
+- Node LTS is the default interactive Node version.
+- Node 25 is installed specifically for Pi.
+- Python 3.14 is the default Python version.
+- mise shims are added early enough for login and non-interactive Zsh shells,
+  preventing accidental fallback to Homebrew's Node or Python commands.
+
+uv remains a Homebrew-managed standalone application. Its user configuration
+only permits externally managed Python interpreters, so Python comes from mise
+instead of uv downloading a second runtime collection.
+
+Pi is installed under `~/.local/share/pi` using npm from mise-managed Node 25.
+The managed `~/.local/bin/pi` launcher pins every invocation to Node 25,
+including self-updates and package updates, regardless of project-local mise
+configuration. Pi's mutable `~/.pi/agent/settings.json` is not managed as a
+complete chezmoi file; the installation hook only merges its stable npm command
+and ensures `npm:pi-caveman` and `npm:pi-web-access` are present.
 
 ## Maintenance
 
@@ -132,6 +158,23 @@ brew-maintenance
 
 The maintenance command can request administrator privileges if it encounters
 incorrect ownership in Homebrew-managed directories.
+
+Update mise-managed runtimes with:
+
+```bash
+mise upgrade
+```
+
+Update Pi itself, its packages, or both with:
+
+```bash
+pi update
+pi update --extensions
+pi update --all
+```
+
+All three commands run with Node 25 through the managed launcher. uv is updated
+with the rest of Homebrew by `brew-maintenance`.
 
 Lint plain and rendered template shell scripts with:
 
