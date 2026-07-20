@@ -1,7 +1,6 @@
 {
   "type": "project",
   "require": {
-    "laravel/valet": "^4.11.0",
     "icanhazstring/composer-unused": "^0.9.5",
     "maglnet/composer-require-checker": "^4.16.1",
     "pyrech/composer-changelogs": "^2.1"
