@@ -19,12 +19,12 @@ eval $(op signin)
 
 ## Updates
 
-- External deps live in `home/.chezmoiexternal.toml.tmpl`
-- Pinned refs keep installs stable
-- Check for newer upstream versions:
+- Packages, including the Zsh plugins, are managed in the generated Brewfile at
+  `~/.config/homebrew/Brewfile`.
+- Run the managed maintenance command to update Homebrew and its packages:
 
 ```bash
-./scripts/check-external-updates.sh
+brew-maintenance
 ```
 
 ## Bootstrap side effects

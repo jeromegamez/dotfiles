@@ -36,6 +36,8 @@ brew "xdg-ninja" # Check your $HOME for unwanted files and directories
 brew "zoxide" # Shell extension to navigate your filesystem faster
 brew "yt-dlp" # Feature-rich command-line audio/video downloader
 brew "zizmor" # Find security issues in GitHub Actions setups
+brew "zsh-autosuggestions" # Fish-like autosuggestions for zsh
+brew "zsh-syntax-highlighting" # Fish-like syntax highlighting for zsh
 brew "zsh" # UNIX shell (command interpreter)
 
 ### Fonts

@@ -74,7 +74,7 @@ if command -v starship &>/dev/null; then
 fi
 
 # Load widget-wrapping plugins last; syntax highlighting must be the final one.
-[[ -f "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
-    source "$XDG_DATA_HOME/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
-[[ -f "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && \
-    source "$XDG_DATA_HOME/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+[[ -f "{{ .homebrewPrefix }}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
+    source "{{ .homebrewPrefix }}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[[ -f "{{ .homebrewPrefix }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && \
+    source "{{ .homebrewPrefix }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

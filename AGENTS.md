@@ -38,11 +38,6 @@ Personal chezmoi-managed dotfiles repo for macOS.
 `home/.chezmoi.toml.tmpl` = source of truth for template data.
 Do not mirror keys here; inspect file for current keys and values.
 
-## External resources
-
-`home/.chezmoiexternal.toml` = source of truth for external resources.
-Do not mirror entries here; inspect file for current entries.
-
 ## Scripts
 
 `home/.chezmoiscripts/` contains lifecycle hooks.
