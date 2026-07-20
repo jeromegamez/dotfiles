@@ -6,10 +6,6 @@ osascript -e 'tell application "System Settings" to quit' 2>/dev/null || true
 
 # https://github.com/driesvints/dotfiles/blob/main/.macos
 
-scutil --set ComputerName "{{ .computername }}"
-scutil --set HostName "{{ .hostname }}"
-scutil --set LocalHostName "{{ .hostname }}"
-
 ### Globals
 
 # Disable the sound effects on boot

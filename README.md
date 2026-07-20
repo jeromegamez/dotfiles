@@ -100,7 +100,6 @@ A full apply can:
 - Generate SSH host configuration from SSH items in 1Password.
 - Add Homebrew Zsh to `/etc/shells` and change the login shell after
   confirmation.
-- Change the computer name and local hostname.
 - Apply macOS defaults for the keyboard, trackpad, Finder, Dock, Safari,
   screenshots, power management, timezone, login window, and related settings.
 - Enable the macOS application firewall and stealth mode.
