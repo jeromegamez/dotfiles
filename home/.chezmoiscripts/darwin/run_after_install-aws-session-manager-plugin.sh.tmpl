@@ -14,7 +14,8 @@ PKG_URL="https://s3.amazonaws.com/session-manager-downloads/plugin/latest/mac/se
 
 cleanup() {
     if [[ -n "$temp_dir" && -d "$temp_dir" ]]; then
-        rm -rf "$temp_dir"
+        rm -f -- "$temp_dir/session-manager-plugin.pkg"
+        rmdir -- "$temp_dir" 2>/dev/null || true
     fi
 }
 

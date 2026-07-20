@@ -7,7 +7,10 @@
 set -euo pipefail
 
 cleanup() {
-    [[ -n "${tmp_dir:-}" && -d "$tmp_dir" ]] && rm -rf "$tmp_dir"
+    if [[ -n "${tmp_dir:-}" && -d "$tmp_dir" ]]; then
+        rm -f -- "$tmp_dir/uv-install.sh"
+        rmdir -- "$tmp_dir" 2>/dev/null || true
+    fi
 }
 
 trap cleanup EXIT INT TERM

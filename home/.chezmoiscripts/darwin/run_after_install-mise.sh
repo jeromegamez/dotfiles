@@ -5,7 +5,8 @@ set -euo pipefail
 temp_dir=""
 cleanup() {
     if [[ -n "${temp_dir:-}" && -d "$temp_dir" ]]; then
-        rm -rf "$temp_dir"
+        rm -f -- "$temp_dir/mise-install.sh"
+        rmdir -- "$temp_dir" 2>/dev/null || true
     fi
 }
 trap cleanup EXIT INT TERM

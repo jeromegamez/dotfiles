@@ -4,10 +4,12 @@ set -euo pipefail
 
 SDK_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/google-cloud-sdk"
 gcloud_bin=""
+temp_parent="${TMPDIR:-/tmp}"
+temp_parent="${temp_parent%/}"
 
 cleanup() {
-    if [[ -n "${temp_dir:-}" && -d "$temp_dir" ]]; then
-        rm -rf "$temp_dir"
+    if [[ -n "${temp_dir:-}" && "$temp_dir" == "$temp_parent"/chezmoi-gcloud.* && -d "$temp_dir" ]]; then
+        rm -rf -- "$temp_dir"
     fi
 }
 
@@ -24,7 +26,7 @@ if command -v gcloud >/dev/null 2>&1; then
     gcloud_bin="$(command -v gcloud)"
 else
     echo "Installing Google Cloud CLI..."
-    temp_dir=$(mktemp -d)
+    temp_dir=$(mktemp -d "$temp_parent/chezmoi-gcloud.XXXXXX")
     archive_path="${temp_dir}/google-cloud-cli.tar.gz"
 
     echo "Downloading Google Cloud SDK..."
