@@ -1,0 +1,3 @@
+# mise owns Python runtimes; uv owns Python projects and packages.
+python-preference = "only-system"
+python-downloads = "manual"
