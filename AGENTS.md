@@ -1,58 +1,73 @@
-# Dotfiles repo guide
+# Repository instructions
 
-Personal chezmoi-managed dotfiles repo for macOS.
+Personal Apple Silicon macOS dotfiles managed with chezmoi.
 
-## Platform
+## Scope
 
-- macOS only (darwin)
-- Do not suggest Windows-specific fixes or compatibility layers
+- Support macOS (`darwin`) only. Do not add Windows or Linux compatibility.
+- Treat `home/` as the source of truth; do not edit generated files in `~`.
+- Preserve unrelated working-tree changes.
+- Keep `IMPROVEMENTS.md` as an uncommitted local working note.
+- Commit each completed logical change separately.
 
-## Source tree
+## Chezmoi sources
 
-- Source files live under `home/`
+Common filename transformations:
 
-### ChezMoi naming rules
+- `dot_*` becomes a dotfile.
+- `private_*` receives restrictive permissions.
+- `executable_*` becomes executable.
+- `*.tmpl` is rendered as a Go template.
+- `remove_*` intentionally removes an obsolete target.
 
-- `private_*` → restrictive permissions
-- `dot_*` → dotfiles (`.filename`)
-- `*.tmpl` → Go templates rendered by chezmoi
-- Combine as needed, e.g. `private_dot_ssh/config.tmpl` → `~/.ssh/config`
+Names can be combined. For example,
+`private_dot_config/private_git/config.tmpl` renders to
+`~/.config/git/config`.
 
-## Secrets and credentials
+Inspect the current source before relying on configuration details:
 
-- Use 1Password CLI for secret material
-- Never commit plaintext secrets, API keys, or credentials
-- Prefer `onepasswordRead` refs in templates instead of embedding values
-- Keep secret names generic in docs and comments
+- `home/.chezmoi.toml.tmpl` defines machine-local template data.
+- `home/.chezmoidata/` contains declarative shared data.
+- `home/.chezmoitemplates/homebrew/` defines Homebrew packages.
+- `home/.chezmoiscripts/darwin/` contains lifecycle hooks.
 
-## Project conventions
+Do not duplicate changing template keys or package lists in this file.
 
-- Edit source files under `home/`, not generated files in `~`
-- Keep scripts idempotent
-- Prefer template data over hardcoded machine-specific values
-- Use `private_` for anything that may contain secrets or tokens
-- `remove_*` markers intentionally delete obsolete targets
+## Secrets
 
-## Template data
+- Obtain secret material through 1Password CLI.
+- Never commit plaintext credentials, tokens, private keys, or passphrases.
+- Use `onepasswordRead` in templates instead of embedding secret values.
+- Use `private_` for files that may contain sensitive rendered data.
+- Keep secret names generic in documentation and comments.
+- Treat rendered diffs and dry-run output as sensitive because templates may
+  resolve 1Password values.
 
-`home/.chezmoi.toml.tmpl` = source of truth for template data.
-Do not mirror keys here; inspect file for current keys and values.
+## Implementation rules
 
-## Scripts
+- Keep lifecycle scripts idempotent.
+- Prefer template data over hardcoded machine-specific values.
+- Keep cleanup operations narrowly scoped to files created or managed by the
+  script. Remove a surrounding directory only when it is known and empty.
+- Inspect lifecycle hook filenames before changing execution order; their
+  `run_once_*`, `run_onchange_*`, and `run_after_*` prefixes are significant.
+- Use a `remove_*` source only when deletion must propagate to every managed
+  machine; do not retain one for a completed one-time local cleanup.
 
-`home/.chezmoiscripts/` contains lifecycle hooks.
-Inspect filenames for current `run_once_*`, `run_onchange_*`, and `run_after_*` hooks.
+## Validation
 
-macOS-specific scripts live under `home/.chezmoiscripts/darwin/`.
-
-## Example workflows
+After changing shell scripts or shell-script templates, run:
 
 ```bash
-chezmoi edit --apply ~/.zshrc
-chezmoi diff ~/.zshrc
-chezmoi apply --dry-run --verbose ~/.zshrc
+./scripts/lint-shell.sh
 ```
 
-Prefer previews scoped to explicit targets. Diff and dry-run output can contain
-values rendered from 1Password-backed templates; treat that output as secret
-material and do not share or persist it casually.
+Validate chezmoi changes against explicit targets whenever possible:
+
+```bash
+chezmoi diff ~/.config/zsh/.zshrc
+chezmoi apply --dry-run --verbose ~/.config/zsh/.zshrc
+```
+
+Also run `git diff --check` before committing. Avoid a full apply when a scoped
+preview or apply is sufficient.
