@@ -132,6 +132,15 @@ brew-maintenance
 The maintenance command can request administrator privileges if it encounters
 incorrect ownership in Homebrew-managed directories.
 
+Lint plain and rendered template shell scripts with:
+
+```bash
+./scripts/lint-shell.sh
+```
+
+The command uses synthetic template data and does not access 1Password or the
+machine-local chezmoi configuration.
+
 ## Manual migration
 
 Some applications require manual export and import steps. See the

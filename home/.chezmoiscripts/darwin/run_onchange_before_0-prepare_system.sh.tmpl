@@ -2,9 +2,9 @@
 
 set -eufo pipefail
 
-{{ if eq .chezmoi.arch "arm64" }}
+{{ if eq .chezmoi.arch "arm64" -}}
 if ! /usr/bin/arch -x86_64 /usr/bin/true 2>/dev/null; then
     echo "Installing Rosetta..."
     softwareupdate --install-rosetta --agree-to-license
 fi
-{{ end }}
+{{ end -}}

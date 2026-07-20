@@ -27,6 +27,8 @@ brew "posting" # Modern API client that lives in your terminal
 brew "pv" # Monitor data's progress through a pipe
 brew "restic" # Fast, efficient and secure backup program
 brew "ripgrep" # Search tool like grep and The Silver Searcher
+brew "shellcheck" # Static analysis tool for shell scripts
+brew "shfmt" # Formatter for shell scripts
 brew "starship" # Cross-shell prompt for astronauts
 brew "terraform-docs" # Tool to generate documentation from Terraform modules
 brew "tflint" # Linter for Terraform files

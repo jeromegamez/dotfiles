@@ -6,11 +6,11 @@ PLUGIN_BINARY="${HOME}/.local/bin/session-manager-plugin"
 temp_dir=""
 
 # Architecture detection in template
-{{ if eq .chezmoi.arch "arm64" }}
+{{ if eq .chezmoi.arch "arm64" -}}
 PKG_URL="https://s3.amazonaws.com/session-manager-downloads/plugin/latest/mac_arm64/session-manager-plugin.pkg"
-{{ else }}
+{{ else -}}
 PKG_URL="https://s3.amazonaws.com/session-manager-downloads/plugin/latest/mac/session-manager-plugin.pkg"
-{{ end }}
+{{ end -}}
 
 cleanup() {
     if [[ -n "$temp_dir" && -d "$temp_dir" ]]; then
@@ -22,8 +22,8 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 get_latest_version() {
-    curl -fsSL "https://api.github.com/repos/aws/session-manager-plugin/releases/latest" \
-        | python3 -c 'import json, sys; print(json.load(sys.stdin)["tag_name"].lstrip("v"))'
+    curl -fsSL "https://api.github.com/repos/aws/session-manager-plugin/releases/latest" |
+        python3 -c 'import json, sys; print(json.load(sys.stdin)["tag_name"].lstrip("v"))'
 }
 
 get_installed_version() {

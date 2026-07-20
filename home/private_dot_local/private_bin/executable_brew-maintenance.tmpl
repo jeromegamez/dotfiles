@@ -54,7 +54,7 @@ fix_cleanup_permissions() {
         [[ -n "$cleanup_path" ]] || continue
         echo "==> Fix Homebrew permissions: $cleanup_path"
         sudo chown -R "$(id -un):$(id -gn)" "$cleanup_path"
-    done <<< "$cleanup_paths"
+    done <<<"$cleanup_paths"
 
     return 2
 }

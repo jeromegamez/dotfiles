@@ -28,8 +28,7 @@ fi
 COMPOSER_PATH="${HOME}/.local/bin"
 COMPOSER_FILE_NAME="composer"
 
-if [ ! -f "${COMPOSER_PATH}/${COMPOSER_FILE_NAME}" ]
-then
+if [ ! -f "${COMPOSER_PATH}/${COMPOSER_FILE_NAME}" ]; then
     mkdir -p "${COMPOSER_PATH}"
     temp_dir=$(mktemp -d "${TMPDIR:-/tmp}/chezmoi-composer.XXXXXX")
     installer="${temp_dir}/composer-setup.php"
@@ -38,8 +37,7 @@ then
     "$PHP_BIN" -r "copy('https://getcomposer.org/installer', \$argv[1]);" "$installer"
     ACTUAL_CHECKSUM="$("$PHP_BIN" -r "echo hash_file('sha384', \$argv[1]);" "$installer")"
 
-    if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]
-    then
+    if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
         >&2 echo 'ERROR: Invalid installer checksum'
         exit 1
     fi

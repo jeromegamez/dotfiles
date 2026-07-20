@@ -16,11 +16,11 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 # Architecture detection in template
-{{ if eq .chezmoi.arch "arm64" }}
+{{ if eq .chezmoi.arch "arm64" -}}
 DOWNLOAD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-darwin-arm.tar.gz"
-{{ else }}
+{{ else -}}
 DOWNLOAD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-darwin-x86_64.tar.gz"
-{{ end }}
+{{ end -}}
 
 if command -v gcloud >/dev/null 2>&1; then
     gcloud_bin="$(command -v gcloud)"
@@ -50,7 +50,7 @@ else
         --path-update false \
         --command-completion false \
         --install-python false \
-        > /dev/null 2>&1
+        >/dev/null 2>&1
 
     gcloud_bin="${SDK_DIR}/bin/gcloud"
     if [[ ! -x "$gcloud_bin" ]]; then
