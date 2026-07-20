@@ -40,20 +40,24 @@ Do not mirror keys here; inspect file for current keys and values.
 
 ## External resources
 
-`home/.chezmoiexternal.toml.tmpl` = source of truth for external resources.
+`home/.chezmoiexternal.toml` = source of truth for external resources.
 Do not mirror entries here; inspect file for current entries.
 
 ## Scripts
 
-`.chezmoiscripts/` contains lifecycle hooks.
+`home/.chezmoiscripts/` contains lifecycle hooks.
 Inspect filenames for current `run_once_*`, `run_onchange_*`, and `run_after_*` hooks.
 
-macOS-specific scripts live under `darwin/`.
+macOS-specific scripts live under `home/.chezmoiscripts/darwin/`.
 
 ## Example workflows
 
 ```bash
 chezmoi edit --apply ~/.zshrc
-chezmoi diff
-chezmoi apply --dry-run --verbose
+chezmoi diff ~/.zshrc
+chezmoi apply --dry-run --verbose ~/.zshrc
 ```
+
+Prefer previews scoped to explicit targets. Diff and dry-run output can contain
+values rendered from 1Password-backed templates; treat that output as secret
+material and do not share or persist it casually.
