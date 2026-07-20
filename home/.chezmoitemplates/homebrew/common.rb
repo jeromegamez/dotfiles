@@ -49,7 +49,7 @@ brew "zsh" # UNIX shell (command interpreter)
 
 ### Fonts
 
-cask "font-fira-code-nerd-font" # FiraCode Nerd Font (Fira Code)
+cask "font-maple-mono-nf" # https://font.subf.dev/en/
 
 ### Casks
 
