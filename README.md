@@ -95,8 +95,9 @@ A full apply can:
 - Install Rosetta on Apple Silicon.
 - Generate the managed Brewfile at `~/.config/homebrew/Brewfile`, then install
   and upgrade its formulae, casks, and applications.
-- Install uv; install or update mise, Node LTS, Google Cloud CLI, AWS Session
-  Manager Plugin, Composer, and global Composer packages.
+- Install uv and mise through Homebrew; install Node LTS through mise; install
+  or update Google Cloud CLI, AWS Session Manager Plugin, Composer, and global
+  Composer packages.
 - Retrieve the GPG private key and passphrase from 1Password and import the key
   into GnuPG.
 - Generate SSH host configuration from SSH items in 1Password.

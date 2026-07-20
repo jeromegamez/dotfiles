@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# mise config hash: {{ include (joinPath .chezmoi.sourceDir "private_dot_config/private_mise/config.toml") | sha256sum }}
+
+mise install --yes
+
+echo "✓ mise-managed tools installed"

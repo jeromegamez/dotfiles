@@ -21,6 +21,7 @@ brew "gnupg" # GNU Pretty Good Privacy (PGP) package
 brew "jq" # Lightweight and flexible command-line JSON processor
 brew "make" # Utility for directing compilation
 brew "mas" # Mac App Store command-line interface
+brew "mise" # Polyglot runtime manager
 brew "neovim" # Ambitious Vim-fork focused on extensibility and agility
 brew "pinentry-mac" # Pinentry for GPG on Mac
 brew "poppler" # PDF rendering library
@@ -34,6 +35,7 @@ brew "starship" # Cross-shell prompt for astronauts
 brew "terraform-docs" # Tool to generate documentation from Terraform modules
 brew "tflint" # Linter for Terraform files
 brew "tree-sitter-cli" # Parser generator tool
+brew "uv" # Python package and project manager
 brew "wget" # Internet file retriever
 brew "xdg-ninja" # Check your $HOME for unwanted files and directories
 brew "zoxide" # Shell extension to navigate your filesystem faster
