@@ -73,6 +73,12 @@ if command -v starship &>/dev/null; then
     eval "$(starship init zsh)"
 fi
 
+# Replace the standard completion menu after compinit and fzf initialization.
+if [[ -f "{{ .homebrewPrefix }}/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh" ]]; then
+    zstyle ':completion:*' menu no
+    source "{{ .homebrewPrefix }}/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
+fi
+
 # Load widget-wrapping plugins last; syntax highlighting must be the final one.
 [[ -f "{{ .homebrewPrefix }}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
     source "{{ .homebrewPrefix }}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"

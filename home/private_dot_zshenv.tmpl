@@ -16,6 +16,7 @@ export XDG_STATE_HOME=$HOME/.local/state
 {{ if eq .chezmoi.os "darwin" -}}
 typeset -U fpath
 fpath=(
+    "{{ .homebrewPrefix }}/share/zsh-completions"
     "{{ .homebrewPrefix }}/share/zsh/site-functions"
     "{{ .homebrewPrefix }}/opt/zsh/share/zsh/functions"
     ${fpath:#{{ .homebrewPrefix }}/Cellar/zsh/*/share/zsh/functions}

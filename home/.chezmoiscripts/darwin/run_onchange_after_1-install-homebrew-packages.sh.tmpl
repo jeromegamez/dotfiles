@@ -10,4 +10,10 @@ eval "$({{ joinPath .homebrewPrefix "bin" "brew" }} shellenv)" || true
 brewfile="${XDG_CONFIG_HOME:-$HOME/.config}/homebrew/Brewfile"
 HOMEBREW_CASK_OPTS=--no-quarantine {{ joinPath .homebrewPrefix "bin" "brew" }} bundle install --file="$brewfile"
 
+# compinit rejects completion paths whose parent directories are group-writable.
+zsh_completion_parent={{ joinPath .homebrewPrefix "share" | quote }}
+if [[ -O "$zsh_completion_parent" ]]; then
+    chmod go-w "$zsh_completion_parent"
+fi
+
 echo "✓ Homebrew setup completed"

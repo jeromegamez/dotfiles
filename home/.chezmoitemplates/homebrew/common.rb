@@ -13,6 +13,7 @@ brew "direnv" # Load/unload environment variables based on PWD
 brew "eza" # Modern, maintained replacement for ls
 brew "fd" # Simple, fast and user-friendly alternative to find
 brew "fzf" # Command-line fuzzy finder written in Go
+brew "fzf-tab" # Replace Zsh completion selection menu with fzf
 brew "gh" # GitHub command-line tool
 brew "git" # Distributed revision control system
 brew "go-task/tap/go-task" # Task is a task runner/build tool that aims to be simpler and easier to use
@@ -39,6 +40,7 @@ brew "zoxide" # Shell extension to navigate your filesystem faster
 brew "yt-dlp" # Feature-rich command-line audio/video downloader
 brew "zizmor" # Find security issues in GitHub Actions setups
 brew "zsh-autosuggestions" # Fish-like autosuggestions for zsh
+brew "zsh-completions" # Additional completion definitions for Zsh
 brew "zsh-syntax-highlighting" # Fish-like syntax highlighting for zsh
 brew "zsh" # UNIX shell (command interpreter)
 
