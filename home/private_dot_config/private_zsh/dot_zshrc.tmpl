@@ -10,6 +10,8 @@ HISTFILE="$XDG_STATE_HOME"/zsh/history
 HISTSIZE=200000 # Keep larger than SAVEHIST so duplicate expiry has room
 SAVEHIST=100000
 
+setopt AUTO_CD
+
 setopt EXTENDED_HISTORY         # include timestamp
 setopt HIST_BEEP                # beep if attempting to access a history entry which isn't there
 setopt HIST_EXPIRE_DUPS_FIRST   # trim dupes first if history is full
