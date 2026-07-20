@@ -1,17 +1,10 @@
-{{- $work := false -}}{{/* true if this machine is a work machine */}}
-{{- $personal := false -}}{{/* true if this machine should have personal secrets */}}
-
-{{/* work around unreliable hostname on darwin */}}
-{{- $hostname := .chezmoi.hostname -}}
-{{- if eq .chezmoi.os "darwin" -}}
-{{-   $hostname := output "scutil" "--get" "LocalHostName" | trim -}}
-{{- end -}}
-
-{{- if eq $hostname "***REMOVED***" -}}
-{{-   $work = true -}}
-{{- else if eq $hostname "kerngehaeuse" -}}
-{{-   $personal = true -}}
-{{- end -}}
+{{- $profile := promptChoiceOnce
+    . "profile"
+    "Select this machine's profile"
+    (list "personal" "work")
+-}}
+{{- $work := eq $profile "work" -}}
+{{- $personal := eq $profile "personal" -}}
 
 {{- $name := "Jérôme Gamez" -}}
 
@@ -23,6 +16,7 @@
 {{- end -}}
 
 [data]
+    profile = {{ $profile | quote }}
     work = {{ $work }}
     personal = {{ $personal }}
     name = {{ $name | quote }}

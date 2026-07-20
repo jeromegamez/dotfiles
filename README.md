@@ -39,13 +39,17 @@ op signin
 
 ## Machine profiles
 
-`home/.chezmoi.toml.tmpl` derives the `work` and `personal` profiles from the
-Mac's `LocalHostName`. These profiles control identity, secrets, and parts of
-the generated Brewfile.
+`home/.chezmoi.toml.tmpl` prompts for either the `work` or `personal` profile
+during initialization. The selected profile controls identity, secrets, and
+parts of the generated Brewfile.
 
-Known machines select their profile automatically. A new hostname matches
-neither profile: update the hostname mapping in `home/.chezmoi.toml.tmpl`, then
-rerun `chezmoi init` to regenerate the chezmoi configuration before applying.
+The choice is stored in the generated chezmoi configuration and reused by
+subsequent initialization. To select a different profile, force the prompt and
+then review the resulting target state before applying:
+
+```bash
+chezmoi init --prompt
+```
 
 Verify the selected profile without printing secret values:
 
