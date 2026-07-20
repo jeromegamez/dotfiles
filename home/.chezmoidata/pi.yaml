@@ -1,0 +1,4 @@
+pi:
+  packages:
+    - npm:pi-caveman
+    - npm:pi-web-access

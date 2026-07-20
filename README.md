@@ -136,7 +136,7 @@ The managed `~/.local/bin/pi` launcher pins every invocation to Node 25,
 including self-updates and package updates, regardless of project-local mise
 configuration. Pi's mutable `~/.pi/agent/settings.json` is not managed as a
 complete chezmoi file; the installation hook only merges its stable npm command
-and ensures `npm:pi-caveman` and `npm:pi-web-access` are present.
+and ensures the packages listed in `home/.chezmoidata/pi.yaml` are present.
 
 ## Maintenance
 
@@ -175,6 +175,17 @@ pi update --all
 
 All three commands run with Node 25 through the managed launcher. uv is updated
 with the rest of Homebrew by `brew-maintenance`.
+
+Install a Pi package locally while evaluating it with:
+
+```bash
+pi install npm:package-name
+```
+
+The mutable Pi settings retain local packages across chezmoi applies. To make a
+package reproducible on every machine, add its source to
+`home/.chezmoidata/pi.yaml` and run `chezmoi apply`; changing the manifest
+causes the Pi installation hook to run again automatically.
 
 Lint plain and rendered template shell scripts with:
 

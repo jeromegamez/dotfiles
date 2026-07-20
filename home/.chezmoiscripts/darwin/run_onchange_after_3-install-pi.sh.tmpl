@@ -12,6 +12,7 @@ pi_package="@earendil-works/pi-coding-agent"
 settings_dir="$HOME/.pi/agent"
 settings_file="$settings_dir/settings.json"
 settings_temp=""
+required_packages={{ .pi.packages | toJson | quote }}
 
 cleanup() {
     if [[ -n "$settings_temp" && -f "$settings_temp" ]]; then
@@ -46,7 +47,7 @@ merge_settings() {
     jq \
         --arg mise_bin "$mise_bin" \
         --arg npm_prefix "NPM_CONFIG_PREFIX=$pi_prefix" \
-        --argjson required_packages '["npm:pi-caveman", "npm:pi-web-access"]' \
+        --argjson required_packages "$required_packages" \
         '
             .npmCommand = [$mise_bin, "exec", "node@25", "--", "env", $npm_prefix, "npm"]
             | .packages = reduce $required_packages[] as $package (
