@@ -97,9 +97,10 @@ change. Open a new terminal after the bootstrap completes.
 
 ## Tool ownership
 
-Homebrew owns applications and general command-line tools. The shell resolves
-Node.js and Python through mise shims, even when Homebrew retains its own copies
-as dependencies of other formulae.
+Homebrew owns applications, including the ChatGPT desktop app, and general
+command-line tools. mise owns the Codex CLI as well as the Node.js and Python
+runtimes selected by the shell. Homebrew may retain its own Node.js and Python
+copies as dependencies of other formulae.
 
 The default mise runtimes are declared in
 [`home/private_dot_config/private_mise/config.toml`](home/private_dot_config/private_mise/config.toml).
