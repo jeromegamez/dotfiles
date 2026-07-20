@@ -3,6 +3,7 @@ tap "shivammathur/php", trusted: true
 
 cask "ausweisapp" # Official eID-Client of the Federal Government of Germany
 cask "cardhop" # Contacts manager
+cask "chatgpt" # ChatGPT desktop app with Codex
 cask "discord" # Voice and text chat software
 cask "droplr" # Screenshot and screen recorder
 cask "duckduckgo" # Web browser focusing on privacy
