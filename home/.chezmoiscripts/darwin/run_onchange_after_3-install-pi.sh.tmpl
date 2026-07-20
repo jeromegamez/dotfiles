@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+mise_bin={{ joinPath .homebrewPrefix "bin" "mise" | quote }}
+homebrew_prefix={{ .homebrewPrefix | quote }}
+data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
+pi_prefix="$data_home/pi"
+pi_entrypoint="$pi_prefix/bin/pi"
+pi_launcher="$HOME/.local/bin/pi"
+pi_package="@earendil-works/pi-coding-agent"
+settings_dir="$HOME/.pi/agent"
+settings_file="$settings_dir/settings.json"
+settings_temp=""
+
+cleanup() {
+    if [[ -n "$settings_temp" && -f "$settings_temp" ]]; then
+        unlink "$settings_temp"
+    fi
+}
+trap cleanup EXIT
+
+if [[ ! -x "$pi_entrypoint" ]]; then
+    echo "==> Install Pi with mise-managed Node 25"
+    "$mise_bin" exec node@25 -- npm install \
+        --global \
+        --ignore-scripts \
+        --min-release-age=0 \
+        --prefix "$pi_prefix" \
+        --no-audit \
+        --no-fund \
+        "$pi_package"
+fi
+
+if [[ ! -x "$pi_launcher" ]]; then
+    echo "Missing managed Pi launcher: $pi_launcher" >&2
+    exit 1
+fi
+
+"$pi_launcher" --version
+
+mkdir -p "$settings_dir"
+settings_temp="$(mktemp "$settings_dir/.settings.json.XXXXXX")"
+
+merge_settings() {
+    jq \
+        --arg mise_bin "$mise_bin" \
+        --arg npm_prefix "NPM_CONFIG_PREFIX=$pi_prefix" \
+        --argjson required_packages '["npm:pi-caveman", "npm:pi-web-access"]' \
+        '
+            .npmCommand = [$mise_bin, "exec", "node@25", "--", "env", $npm_prefix, "npm"]
+            | .packages = reduce $required_packages[] as $package (
+                (.packages // []);
+                if index($package) then . else . + [$package] end
+            )
+        '
+}
+
+if [[ -f "$settings_file" ]]; then
+    merge_settings <"$settings_file" >"$settings_temp"
+else
+    printf '{}\n' | merge_settings >"$settings_temp"
+fi
+
+chmod 600 "$settings_temp"
+if [[ -f "$settings_file" ]] && cmp -s "$settings_temp" "$settings_file"; then
+    unlink "$settings_temp"
+else
+    mv "$settings_temp" "$settings_file"
+fi
+settings_temp=""
+
+echo "==> Install or update required Pi packages"
+"$pi_launcher" update --extensions
+
+legacy_package_dir="$homebrew_prefix/lib/node_modules/$pi_package"
+if [[ -d "$legacy_package_dir" ]]; then
+    echo "==> Remove legacy Pi installation from the Homebrew npm prefix"
+    "$mise_bin" exec node@25 -- npm uninstall \
+        --global \
+        --ignore-scripts \
+        --prefix "$homebrew_prefix" \
+        --no-audit \
+        --no-fund \
+        "$pi_package"
+fi
+
+echo "✓ Pi uses mise-managed Node 25"
