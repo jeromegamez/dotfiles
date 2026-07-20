@@ -47,11 +47,6 @@ if command -v zoxide &>/dev/null; then
     eval "$(zoxide init zsh)"
 fi
 
-# Initialize atuin (shell history)
-if command -v atuin &>/dev/null; then
-    eval "$(atuin init zsh)"
-fi
-
 # Initialize fzf (fuzzy finder)
 if command -v fzf &>/dev/null; then
     # Use fd if available (respects .gitignore by default)

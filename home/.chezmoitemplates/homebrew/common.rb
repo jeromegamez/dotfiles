@@ -3,7 +3,6 @@ tap "go-task/tap", trusted: true
 
 brew "actionlint" # Static checker for GitHub Actions workflow files
 brew "ant" # Java build tool
-brew "atuin" # Improved shell history for zsh, bash, fish and nushell
 brew "awscli" # Official Amazon AWS command-line interface
 brew "bash" # Bourne-Again SHell, a UNIX command interpreter
 brew "bat" # Clone of cat(1) with syntax highlighting and Git integration
