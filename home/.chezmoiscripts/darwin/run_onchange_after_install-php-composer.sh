@@ -2,6 +2,23 @@
 
 set -eufo pipefail
 
+umask 077
+
+temp_dir=""
+installer=""
+cleanup() {
+    if [[ -n "$installer" ]]; then
+        rm -f -- "$installer"
+    fi
+    if [[ -n "$temp_dir" ]]; then
+        rmdir -- "$temp_dir" 2>/dev/null || true
+    fi
+}
+trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
 PHP_BIN="$(command -v php || true)"
 if [[ -z "$PHP_BIN" ]]; then
     echo "Skipping Composer setup because PHP is not installed"
@@ -14,19 +31,20 @@ COMPOSER_FILE_NAME="composer"
 if [ ! -f "${COMPOSER_PATH}/${COMPOSER_FILE_NAME}" ]
 then
     mkdir -p "${COMPOSER_PATH}"
+    temp_dir=$(mktemp -d "${TMPDIR:-/tmp}/chezmoi-composer.XXXXXX")
+    installer="${temp_dir}/composer-setup.php"
+
     EXPECTED_CHECKSUM="$("$PHP_BIN" -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')"
-    "$PHP_BIN" -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    ACTUAL_CHECKSUM="$("$PHP_BIN" -r "echo hash_file('sha384', 'composer-setup.php');")"
+    "$PHP_BIN" -r "copy('https://getcomposer.org/installer', \$argv[1]);" "$installer"
+    ACTUAL_CHECKSUM="$("$PHP_BIN" -r "echo hash_file('sha384', \$argv[1]);" "$installer")"
 
     if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]
     then
         >&2 echo 'ERROR: Invalid installer checksum'
-        rm composer-setup.php
         exit 1
     fi
 
-    "$PHP_BIN" composer-setup.php --install-dir="${COMPOSER_PATH}" --filename="${COMPOSER_FILE_NAME}"
-    rm composer-setup.php
+    "$PHP_BIN" "$installer" --install-dir="${COMPOSER_PATH}" --filename="${COMPOSER_FILE_NAME}"
 fi
 
 "$PHP_BIN" "${COMPOSER_PATH}/${COMPOSER_FILE_NAME}" global update --quiet --with-all-dependencies
