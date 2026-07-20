@@ -13,11 +13,13 @@ brew "eza" # Modern, maintained replacement for ls
 brew "fd" # Simple, fast and user-friendly alternative to find
 brew "fzf" # Command-line fuzzy finder written in Go
 brew "fzf-tab" # Replace Zsh completion selection menu with fzf
+brew "forgit" # Interactive Git commands powered by fzf
 brew "gh" # GitHub command-line tool
 brew "git" # Distributed revision control system
 brew "go-task/tap/go-task" # Task is a task runner/build tool that aims to be simpler and easier to use
 brew "gnupg" # GNU Pretty Good Privacy (PGP) package
 brew "jq" # Lightweight and flexible command-line JSON processor
+brew "lazygit" # Terminal UI for Git
 brew "make" # Utility for directing compilation
 brew "mas" # Mac App Store command-line interface
 brew "mise" # Polyglot runtime manager
