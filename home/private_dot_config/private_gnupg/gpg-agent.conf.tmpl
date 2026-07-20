@@ -1,4 +1,6 @@
 {{- if eq .chezmoi.os "darwin" -}}
 pinentry-program {{ .homebrewPrefix }}/bin/pinentry-mac
 {{- end }}
+default-cache-ttl 28800
+max-cache-ttl 86400
 enable-ssh-support
