@@ -10,6 +10,9 @@ path=("$HOMEBREW_GNUBIN_DIR" $path)
 {{ if eq .chezmoi.os "darwin" -}}
 # Homebrew
 eval "$({{ .homebrewPrefix }}/bin/brew shellenv)"
+# Homebrew's shellenv prepends its prefix; restore user launchers and mise
+# shims so dependency runtimes are not selected accidentally.
+path=("$XDG_BIN_DIR" "$MISE_SHIMS_DIR" $path)
 
 if [[ -f ${HOME}/.orbstack/shell/init.zsh ]]; then
     source ${HOME}/.orbstack/shell/init.zsh

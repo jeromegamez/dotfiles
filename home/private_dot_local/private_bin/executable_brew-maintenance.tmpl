@@ -24,6 +24,13 @@ $brew_bin upgrade
 echo "==> brew autoremove"
 $brew_bin autoremove
 
+echo "==> Hide Homebrew runtime commands"
+for runtime_formula in node python@3.14; do
+    if $brew_bin list --formula "$runtime_formula" >/dev/null 2>&1; then
+        $brew_bin unlink "$runtime_formula"
+    fi
+done
+
 cellar="$($brew_bin --cellar)"
 if find "$cellar" -mindepth 2 -maxdepth 2 ! -user "$(id -un)" -print -quit | grep -q .; then
     echo "==> Fix Homebrew cellar ownership"

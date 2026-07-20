@@ -10,6 +10,14 @@ eval "$({{ joinPath .homebrewPrefix "bin" "brew" }} shellenv)" || true
 brewfile="${XDG_CONFIG_HOME:-$HOME/.config}/homebrew/Brewfile"
 HOMEBREW_CASK_OPTS=--no-quarantine {{ joinPath .homebrewPrefix "bin" "brew" }} bundle install --file="$brewfile"
 
+# Keep runtime dependencies available through Homebrew's opt paths without
+# exposing their generic commands ahead of mise-managed runtimes.
+for runtime_formula in node python@3.14; do
+    if {{ joinPath .homebrewPrefix "bin" "brew" }} list --formula "$runtime_formula" >/dev/null 2>&1; then
+        {{ joinPath .homebrewPrefix "bin" "brew" }} unlink "$runtime_formula"
+    fi
+done
+
 # compinit rejects completion paths whose parent directories are group-writable.
 zsh_completion_parent={{ joinPath .homebrewPrefix "share" | quote }}
 if [[ -O "$zsh_completion_parent" ]]; then
