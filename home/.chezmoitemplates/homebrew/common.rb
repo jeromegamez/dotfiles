@@ -55,7 +55,6 @@ cask "font-maple-mono-nf" # https://font.subf.dev/en/
 
 cask "1password" # Password manager that keeps all passwords secure behind one password
 cask "1password-cli" # Command-line interface for 1Password
-cask "wouterdebie/tap/davit", trusted:true  # UI for Apple's container platform
 cask "ghostty" # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "gpg-suite-no-mail" # GPG Suite (without GPG Mail)
 cask "karabiner-elements" # Keyboard customizer
