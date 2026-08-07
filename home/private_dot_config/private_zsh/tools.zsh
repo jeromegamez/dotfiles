@@ -29,6 +29,12 @@ _load_completion_cache uvx uvx uvx --generate-shell-completion zsh
 _load_completion_cache chezmoi chezmoi chezmoi completion zsh
 unfunction _load_completion_cache
 
+if command -v aws_completer &>/dev/null; then
+    autoload -Uz bashcompinit
+    bashcompinit
+    complete -C "${commands[aws_completer]}" aws
+fi
+
 if command -v op &>/dev/null; then
     # eval "$(op completion zsh)"; compdef _op op
     [[ -f "${XDG_CONFIG_HOME}/op/plugins.sh" ]] && source "${XDG_CONFIG_HOME}/op/plugins.sh"
