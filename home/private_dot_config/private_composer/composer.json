@@ -1,9 +1,9 @@
 {
   "type": "project",
   "require": {
-    "icanhazstring/composer-unused": "^0.9.5",
-    "maglnet/composer-require-checker": "^4.16.1",
-    "pyrech/composer-changelogs": "^2.1"
+    "icanhazstring/composer-unused": "^0.9.6",
+    "maglnet/composer-require-checker": "^4.24.0",
+    "pyrech/composer-changelogs": "^2.2"
   },
   "config": {
     "allow-plugins": {
