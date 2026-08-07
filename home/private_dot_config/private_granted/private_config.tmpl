@@ -1,5 +1,5 @@
 {{- if eq .chezmoi.os "darwin" -}}
-DefaultBrowser = "ZEN"
+DefaultBrowser = "FIREFOX"
 CustomBrowserPath = {{ lookPath "zen" | output "/usr/bin/readlink" | trim | quote }}
 {{- else if eq .chezmoi.os "linux" }}
 DefaultBrowser = "FIREFOX"

@@ -8,7 +8,7 @@ brew "chezmoi" # Manage your dotfiles across multiple diverse machines, securely
 brew "cmake" # Cross-platform make
 brew "cmake-docs" # Documentation for CMake
 brew "coreutils" # GNU File, Shell, and Text utilities
-brew "fwdcloudsec/granted/granted", trusted: true # The easiest way to access your cloud.
+brew "common-fate/granted/granted", trusted: true # The easiest way to access your cloud.
 brew "csvkit" # Suite of command-line tools for converting to and working with CSV
 brew "direnv" # Load/unload environment variables based on PWD
 brew "eza" # Modern, maintained replacement for ls
