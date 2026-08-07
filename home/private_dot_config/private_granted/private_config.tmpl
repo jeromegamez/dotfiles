@@ -1,14 +1,8 @@
-DefaultBrowser = "FIREFOX"
-
-{{- if eq .chezmoi.os "darwin" }}
-{{- $browserPath := lookPath "zen" }}
-{{- $browserPathStat := lstat $browserPath }}
-{{- if and $browserPathStat (eq $browserPathStat.type "symlink") }}
-{{-   $browserPath = output "readlink" $browserPath | trim }}
-{{- end }}
-CustomBrowserPath = {{ $browserPath | quote }}
+{{- if eq .chezmoi.os "darwin" -}}
+DefaultBrowser = "ZEN"
+CustomBrowserPath = {{ lookPath "zen" | output "/usr/bin/readlink" | trim | quote }}
 {{- else if eq .chezmoi.os "linux" }}
-CustomBrowserPath = {{ lookPath "firefox" | quote }}
+DefaultBrowser = "FIREFOX"
 {{- end }}
 
 CredentialProcessAutoLogin = true
