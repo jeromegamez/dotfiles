@@ -49,7 +49,7 @@ brew "shivammathur/extensions/igbinary@{{ . }}" # IGBinary PHP extension
 brew "shivammathur/extensions/mongodb@{{ . }}" # MongoDB PHP extension
 brew "shivammathur/extensions/msgpack@{{ . }}" # MSGPack PHP extension
 brew "shivammathur/extensions/protobuf@{{ . }}" # Protobuf PHP extension
-brew "shivammathur/extensions/redis@{{ . }}" # Redis PHP extension
+brew "shivammathur/extensions/phpredis@{{ . }}" # Redis PHP extension
 brew "shivammathur/extensions/xdebug@{{ . }}" # XDebug PHP extension
 
 {{- end }}
