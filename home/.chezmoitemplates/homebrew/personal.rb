@@ -38,22 +38,19 @@ mas "Pixelmator Pro", id: 1289583905
 mas "Things", id: 904280696
 
 {{- range .versions.phpVersions }}
-tap "shivammathur/extensions", trusted: true
-tap "shivammathur/php", trusted: true
-
 {{- if eq . $.versions.defaultPhpVersion }}
-brew "shivammathur/php/php" # General-purpose scripting language
+brew "shivammathur/php/php", trusted: true # General-purpose scripting language
 {{- else }}
-brew "shivammathur/php/php@{{ . }}" # General-purpose scripting language
+brew "shivammathur/php/php@{{ . }}", trusted: true # General-purpose scripting language
 {{- end }}
-brew "shivammathur/extensions/amqp@{{ . }}" # AMQP PHP extension
-brew "shivammathur/extensions/apcu@{{ . }}" # APCU PHP extension
-brew "shivammathur/extensions/grpc@{{ . }}" # gRPC PHP extension
-brew "shivammathur/extensions/igbinary@{{ . }}" # IGBinary PHP extension
-brew "shivammathur/extensions/mongodb@{{ . }}" # MongoDB PHP extension
-brew "shivammathur/extensions/msgpack@{{ . }}" # MSGPack PHP extension
-brew "shivammathur/extensions/protobuf@{{ . }}" # Protobuf PHP extension
-brew "shivammathur/extensions/phpredis@{{ . }}" # Redis PHP extension
-brew "shivammathur/extensions/xdebug@{{ . }}" # XDebug PHP extension
+brew "shivammathur/extensions/amqp@{{ . }}", trusted: true # AMQP PHP extension
+brew "shivammathur/extensions/apcu@{{ . }}", trusted: true # APCU PHP extension
+brew "shivammathur/extensions/grpc@{{ . }}", trusted: true # gRPC PHP extension
+brew "shivammathur/extensions/igbinary@{{ . }}", trusted: true # IGBinary PHP extension
+brew "shivammathur/extensions/mongodb@{{ . }}", trusted: true # MongoDB PHP extension
+brew "shivammathur/extensions/msgpack@{{ . }}", trusted: true # MSGPack PHP extension
+brew "shivammathur/extensions/protobuf@{{ . }}", trusted: true # Protobuf PHP extension
+brew "shivammathur/extensions/phpredis@{{ . }}", trusted: true # Redis PHP extension
+brew "shivammathur/extensions/xdebug@{{ . }}", trusted: true # XDebug PHP extension
 
 {{- end }}
