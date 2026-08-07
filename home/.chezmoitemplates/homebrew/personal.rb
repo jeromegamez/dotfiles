@@ -41,7 +41,7 @@ mas "Things", id: 904280696
 tap "shivammathur/extensions", trusted: true
 tap "shivammathur/php", trusted: true
 
-{{- if eq . "8.5" }}
+{{- if eq . $.versions.defaultPhpVersion }}
 brew "shivammathur/php/php" # General-purpose scripting language
 {{- else }}
 brew "shivammathur/php/php@{{ . }}" # General-purpose scripting language

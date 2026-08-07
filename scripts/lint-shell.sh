@@ -31,6 +31,7 @@ lint_data='{
         "signingKey": "test"
     },
     "versions": {
+        "defaultPhpVersion": "8.5",
         "phpVersions": ["8.4", "8.5"]
     },
     "macos": {
