@@ -3,6 +3,7 @@
 set -euo pipefail
 
 mise_bin={{ joinPath .homebrewPrefix "bin" "mise" | quote }}
+pi_node={{ printf "node@%s" .versions.node.pi | quote }}
 pi_entrypoint="${XDG_DATA_HOME:-$HOME/.local/share}/pi/bin/pi"
 
 if [[ ! -x "$pi_entrypoint" ]]; then
@@ -10,4 +11,4 @@ if [[ ! -x "$pi_entrypoint" ]]; then
     exit 127
 fi
 
-exec "$mise_bin" exec node@25 -- "$pi_entrypoint" "$@"
+exec "$mise_bin" exec "$pi_node" -- "$pi_entrypoint" "$@"

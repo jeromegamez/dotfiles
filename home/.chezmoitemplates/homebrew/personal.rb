@@ -37,8 +37,8 @@ mas "Pages", id: 361309726
 mas "Pixelmator Pro", id: 1289583905
 mas "Things", id: 904280696
 
-{{- range .versions.phpVersions }}
-{{- if eq . $.versions.defaultPhpVersion }}
+{{- range .versions.php.installed }}
+{{- if eq . $.versions.php.default }}
 brew "shivammathur/php/php", trusted: true # General-purpose scripting language
 {{- else }}
 brew "shivammathur/php/php@{{ . }}", trusted: true # General-purpose scripting language

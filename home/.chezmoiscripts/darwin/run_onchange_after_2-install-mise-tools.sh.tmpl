@@ -2,7 +2,8 @@
 
 set -euo pipefail
 
-# mise config hash: {{ include (joinPath .chezmoi.sourceDir "private_dot_config/private_mise/config.toml") | sha256sum }}
+# mise config hash: {{ include (joinPath .chezmoi.sourceDir "private_dot_config/private_mise/config.toml.tmpl") | sha256sum }}
+# runtime versions hash: {{ dict "node" .versions.node "python" .versions.python | toJson | sha256sum }}
 
 mise install --yes
 

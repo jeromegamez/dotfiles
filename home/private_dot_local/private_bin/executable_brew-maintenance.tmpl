@@ -25,7 +25,11 @@ echo "==> brew autoremove"
 $brew_bin autoremove
 
 echo "==> Hide Homebrew runtime commands"
-for runtime_formula in node python@3.14; do
+runtime_formulae=(
+    node
+    {{ printf "python@%s" .versions.python.default | quote }}
+)
+for runtime_formula in "${runtime_formulae[@]}"; do
     if $brew_bin list --formula "$runtime_formula" >/dev/null 2>&1; then
         $brew_bin unlink "$runtime_formula"
     fi

@@ -1,3 +1,10 @@
-[versions]
-    defaultPhpVersion = "8.5"
-    phpVersions = ["8.4", "8.5"]
+[versions.php]
+    default = "8.5"
+    installed = ["8.4", "8.5"]
+
+[versions.node]
+    default = "lts"
+    pi = "25"
+
+[versions.python]
+    default = "3.14"

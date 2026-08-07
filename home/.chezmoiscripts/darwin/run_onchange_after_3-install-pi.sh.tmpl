@@ -8,7 +8,8 @@ data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
 pi_prefix="$data_home/pi"
 pi_entrypoint="$pi_prefix/bin/pi"
 pi_launcher="$HOME/.local/bin/pi"
-pi_package="@earendil-works/pi-coding-agent"
+pi_node={{ printf "node@%s" .versions.node.pi | quote }}
+pi_package={{ .pi.package | quote }}
 settings_dir="$HOME/.pi/agent"
 settings_file="$settings_dir/settings.json"
 settings_temp=""
@@ -22,8 +23,8 @@ cleanup() {
 trap cleanup EXIT
 
 if [[ ! -x "$pi_entrypoint" ]]; then
-    echo "==> Install Pi with mise-managed Node 25"
-    "$mise_bin" exec node@25 -- npm install \
+    echo "==> Install Pi with mise-managed $pi_node"
+    "$mise_bin" exec "$pi_node" -- npm install \
         --global \
         --ignore-scripts \
         --min-release-age=0 \
@@ -46,10 +47,11 @@ settings_temp="$(mktemp "$settings_dir/.settings.json.XXXXXX")"
 merge_settings() {
     jq \
         --arg mise_bin "$mise_bin" \
+        --arg pi_node "$pi_node" \
         --arg npm_prefix "NPM_CONFIG_PREFIX=$pi_prefix" \
         --argjson required_packages "$required_packages" \
         '
-            .npmCommand = [$mise_bin, "exec", "node@25", "--", "env", $npm_prefix, "npm"]
+            .npmCommand = [$mise_bin, "exec", $pi_node, "--", "env", $npm_prefix, "npm"]
             | .packages = reduce $required_packages[] as $package (
                 (.packages // []);
                 if index($package) then . else . + [$package] end
@@ -77,7 +79,7 @@ echo "==> Install or update required Pi packages"
 legacy_package_dir="$homebrew_prefix/lib/node_modules/$pi_package"
 if [[ -d "$legacy_package_dir" ]]; then
     echo "==> Remove legacy Pi installation from the Homebrew npm prefix"
-    "$mise_bin" exec node@25 -- npm uninstall \
+    "$mise_bin" exec "$pi_node" -- npm uninstall \
         --global \
         --ignore-scripts \
         --prefix "$homebrew_prefix" \
@@ -86,4 +88,4 @@ if [[ -d "$legacy_package_dir" ]]; then
         "$pi_package"
 fi
 
-echo "✓ Pi uses mise-managed Node 25"
+echo "✓ Pi uses mise-managed $pi_node"

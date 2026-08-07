@@ -1,4 +1,0 @@
-[tools]
-codex = "latest"
-node = ["lts", "25"]
-python = "3.14"
