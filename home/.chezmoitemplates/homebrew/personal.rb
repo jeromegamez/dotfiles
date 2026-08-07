@@ -41,7 +41,11 @@ mas "Things", id: 904280696
 tap "shivammathur/extensions", trusted: true
 tap "shivammathur/php", trusted: true
 
+{{- if eq . "8.5" }}
+brew "shivammathur/php/php" # General-purpose scripting language
+{{- else }}
 brew "shivammathur/php/php@{{ . }}" # General-purpose scripting language
+{{- end }}
 brew "shivammathur/extensions/amqp@{{ . }}" # AMQP PHP extension
 brew "shivammathur/extensions/apcu@{{ . }}" # APCU PHP extension
 brew "shivammathur/extensions/grpc@{{ . }}" # gRPC PHP extension
