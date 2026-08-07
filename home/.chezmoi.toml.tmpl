@@ -6,15 +6,12 @@
 {{- $work := eq $profile "work" -}}
 {{- $personal := eq $profile "personal" -}}
 
-{{- $name := "Jérôme Gamez" -}}
 {{- $email := promptStringOnce . "email" "Git commit email" -}}
 
 [data]
     profile = {{ $profile | quote }}
     work = {{ $work }}
     personal = {{ $personal }}
-    name = {{ $name | quote }}
-    email = {{ $email | quote }}
     onepasswordAccount = "UM5PFDCXWRDOXA2MBGNTMSFJ24"
 {{- if eq .chezmoi.os "darwin" }}
     homebrewPrefix = "/opt/homebrew"
@@ -25,9 +22,7 @@
     githubComposerToken = {{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Composer" .onepasswordAccount | trim | quote }}
 
 [data.git]
-    name = {{ $name | quote }}
     email = {{ $email | quote }}
-    signingKey = "4E902530D3BC24D1"
 
 [data.macos]
     timezone = "Europe/Berlin"

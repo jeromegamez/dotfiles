@@ -1,11 +1,11 @@
 [user]
-    name = {{ .git.name | quote }}
+    name = {{ .identity.name | quote }}
     email = {{ .git.email | quote }}
     useconfigonly = true
-    signingkey = {{ .git.signingKey | quote }}
+    signingkey = {{ .identity.gpgSigningKey | quote }}
 
 [alias]
-    me = log --pretty=format:\"%ad (%h) %s\" --date=short --all --no-merges --author={{ .git.name | quote }}
+    me = log --pretty=format:\"%ad (%h) %s\" --date=short --all --no-merges --author={{ .identity.name | quote }}
     oneline = log --oneline --decorate --all --graph
 
 [blame]
