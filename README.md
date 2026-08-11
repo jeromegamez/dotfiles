@@ -32,7 +32,7 @@ During initialization, [`home/.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl)
 prompts once for:
 
 - a `personal` or `work` package profile;
-- the active profile's Git commit email;
+- the active profile's email address;
 - on work, the public key used for SSH commit and tag signing;
 - a 1Password account and the reference to one low-privilege GitHub API PAT for
   public-data readers and rate-limit elevation.

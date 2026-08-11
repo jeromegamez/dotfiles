@@ -8,11 +8,11 @@
 
 {{- $email := promptStringOnce
     . "email"
-    (printf "%s Git email" (title $profile))
+    (printf "%s email" (title $profile))
     | trim
 -}}
 {{- if eq $email "" -}}
-{{- fail "Git email must not be empty" -}}
+{{- fail "Email must not be empty" -}}
 {{- end -}}
 
 {{- $workGitSigningPublicKey := "" -}}
