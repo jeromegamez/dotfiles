@@ -31,21 +31,6 @@
     gpgSign = true
     sort = version:refname
 
-[includeIf "gitdir:~/Code/reference/"]
-    path = ~/.config/git/no-identity
-{{- if .personal }}
-
-[includeIf "gitdir:~/Code/work/"]
-    path = ~/.config/git/no-identity
-{{- else if .work }}
-
-[includeIf "gitdir:~/Code/personal/"]
-    path = ~/.config/git/no-identity
-
-[includeIf "gitdir:~/.local/share/chezmoi/"]
-    path = ~/.config/git/no-identity
-{{- end }}
-
 [alias]
     me = log --pretty=format:\"%ad (%h) %s\" --date=short --all --no-merges --author={{ .identity.name | quote }}
     oneline = log --oneline --decorate --all --graph
@@ -121,3 +106,18 @@
 
 [pack]
     allowPackReuse = multi
+
+[includeIf "gitdir:~/Code/reference/"]
+    path = ~/.config/git/no-identity
+{{- if .personal }}
+
+[includeIf "gitdir:~/Code/work/"]
+    path = ~/.config/git/no-identity
+{{- else if .work }}
+
+[includeIf "gitdir:~/Code/personal/"]
+    path = ~/.config/git/no-identity
+
+[includeIf "gitdir:~/.local/share/chezmoi/"]
+    path = ~/.config/git/no-identity
+{{- end }}
