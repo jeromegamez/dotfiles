@@ -2,7 +2,9 @@
     name = {{ .identity.name | quote }}
     email = {{ .email | quote }}
     useconfigonly = true
-    signingkey = {{ .identity.gpgSigningKey | quote }}
+{{- if .personal }}
+    signingkey = {{ .identity.personal.gpgSigningKey | quote }}
+{{- end }}
 
 [alias]
     me = log --pretty=format:\"%ad (%h) %s\" --date=short --all --no-merges --author={{ .identity.name | quote }}
@@ -18,8 +20,10 @@
 [column]
     ui = auto
 
+{{- if .personal }}
 [commit]
     gpgsign = true
+{{- end }}
 
 [core]
     excludesfile = ~/.config/git/ignore
@@ -84,6 +88,8 @@
     allowPackReuse = multi
 
 [tag]
+{{- if .personal }}
     forceSignAnnotated = true
     gpgsign = true
+{{- end }}
     sort = version:refname

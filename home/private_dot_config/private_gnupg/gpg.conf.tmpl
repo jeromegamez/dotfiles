@@ -1,4 +1,6 @@
 auto-key-retrieve
 no-emit-version
-default-key {{ .identity.gpgSigningKey }}
+{{- if .personal }}
+default-key {{ .identity.personal.gpgSigningKey }}
+{{- end }}
 use-agent

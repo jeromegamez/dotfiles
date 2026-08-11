@@ -22,6 +22,8 @@
     homebrewPrefix = "/opt/homebrew"
 {{- end }}
 
+{{- if $personal }}
 [data.credentials]
     githubToken = {{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Avoid Rate Limits" $onepasswordAccount | trim | quote }}
     githubComposerToken = {{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Composer" $onepasswordAccount | trim | quote }}
+{{- end }}

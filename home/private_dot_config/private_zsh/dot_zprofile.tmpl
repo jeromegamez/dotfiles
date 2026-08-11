@@ -38,8 +38,10 @@ export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export SHELL_SESSIONS_DISABLE=1
 unset PAGER
 
+{{ if .personal -}}
 export GITHUB_AUTH_TOKEN={{ .credentials.githubToken | quote }}
 export MISE_GITHUB_TOKEN={{ .credentials.githubToken | quote }}
+{{ end -}}
 
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker

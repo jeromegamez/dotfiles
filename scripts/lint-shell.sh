@@ -12,7 +12,7 @@ for dependency in chezmoi shellcheck shfmt; do
     fi
 done
 
-lint_data='{
+personal_lint_data='{
     "profile": "personal",
     "work": false,
     "personal": true,
@@ -24,19 +24,17 @@ lint_data='{
         "githubToken": "test",
         "githubComposerToken": "test",
         "gitlabToken": "test"
-    },
-    "git": {
-        "name": "Test User",
-        "email": "test@example.invalid",
-        "signingKey": "test"
-    },
-    "versions": {
-        "defaultPhpVersion": "8.5",
-        "phpVersions": ["8.4", "8.5"]
-    },
-    "macos": {
-        "timezone": "Europe/Berlin"
     }
+}'
+
+work_lint_data='{
+    "profile": "work",
+    "work": true,
+    "personal": false,
+    "name": "Test User",
+    "email": "test@example.invalid",
+    "onepasswordAccount": "test",
+    "homebrewPrefix": "/opt/homebrew"
 }'
 
 rendered_file=""
@@ -56,22 +54,28 @@ while IFS= read -r -d '' file; do
     fi
 
     if [[ "$file" == *.tmpl ]]; then
-        echo "Linting rendered template: $file"
-        chezmoi --verbose execute-template \
-            --config /dev/null \
-            --config-format toml \
-            --source "$repo_root/home" \
-            --override-data "$lint_data" \
-            <"$file" >"$rendered_file"
-        shellcheck -s bash "$rendered_file"
-        shfmt -d -ln bash -i 4 -ci "$rendered_file"
+        for profile in personal work; do
+            case "$profile" in
+                personal) lint_data="$personal_lint_data" ;;
+                work) lint_data="$work_lint_data" ;;
+            esac
+            echo "Linting rendered template ($profile): $file"
+            chezmoi --verbose execute-template \
+                --config /dev/null \
+                --config-format toml \
+                --source "$repo_root/home" \
+                --override-data "$lint_data" \
+                <"$file" >"$rendered_file"
+            shellcheck -s bash "$rendered_file"
+            shfmt -d -ln bash -i 4 -ci "$rendered_file"
+            checked=$((checked + 1))
+        done
     else
         echo "Linting: $file"
         shellcheck -s bash "$file"
         shfmt -d -ln bash -i 4 -ci "$file"
+        checked=$((checked + 1))
     fi
-
-    checked=$((checked + 1))
 done < <(
     find home scripts -type f \
         \( -name '*.sh' -o -name '*.bash' -o -name '*.tmpl' -o -name 'executable_*' -o -perm -111 \) \
