@@ -111,9 +111,10 @@ A work-only, run-once migration removes the `gnupg`, `pinentry-mac`, and
 `gpg-suite-no-mail` packages that the old common Brewfile may have installed.
 The migration names only those packages, does not force removal when another
 installed formula depends on them, and does not touch GPG keys or configuration.
-If Homebrew refuses a removal, the migration warns, retains that package, and
-continues with the remaining packages. Remove the migration script after every
-existing work machine has crossed this change.
+If Homebrew reports installed dependents, the migration warns, retains that
+formula, and continues with the remaining packages. Any other uninstall failure
+remains fatal so chezmoi can retry the migration. Remove the migration script
+after every existing work machine has crossed this change.
 
 ## Choosing a chezmoi mechanism
 
