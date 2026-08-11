@@ -13,10 +13,8 @@ cask "cardhop" # Contacts manager
 cask "chatgpt" # ChatGPT desktop app with Codex
 cask "discord" # Voice and text chat software
 cask "droplr" # Screenshot and screen recorder
-cask "duckduckgo" # Web browser focusing on privacy
 cask "fantastical" # Calendar software
 cask "feed-the-beast" # Minecraft mod downloader and manager
-cask "google-chrome" # Web browser
 cask "keepassxc" # Password manager app
 cask "jetbrains-toolbox" # JetBrains tools manager
 cask "prismlauncher" # Minecraft launcher
@@ -26,6 +24,7 @@ cask "tailscale-app" # Mesh VPN based on WireGuard
 cask "telegram" # Messaging app with a focus on speed and security
 cask "whatsapp" # Native desktop client for WhatsApp
 cask "wiso-steuer-2026" # Tax declaration for the fiscal year 2025
+cask "zen" # Gecko based web browser
 
 mas "AusweisApp", id: 948660805
 mas "Bear", id: 1091189122
