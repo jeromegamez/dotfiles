@@ -1,5 +1,5 @@
 {
     "github-oauth": {
-        "github.com": {{ onepasswordRead .githubTokenReference .onepasswordAccount | trim | quote }}
+        "github.com": {{ onepasswordRead .githubRateLimitTokenReference .onepasswordAccount | trim | quote }}
     }
 }

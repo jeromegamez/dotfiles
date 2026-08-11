@@ -21,10 +21,12 @@ the primary profile selectors. Static, non-secret policy belongs in
 machine-local configuration or the target template that consumes them.
 
 Each machine also records a 1Password account and a secret reference for its
-GitHub PAT. The reference, not the token, is stored in chezmoi's machine-local
-configuration. mise resolves it on demand, while the Composer auth template
-resolves the same PAT into its private global `auth.json`. The reference may
-point to different 1Password accounts and items on personal and work machines.
+GitHub API rate-limit PAT. The reference, not the token, is stored in chezmoi's
+machine-local configuration. mise resolves it on demand, while the Composer auth
+template resolves the same PAT into its private global `auth.json`. The
+reference may point to different 1Password accounts and items on personal and
+work machines. This PAT is not used to authenticate GitHub CLI; `gh auth login`
+manages that credential separately.
 
 ## Choosing a chezmoi mechanism
 
