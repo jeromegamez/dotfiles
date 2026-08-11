@@ -4,6 +4,21 @@ set -euo pipefail
 
 account={{ .onepasswordAccount | quote }}
 out="${HOME}/.ssh/1Password/generated-hosts.conf"
+
+required_commands=(op jq python3)
+missing_commands=()
+for required_command in "${required_commands[@]}"; do
+    if ! command -v "$required_command" >/dev/null 2>&1; then
+        missing_commands+=("$required_command")
+    fi
+done
+
+if ((${#missing_commands[@]} > 0)); then
+    printf 'Skipping 1Password SSH host generation: missing required command(s): %s.\n' "${missing_commands[*]}" >&2
+    printf 'Install them and rerun chezmoi apply; leaving %s unchanged.\n' "$out" >&2
+    exit 0
+fi
+
 tmp="$(mktemp "${TMPDIR:-/tmp}/generated-hosts.XXXXXX")"
 helper={{ joinPath .chezmoi.sourceDir "private_dot_config/chezmoi/scripts/generate_ssh_hosts.py" | quote }}
 trap 'rm -f "$tmp"' EXIT
