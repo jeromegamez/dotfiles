@@ -68,12 +68,20 @@ example, `private_dot_config/private_git/config.tmpl` renders as
 
 ## Bootstrap
 
-Install the prerequisites:
+Install the chezmoi binary in `~/.local/bin` with the official installer:
 
 ```bash
-brew install chezmoi
+sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "$HOME/.local/bin"
+```
+
+Install the remaining prerequisites:
+
+```bash
 brew install --cask 1password 1password-cli
 ```
+
+The dotfiles add `~/.local/bin` to `PATH`, but they have not been applied yet.
+Use the binary's full path during the bootstrap.
 
 Enable the 1Password desktop application's CLI integration and authenticate:
 
@@ -84,14 +92,14 @@ op signin
 Initialize the repository without applying it immediately:
 
 ```bash
-chezmoi init jeromegamez
+~/.local/bin/chezmoi --verbose init jeromegamez
 ```
 
 Review the changes before applying them:
 
 ```bash
-chezmoi diff
-chezmoi apply --dry-run --verbose
+~/.local/bin/chezmoi --verbose diff
+~/.local/bin/chezmoi --verbose apply --dry-run
 ```
 
 Rendered previews can contain values obtained from 1Password. Treat their
@@ -100,7 +108,7 @@ output as sensitive and do not save or share it indiscriminately.
 Apply the complete configuration from an interactive terminal:
 
 ```bash
-chezmoi apply
+~/.local/bin/chezmoi --verbose apply
 ```
 
 Some hooks may request confirmation, administrator access, or a login-shell
@@ -108,10 +116,10 @@ change. Open a new terminal after the bootstrap completes.
 
 ## Tool ownership
 
-Homebrew owns applications, including the ChatGPT desktop app, and general
-command-line tools. mise owns the Codex CLI as well as the Node.js and Python
-runtimes selected by the shell. Homebrew may retain its own Node.js and Python
-copies as dependencies of other formulae.
+The standalone installer owns chezmoi. Homebrew owns applications, including
+the ChatGPT desktop app, and general command-line tools. mise owns the Codex CLI
+as well as the Node.js and Python runtimes selected by the shell. Homebrew may
+retain its own Node.js and Python copies as dependencies of other formulae.
 
 The default mise runtimes are declared in
 [`home/private_dot_config/private_mise/config.toml`](home/private_dot_config/private_mise/config.toml).

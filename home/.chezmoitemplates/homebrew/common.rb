@@ -4,7 +4,6 @@ brew "actionlint" # Static checker for GitHub Actions workflow files
 brew "ant" # Java build tool
 brew "bash" # Bourne-Again SHell, a UNIX command interpreter
 brew "bat" # Clone of cat(1) with syntax highlighting and Git integration
-brew "chezmoi" # Manage your dotfiles across multiple diverse machines, securely
 brew "cmake" # Cross-platform make
 brew "cmake-docs" # Documentation for CMake
 brew "coreutils" # GNU File, Shell, and Text utilities
