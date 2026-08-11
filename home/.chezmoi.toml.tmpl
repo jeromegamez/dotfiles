@@ -15,6 +15,10 @@
     . "githubRateLimitTokenReference"
     "1Password secret reference for the GitHub API rate-limit PAT"
 -}}
+{{- $githubRateLimitTokenReference = $githubRateLimitTokenReference | trim | trimAll "\"'" -}}
+{{- if not (hasPrefix "op://" $githubRateLimitTokenReference) -}}
+{{- fail "GitHub API rate-limit PAT reference must start with op://" -}}
+{{- end -}}
 
 [data]
     profile = {{ $profile | quote }}
