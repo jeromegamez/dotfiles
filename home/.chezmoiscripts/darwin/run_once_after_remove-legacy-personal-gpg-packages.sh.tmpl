@@ -11,13 +11,17 @@ legacy_formulae=(
 
 for formula in "${legacy_formulae[@]}"; do
     if "$brew" list --formula "$formula" >/dev/null 2>&1; then
-        "$brew" uninstall --formula "$formula"
+        if ! "$brew" uninstall --formula "$formula"; then
+            printf 'Warning: retained Homebrew formula %s because it could not be uninstalled; it may be required by another installed formula.\n' "$formula" >&2
+        fi
     fi
 done
 
 legacy_cask=gpg-suite-no-mail
 if "$brew" list --cask "$legacy_cask" >/dev/null 2>&1; then
-    "$brew" uninstall --cask "$legacy_cask"
+    if ! "$brew" uninstall --cask "$legacy_cask"; then
+        printf 'Warning: retained Homebrew cask %s because it could not be uninstalled.\n' "$legacy_cask" >&2
+    fi
 fi
 
-echo "Legacy personal GPG packages removed from the work profile"
+echo "Legacy personal GPG package cleanup completed for the work profile"
