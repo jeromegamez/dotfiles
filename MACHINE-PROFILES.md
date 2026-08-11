@@ -39,6 +39,8 @@ profile:
 
 - repositories under `~/Code/personal/` use the personal email, personal SSH
   authentication key, and GPG signing key;
+- the chezmoi source repository stays at its standard XDG location under
+  `~/.local/share/chezmoi/` and also uses the personal Git context;
 - repositories under `~/Code/work/` use the work email and one work SSH key for
   both authentication and SSH commit signing;
 - repositories outside those directories have no global name or email, so
