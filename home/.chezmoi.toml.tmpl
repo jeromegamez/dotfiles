@@ -30,7 +30,11 @@
 {{- $onepasswordAccount := promptStringOnce
     . "onepasswordAccount"
     (printf "1Password account ID or sign-in address for the %s profile" $profile)
+    | trim
 -}}
+{{- if eq $onepasswordAccount "" -}}
+{{- fail "1Password account must not be empty" -}}
+{{- end -}}
 {{- $githubRateLimitTokenReference := promptStringOnce
     . "githubRateLimitTokenReference"
     "1Password secret reference for the GitHub API rate-limit PAT"
