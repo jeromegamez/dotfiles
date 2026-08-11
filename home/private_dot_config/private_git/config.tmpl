@@ -1,6 +1,6 @@
 [user]
     name = {{ .identity.name | quote }}
-    email = {{ .git.email | quote }}
+    email = {{ .email | quote }}
     useconfigonly = true
     signingkey = {{ .identity.gpgSigningKey | quote }}
 
