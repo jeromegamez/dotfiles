@@ -4,7 +4,7 @@ Personal Apple Silicon macOS dotfiles managed with chezmoi.
 
 ## Scope
 
-- Support macOS (`darwin`) only. Do not add Windows or Linux compatibility.
+- Support macOS (`darwin`) and Linux. Do not add Windows compatibility.
 - Treat `home/` as the source of truth; do not edit generated files in `~`.
 - Review and diagnosis tasks do not authorize edits or commits.
 - For implementation tasks, preserve unrelated changes and create one local commit per completed logical change unless the user asks otherwise.
