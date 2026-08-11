@@ -1,6 +1,9 @@
 {{ if ne .chezmoi.os "darwin" }}
 .chezmoiscripts/darwin/**
 {{ end }}
+{{ if .work }}
+.chezmoiscripts/darwin/import-gpg-key.sh
+{{ end }}
 
 .local/share/oh-my-zsh/cache/**
 .local/share/zsh/**

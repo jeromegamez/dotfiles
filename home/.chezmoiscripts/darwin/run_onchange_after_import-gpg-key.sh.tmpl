@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-{{ if .personal -}}
+
 set -euo pipefail
 
 umask 077
@@ -29,4 +29,3 @@ op --account {{ .onepasswordAccount | quote }} document get --out-file "$key_pat
 op --account {{ .onepasswordAccount | quote }} read --out-file "$passphrase_path" --force "op://Private/GPG Key/Passphrase"
 
 gpg --batch --yes --no-tty --pinentry-mode loopback --allow-secret-key-import --passphrase-file "$passphrase_path" --import "$key_path"
-{{ end -}}
