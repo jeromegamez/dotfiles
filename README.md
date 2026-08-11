@@ -93,7 +93,8 @@ op signin
 Initialize the repository without applying it immediately:
 
 ```bash
-~/.local/bin/chezmoi --verbose init jeromegamez
+~/.local/bin/chezmoi --verbose init \
+  https://github.com/jeromegamez/dotfiles.git
 ```
 
 Review the changes before applying them:
@@ -136,6 +137,22 @@ directly:
 
 ```bash
 chezmoi edit --apply ~/.config/zsh/.zshrc
+```
+
+Pull and apply the latest committed source state on another machine:
+
+```bash
+chezmoi --verbose update
+```
+
+To review an update before applying it, pull the source state first and then
+inspect the resulting changes:
+
+```bash
+chezmoi --verbose update --apply=false
+chezmoi --verbose diff
+chezmoi --verbose apply --dry-run
+chezmoi --verbose apply
 ```
 
 Useful maintenance commands:
