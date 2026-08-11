@@ -17,9 +17,13 @@ path=("$XDG_BIN_DIR" "$MISE_SHIMS_DIR" $path)
 if [[ -f ${HOME}/.orbstack/shell/init.zsh ]]; then
     source ${HOME}/.orbstack/shell/init.zsh
 fi
+{{ end }}
 
 # 1Password SSH Agent
+{{ if eq .chezmoi.os "darwin" -}}
 export SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{{ else -}}
+export SSH_AUTH_SOCK="${HOME}/.1password/agent.sock"
 {{ end }}
 
 # Tool-specific paths
@@ -28,7 +32,9 @@ COMPOSER_BIN_DIR="${XDG_CONFIG_HOME}/composer/vendor/bin"
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 [[ -f "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc" ]] && source "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc"
 
+{{ if .personal -}}
 export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
+{{ end }}
 
 # See https://stackoverflow.com/a/52230415/284325
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES

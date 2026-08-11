@@ -6,47 +6,27 @@
 {{- $work := eq $profile "work" -}}
 {{- $personal := eq $profile "personal" -}}
 
-{{- $personalGitEnabled := $personal -}}
-{{- $workGitEnabled := $work -}}
-
-{{- $personalEmail := "" -}}
-{{- $personalSshPublicKey := "" -}}
-{{- if $personalGitEnabled -}}
-{{- $personalEmail = promptStringOnce . "personalEmail" "Personal Git email" | trim -}}
-{{- $personalSshPublicKey = promptStringOnce
-    . "personalSshPublicKey"
-    "Personal SSH authentication public key"
+{{- $email := promptStringOnce
+    . "email"
+    (printf "%s Git email" (title $profile))
     | trim
 -}}
-{{- if eq $personalEmail "" -}}
-{{- fail "Personal Git email must not be empty" -}}
-{{- end -}}
-{{- if not (or (hasPrefix "ssh-" $personalSshPublicKey) (hasPrefix "ecdsa-" $personalSshPublicKey) (hasPrefix "sk-" $personalSshPublicKey)) -}}
-{{- fail "Personal SSH public key must use an OpenSSH public key format" -}}
-{{- end -}}
+{{- if eq $email "" -}}
+{{- fail "Git email must not be empty" -}}
 {{- end -}}
 
-{{- $workEmail := "" -}}
-{{- $workSshPublicKey := "" -}}
-{{- if $workGitEnabled -}}
-{{- $workEmail = promptStringOnce . "workEmail" "Work Git email" | trim -}}
-{{- $workSshPublicKey = promptStringOnce
-    . "workSshPublicKey"
-    "Work SSH authentication and signing public key"
-    | trim
--}}
-{{- if eq $workEmail "" -}}
-{{- fail "Work Git email must not be empty" -}}
-{{- end -}}
-{{- if not (or (hasPrefix "ssh-" $workSshPublicKey) (hasPrefix "ecdsa-" $workSshPublicKey) (hasPrefix "sk-" $workSshPublicKey)) -}}
-{{- fail "Work SSH public key must use an OpenSSH public key format" -}}
-{{- end -}}
-{{- end -}}
-
-{{- $email := $personalEmail -}}
+{{- $workGitSigningPublicKey := "" -}}
 {{- if $work -}}
-{{- $email = $workEmail -}}
+{{- $workGitSigningPublicKey = promptStringOnce
+    . "workGitSigningPublicKey"
+    "Work SSH public key for Git commit and tag signing"
+    | trim
+-}}
+{{- if not (or (hasPrefix "ssh-" $workGitSigningPublicKey) (hasPrefix "ecdsa-" $workGitSigningPublicKey) (hasPrefix "sk-" $workGitSigningPublicKey)) -}}
+{{- fail "Work Git signing public key must use an OpenSSH public key format" -}}
 {{- end -}}
+{{- end -}}
+
 {{- $onepasswordAccount := promptStringOnce
     . "onepasswordAccount"
     (printf "1Password account ID or sign-in address for the %s profile" $profile)
@@ -65,15 +45,8 @@
     work = {{ $work }}
     personal = {{ $personal }}
     email = {{ $email | quote }}
-    personalGitEnabled = {{ $personalGitEnabled }}
-    workGitEnabled = {{ $workGitEnabled }}
-{{- if $personalGitEnabled }}
-    personalEmail = {{ $personalEmail | quote }}
-    personalSshPublicKey = {{ $personalSshPublicKey | quote }}
-{{- end }}
-{{- if $workGitEnabled }}
-    workEmail = {{ $workEmail | quote }}
-    workSshPublicKey = {{ $workSshPublicKey | quote }}
+{{- if $work }}
+    workGitSigningPublicKey = {{ $workGitSigningPublicKey | quote }}
 {{- end }}
     onepasswordAccount = {{ $onepasswordAccount | quote }}
     githubRateLimitTokenReference = {{ $githubRateLimitTokenReference | quote }}

@@ -16,51 +16,96 @@ managed machine. In particular, shared configuration must not:
   part of the selected profile.
 
 The `personal` and `work` values in the machine-local chezmoi configuration are
-mutually exclusive package, machine-policy, and Git-context selectors. Each
-computer enables exactly one profile and its matching Git context. Static,
-non-secret policy belongs in `.chezmoidata`; prompted, computed, and
-secret-backed values belong in the machine-local configuration or the target
-template that consumes them.
+mutually exclusive package, machine-policy, Git-identity, and signing selectors.
+Each computer enables exactly one profile. Static, non-secret policy belongs in
+`.chezmoidata`; prompted, computed, and secret-backed values belong in the
+machine-local configuration or the target template that consumes them.
 
 Each machine also records a 1Password account and a secret reference for its
 GitHub API rate-limit PAT. The reference, not the token, is stored in chezmoi's
 machine-local configuration. The mise and Composer templates resolve the same
-PAT into private configuration files. Persisting this token avoids repeated
-1Password authorization prompts and is acceptable because it has no permissions
-beyond increasing the public GitHub API rate limit. The reference may point to
-different 1Password accounts and items on personal and work machines. This PAT
-is not used to authenticate GitHub CLI; `gh auth login` manages that credential
-separately.
+PAT into their own private configuration files. Persisting this token avoids
+repeated 1Password authorization prompts. It should have only the permissions
+needed for low-risk public GitHub API reads and rate-limit elevation; fine-grained
+tokens are still limited by their endpoint permissions. The reference may point
+to different 1Password accounts and items on personal and work machines. This
+PAT is not used by Git, SSH, commit signing, or GitHub CLI; `gh auth login`
+manages its credential separately.
 
-## Git contexts
+## Git identity and signing
 
-Git identity is selected by repository location within the selected profile:
+The selected machine profile provides one default Git name, email, and signing
+method globally:
 
-- repositories under `~/Code/personal/` use the personal email, personal SSH
-  authentication key, and GPG signing key;
-- on a personal-profile machine, the chezmoi source repository stays at its
-  standard XDG location under `~/.local/share/chezmoi/` and also uses the
-  personal context;
-- repositories under `~/Code/work/` use the work email and one work SSH key for
-  both authentication and SSH commit signing;
-- repositories outside those directories have no global name or email, so
-  `user.useConfigOnly` prevents an accidental commit with the wrong identity.
+- personal commits and annotated tags use the static personal GPG fingerprint;
+- work commits and annotated tags use the prompted work SSH signing public key;
+- `user.useConfigOnly` prevents Git from guessing a missing identity.
 
-Only the selected profile prompts for an email and public SSH key. These values
-are machine-local chezmoi data. The public key file is rendered under
-`~/.config/git/keys/`; its corresponding private key stays in the 1Password
-SSH agent. Git's conditional includes set an explicit public key with
-`IdentitiesOnly=yes`, ensuring that SSH offers the intended agent key when
-multiple identities are available. The directories do not need to exist when
-chezmoi is applied. Changing the selected profile removes the previously managed
-Git fragment and public key file on the next apply.
+The work public key is rendered at
+`~/.config/git/keys/work-signing.pub`; its private key remains in the work
+1Password account. It may also be used for SSH authentication by associating it
+with the appropriate 1Password Bookmarks. Each forge may require the same public
+key to be registered separately for authentication and signing. Whether
+1Password's vault and authorization model satisfies an organization's
+passphrase policy is a policy decision - it is not something GitHub can infer
+from the uploaded public key.
 
-The work SSH public key must be registered as both an authentication key and a
-signing key with the work GitHub account. The personal SSH public key is used
-only for authentication; personal commits continue to use GPG signing.
-The personal machine profile imports the personal GPG private key automatically.
-The work profile neither configures the personal Git context nor imports its
-private key.
+The static `~/.config/git/no-identity` fragment clears the default identity and
+sets `push.default = nothing` for:
+
+- `~/Code/reference/` on every profile;
+- `~/Code/work/` on personal;
+- `~/Code/personal/` on work;
+- `~/.local/share/chezmoi/` on work.
+
+These conditional includes are workflow guardrails, not security boundaries.
+Repository-local configuration and environment variables can override them,
+moving a repository changes which rule matches, and an explicit push can bypass
+`push.default = nothing`. Forge-side credentials, SSO, and repository
+permissions are the actual access controls. The chezmoi source therefore remains
+at its standard XDG path and is pull/apply-oriented on work, but server-side
+read-only access is required for genuine push prevention.
+
+## Repository organization
+
+Group repositories by trust profile first and forge second:
+
+```text
+~/Code/personal/github.com/owner/repository
+~/Code/personal/gitlab.com/owner/repository
+~/Code/work/github.com/owner/repository
+~/Code/work/git.company.example/group/repository
+~/Code/reference/codeberg.org/owner/repository
+```
+
+Use the actual hostname for self-hosted services. Forge directories are only
+organizational and do not select identity, signing, or authentication. Prefer
+HTTPS for public reference clones. Put a contribution fork under the active
+profile and add the public upstream as another remote.
+
+## SSH authentication
+
+Git does not select SSH keys by repository path. SSH uses the 1Password agent
+and the generated files under `~/.ssh/1Password/`. 1Password's Bookmarks config
+maps host-and-user pairs to keys. The chezmoi-generated companion file remains
+necessary because it also supplies default users and alias-to-host mappings,
+including custom hostnames and ports.
+
+macOS uses 1Password's application socket and signing program. Linux uses
+`~/.1password/agent.sock`; Git's default `ssh-keygen` signer uses that socket.
+Linux therefore requires the native 1Password installation, an enabled SSH
+agent, Git 2.34 or newer, and compatible OpenSSH signing support. Validate SSH
+authentication and a signed disposable commit on each Linux machine before
+relying on it.
+
+## Personal-only GPG
+
+The personal profile installs GnuPG, pinentry-mac, and GPG Suite, exports
+`GNUPGHOME`, manages the three known GPG configuration files, and imports the
+personal private key. A work render removes only those previously managed
+configuration files and contains no personal GPG retrieval command. It never
+removes the GPG home directory because that directory may contain unmanaged keys
+or data.
 
 ## Choosing a chezmoi mechanism
 
@@ -93,8 +138,8 @@ References:
 
 The shared layer contains portable, non-secret preferences such as the XDG base
 directory layout, shell behavior, aliases, editor configuration, and common tool
-settings. Shared files may use profile fragments for identity or authentication,
-but the shared fragment itself must not contain those values.
+settings. Profile-specific identity and signing values are rendered only from
+the active profile's machine-local data.
 
 ### Personal machine profile
 
@@ -104,8 +149,8 @@ and opinionated macOS configuration.
 ### Work machine profile
 
 The work profile may use the same XDG layout and shared development environment,
-but must not retrieve, store, import, or expose personal secret credentials.
-The work profile configures only its work identity and public SSH key.
+but must not retrieve, store, import, or expose personal GPG material. It
+configures only its work identity and work SSH signing public key.
 
 ## XDG migrations and removal
 
@@ -119,6 +164,11 @@ The current intended migrations are:
 - `~/.zprofile` to `~/.config/zsh/.zprofile`, after `~/.zshenv` sets `ZDOTDIR`;
 - `~/.zsh_history` to `~/.local/state/zsh/history`;
 - removal of `~/.zsh_sessions` after Apple shell sessions are disabled.
+
+Temporary removal sources also clean up the superseded Git profile fragments
+and public-key targets (`personal`, `work`, `work_allowed_signers`,
+`keys/personal.pub`, and `keys/work.pub`). Remove those migration markers only
+after every managed machine has crossed this migration.
 
 A `remove_` source is not a permanent substitute for an unreviewed migration. It
 should remain only when absence of the target is an intentional invariant on all

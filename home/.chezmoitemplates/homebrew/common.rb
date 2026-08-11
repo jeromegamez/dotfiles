@@ -18,7 +18,6 @@ brew "forgit" # Interactive Git commands powered by fzf
 brew "gh" # GitHub command-line tool
 brew "git" # Distributed revision control system
 brew "go-task/tap/go-task", trusted: true # Task is a task runner/build tool that aims to be simpler and easier to use
-brew "gnupg" # GNU Pretty Good Privacy (PGP) package
 brew "gnu-tar" # GNU version of the tar archiving utility
 brew "jq" # Lightweight and flexible command-line JSON processor
 brew "lazygit" # Terminal UI for Git
@@ -26,7 +25,6 @@ brew "make" # Utility for directing compilation
 brew "mas" # Mac App Store command-line interface
 brew "mise" # Polyglot runtime manager
 brew "neovim" # Ambitious Vim-fork focused on extensibility and agility
-brew "pinentry-mac" # Pinentry for GPG on Mac
 brew "poppler" # PDF rendering library
 brew "ripgrep" # Search tool like grep and The Silver Searcher
 brew "rmlint" # Extremely fast tool to remove dupes and other lint from your filesystem
@@ -54,7 +52,6 @@ cask "font-maple-mono-nf" # https://font.subf.dev/en/
 cask "1password" # Password manager that keeps all passwords secure behind one password
 cask "1password-cli" # Command-line interface for 1Password
 cask "ghostty" # Terminal emulator that uses platform-native UI and GPU acceleration
-cask "gpg-suite-no-mail" # GPG Suite (without GPG Mail)
 cask "karabiner-elements" # Keyboard customizer
 cask "mole-app" # Deep clean, analyze, and optimize app
 cask "openlogi" # Local-first alternative to Logitech Options+ for HID++ devices

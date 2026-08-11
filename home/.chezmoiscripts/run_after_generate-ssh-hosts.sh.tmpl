@@ -2,10 +2,10 @@
 
 set -euo pipefail
 
-account="{{ .onepasswordAccount }}"
+account={{ .onepasswordAccount | quote }}
 out="${HOME}/.ssh/1Password/generated-hosts.conf"
 tmp="$(mktemp "${TMPDIR:-/tmp}/generated-hosts.XXXXXX")"
-helper="{{ .chezmoi.sourceDir }}/private_dot_config/chezmoi/scripts/generate_ssh_hosts.py"
+helper={{ joinPath .chezmoi.sourceDir "private_dot_config/chezmoi/scripts/generate_ssh_hosts.py" | quote }}
 trap 'rm -f "$tmp"' EXIT
 
 op --account "$account" --format json item list --categories "SSH Key" |

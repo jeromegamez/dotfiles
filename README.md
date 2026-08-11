@@ -16,8 +16,9 @@ The setup targets Apple Silicon Macs and assumes Homebrew is installed at
   Store applications from a generated Brewfile.
 - **mise** provides the Node.js and Python versions used from the shell.
 - **uv** manages Python projects while using mise-provided Python runtimes.
-- **1Password CLI** supplies secret values, the GPG key, and generated SSH host
-  configuration. Secrets are not stored in this repository.
+- **1Password CLI** supplies secret values, the personal GPG key, and generated
+  SSH host configuration. Private SSH keys remain in the 1Password SSH agent.
+  Secrets are not stored in this repository.
 - **Lifecycle scripts** install supporting tools, configure the login shell,
   and apply selected macOS defaults and security settings.
 
@@ -31,9 +32,10 @@ During initialization, [`home/.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl)
 prompts once for:
 
 - a `personal` or `work` package profile;
-- the Git commit email and public SSH key for the selected profile;
-- a 1Password account and the reference to one permissionless GitHub API
-  rate-limit PAT.
+- the active profile's Git commit email;
+- on work, the public key used for SSH commit and tag signing;
+- a 1Password account and the reference to one low-privilege GitHub API PAT for
+  public-data readers and rate-limit elevation.
 
 The answers are stored in chezmoi's machine-local configuration, not in the
 repository. Prompt for them again with:
@@ -46,9 +48,17 @@ See [`MACHINE-PROFILES.md`](MACHINE-PROFILES.md) for the profile boundaries,
 credential rules, XDG migration policy, and the chezmoi mechanisms used to keep
 machine-specific behavior centralized.
 
-Git repositories under `~/Code/personal/` and `~/Code/work/` automatically use
-their respective identity, authentication key, and signing method only when the
-matching machine profile is selected.
+The selected profile supplies the default Git identity and signing method
+globally: personal uses GPG and work uses an SSH key held by 1Password. SSH
+authentication is selected separately by SSH host configuration and 1Password
+Bookmarks. Repositories under `~/Code/reference/`, the opposite profile's
+`~/Code/` tree, and the chezmoi source on work receive an empty identity guard.
+
+Organize repositories by trust profile and then forge, for example
+`~/Code/personal/github.com/owner/repository`,
+`~/Code/work/gitlab.com/group/repository`, and
+`~/Code/reference/codeberg.org/owner/repository`. Forge directories organize
+repositories; they do not select identity or credentials.
 
 ## Repository layout
 

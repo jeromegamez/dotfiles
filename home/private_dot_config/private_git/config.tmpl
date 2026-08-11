@@ -1,17 +1,49 @@
 [user]
-    useconfigonly = true
-
-{{- if .personalGitEnabled }}
-[includeIf "gitdir:~/Code/personal/"]
-    path = ~/.config/git/personal
-
-[includeIf "gitdir:~/.local/share/chezmoi/"]
-    path = ~/.config/git/personal
+    name = {{ .identity.name | quote }}
+    email = {{ .email | quote }}
+    useConfigOnly = true
+{{- if .personal }}
+    signingKey = {{ .identity.personal.gpgSigningKey | quote }}
+{{- else if .work }}
+    signingKey = {{ joinPath .chezmoi.homeDir ".config/git/keys/work-signing.pub" | quote }}
 {{- end }}
 
-{{- if .workGitEnabled }}
+[commit]
+    gpgSign = true
+
+[gpg]
+{{- if .personal }}
+    format = openpgp
+{{- else if .work }}
+    format = ssh
+{{- end }}
+
+{{- if .work }}
+[gpg "ssh"]
+    allowedSignersFile = {{ joinPath .chezmoi.homeDir ".config/git/allowed_signers" | quote }}
+{{- if eq .chezmoi.os "darwin" }}
+    program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+{{- end }}
+{{- end }}
+
+[tag]
+    forceSignAnnotated = true
+    gpgSign = true
+    sort = version:refname
+
+[includeIf "gitdir:~/Code/reference/"]
+    path = ~/.config/git/no-identity
+{{- if .personal }}
+
 [includeIf "gitdir:~/Code/work/"]
-    path = ~/.config/git/work
+    path = ~/.config/git/no-identity
+{{- else if .work }}
+
+[includeIf "gitdir:~/Code/personal/"]
+    path = ~/.config/git/no-identity
+
+[includeIf "gitdir:~/.local/share/chezmoi/"]
+    path = ~/.config/git/no-identity
 {{- end }}
 
 [alias]
@@ -89,6 +121,3 @@
 
 [pack]
     allowPackReuse = multi
-
-[tag]
-    sort = version:refname

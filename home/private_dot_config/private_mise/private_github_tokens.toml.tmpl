@@ -1,2 +1,3 @@
+# Shared low-privilege PAT for public GitHub API reads and rate-limit elevation.
 [tokens."github.com"]
 token = {{ onepasswordRead .githubRateLimitTokenReference .onepasswordAccount | trim | quote }}
