@@ -10,3 +10,5 @@ brew "tfautomv" # Generate Terraform moved blocks automatically for painless ref
 
 cask "mongodb/brew/mongodb-compass", trusted: true # Interactive tool for analyzing MongoDB dataa
 cask "terraform-linters/tap/tflint", trusted: true # Pluggable Terraform linter
+cask "slack" # Team communication and collaboration software
+cask "yaak" # REST, GraphQL and gRPC client

@@ -8,7 +8,6 @@ brew "restic" # Fast, efficient and secure backup program
 brew "streamrip" # Scriptable music downloader for Qobuz, Tidal, SoundCloud, and Deezer
 brew "yt-dlp" # Feature-rich command-line audio/video downloader
 
-cask "rokartur/betteraudio/betteraudio", trusted: true # Audio processing tool for macOS
 cask "carbon-copy-cloner" # Hard disk backup and cloning utility
 cask "cardhop" # Contacts manager
 cask "chatgpt" # ChatGPT desktop app with Codex

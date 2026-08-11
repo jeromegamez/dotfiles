@@ -57,13 +57,11 @@ cask "1password-cli" # Command-line interface for 1Password
 cask "ghostty" # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "gpg-suite-no-mail" # GPG Suite (without GPG Mail)
 cask "karabiner-elements" # Keyboard customizer
-cask "logi-options+" # Software for Logitech devices
+cask "openlogi" # Local-first alternative to Logitech Options+ for HID++ devices
 cask "orbstack" # Replacement for Docker Desktop
 cask "raycast" # Control your tools with a few keystrokes
-cask "slack" # Team communication and collaboration software
 cask "sublime-merge" # Git client
 cask "thaw" # Menu bar manager
-cask "yaak" # REST, GraphQL and gRPC client
 cask "zed" # Multiplayer code editor
 cask "zen" # Gecko based web browser
 
