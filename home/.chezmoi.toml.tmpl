@@ -22,8 +22,8 @@
     "Work SSH public key for Git commit and tag signing"
     | trim
 -}}
-{{- if not (or (hasPrefix "ssh-" $workGitSigningPublicKey) (hasPrefix "ecdsa-" $workGitSigningPublicKey) (hasPrefix "sk-" $workGitSigningPublicKey)) -}}
-{{- fail "Work Git signing public key must use an OpenSSH public key format" -}}
+{{- if not (or (hasPrefix "ssh-ed25519 " $workGitSigningPublicKey) (hasPrefix "ssh-rsa " $workGitSigningPublicKey)) -}}
+{{- fail "Work Git signing public key must be an Ed25519 or RSA OpenSSH public key supported by 1Password" -}}
 {{- end -}}
 {{- end -}}
 
