@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+brew={{ joinPath .homebrewPrefix "bin" "brew" | quote }}
+
+legacy_formulae=(
+    gnupg
+    pinentry-mac
+)
+
+for formula in "${legacy_formulae[@]}"; do
+    if "$brew" list --formula "$formula" >/dev/null 2>&1; then
+        "$brew" uninstall --formula "$formula"
+    fi
+done
+
+legacy_cask=gpg-suite-no-mail
+if "$brew" list --cask "$legacy_cask" >/dev/null 2>&1; then
+    "$brew" uninstall --cask "$legacy_cask"
+fi
+
+echo "Legacy personal GPG packages removed from the work profile"

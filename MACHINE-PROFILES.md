@@ -107,6 +107,13 @@ configuration files and contains no personal GPG retrieval command. It never
 removes the GPG home directory because that directory may contain unmanaged keys
 or data.
 
+A work-only, run-once migration removes the `gnupg`, `pinentry-mac`, and
+`gpg-suite-no-mail` packages that the old common Brewfile may have installed.
+The migration names only those packages, does not force removal when another
+installed formula depends on them, and does not touch GPG keys or configuration.
+Remove the migration script after every existing work machine has crossed this
+change.
+
 ## Choosing a chezmoi mechanism
 
 Use the narrowest mechanism that expresses the desired difference:
