@@ -40,6 +40,10 @@ repository. Prompt for them again with:
 chezmoi init --prompt
 ```
 
+See [`MACHINE-PROFILES.md`](MACHINE-PROFILES.md) for the profile boundaries,
+credential rules, XDG migration policy, and the chezmoi mechanisms used to keep
+machine-specific behavior centralized.
+
 ## Repository layout
 
 | Path | Purpose |
