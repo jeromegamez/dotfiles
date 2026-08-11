@@ -4,6 +4,9 @@ set -euo pipefail
 
 umask 077
 
+export GNUPGHOME="${XDG_CONFIG_HOME:-${HOME}/.config}/gnupg"
+install -d -m 700 "$GNUPGHOME"
+
 temp_dir=""
 cleanup() {
     if [[ -n "${key_path:-}" ]]; then

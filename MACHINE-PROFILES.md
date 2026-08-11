@@ -100,12 +100,13 @@ relying on it.
 
 ## Personal-only GPG
 
-The personal profile installs GnuPG, pinentry-mac, and GPG Suite, exports
-`GNUPGHOME`, manages the three known GPG configuration files, and imports the
-personal private key. A work render removes only those previously managed
-configuration files and contains no personal GPG retrieval command. It never
-removes the GPG home directory because that directory may contain unmanaged keys
-or data.
+On macOS, the personal profile installs GnuPG, pinentry-mac, and GPG Suite. On
+macOS and Linux, it exports `GNUPGHOME`, manages the three known GPG
+configuration files, and imports the personal private key into that managed GPG
+home. Linux requires GnuPG and the 1Password CLI to be installed before applying
+the profile. A work render removes only those previously managed configuration
+files and contains no personal GPG retrieval command. It never removes the GPG
+home directory because that directory may contain unmanaged keys or data.
 
 ## Choosing a chezmoi mechanism
 
