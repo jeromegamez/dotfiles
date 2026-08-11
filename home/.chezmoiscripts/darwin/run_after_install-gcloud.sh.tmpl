@@ -7,6 +7,33 @@ gcloud_bin=""
 temp_parent="${TMPDIR:-/tmp}"
 temp_parent="${temp_parent%/}"
 
+is_verbose() {
+    [[ -n "${CHEZMOI_VERBOSE:-}" ]]
+}
+
+log_verbose() {
+    if is_verbose; then
+        echo "$@"
+    fi
+}
+
+run_with_output_if_verbose() {
+    local output
+    local status
+
+    if is_verbose; then
+        "$@"
+    elif output=$("$@" 2>&1); then
+        return 0
+    else
+        status=$?
+        if [[ -n "$output" ]]; then
+            printf '%s\n' "$output" >&2
+        fi
+        return "$status"
+    fi
+}
+
 cleanup() {
     if [[ -n "${temp_dir:-}" && "$temp_dir" == "$temp_parent"/chezmoi-gcloud.* && -d "$temp_dir" ]]; then
         rm -rf -- "$temp_dir"
@@ -25,17 +52,17 @@ DOWNLOAD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-
 if command -v gcloud >/dev/null 2>&1; then
     gcloud_bin="$(command -v gcloud)"
 else
-    echo "Installing Google Cloud CLI..."
+    log_verbose "Installing Google Cloud CLI..."
     temp_dir=$(mktemp -d "$temp_parent/chezmoi-gcloud.XXXXXX")
     archive_path="${temp_dir}/google-cloud-cli.tar.gz"
 
-    echo "Downloading Google Cloud SDK..."
+    log_verbose "Downloading Google Cloud SDK..."
     curl -fsSL "$DOWNLOAD_URL" -o "$archive_path"
 
-    echo "Verifying archive..."
+    log_verbose "Verifying archive..."
     tar -tzf "$archive_path" >/dev/null
 
-    echo "Extracting archive..."
+    log_verbose "Extracting archive..."
     tar -xzf "$archive_path" -C "$temp_dir"
 
     sdk_source_dir=$(find "$temp_dir" -maxdepth 1 -type d -name 'google-cloud-*' | head -n 1)
@@ -44,7 +71,7 @@ else
         exit 1
     fi
 
-    echo "Running installation script..."
+    log_verbose "Running installation script..."
     bash "$sdk_source_dir/install.sh" \
         --usage-reporting false \
         --path-update false \
@@ -58,8 +85,8 @@ else
         exit 1
     fi
 
-    echo "✓ Google Cloud CLI installed successfully"
+    log_verbose "✓ Google Cloud CLI installed successfully"
 fi
 
-echo "Updating Google Cloud CLI and components..."
-"$gcloud_bin" components update --quiet
+log_verbose "Updating Google Cloud CLI and components..."
+run_with_output_if_verbose "$gcloud_bin" components update --quiet
