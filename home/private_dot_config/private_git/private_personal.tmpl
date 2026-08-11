@@ -1,0 +1,17 @@
+[user]
+    name = {{ .identity.name | quote }}
+    email = {{ .personalEmail | quote }}
+    signingkey = {{ .identity.personal.gpgSigningKey | quote }}
+
+[commit]
+    gpgsign = true
+
+[core]
+    sshCommand = {{ printf "ssh -i %s -o IdentitiesOnly=yes" (joinPath .chezmoi.homeDir ".config/git/keys/personal.pub") | quote }}
+
+[gpg]
+    format = openpgp
+
+[tag]
+    forceSignAnnotated = true
+    gpgsign = true

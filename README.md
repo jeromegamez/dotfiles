@@ -31,7 +31,10 @@ During initialization, [`home/.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl)
 prompts once for:
 
 - a `personal` or `work` package profile;
-- the Git commit email for that machine.
+- personal and work Git commit emails;
+- the public SSH key for each Git context;
+- a 1Password account and the reference to one permissionless GitHub API
+  rate-limit PAT.
 
 The answers are stored in chezmoi's machine-local configuration, not in the
 repository. Prompt for them again with:
@@ -43,6 +46,10 @@ chezmoi init --prompt
 See [`MACHINE-PROFILES.md`](MACHINE-PROFILES.md) for the profile boundaries,
 credential rules, XDG migration policy, and the chezmoi mechanisms used to keep
 machine-specific behavior centralized.
+
+Git repositories under `~/Code/personal/` and `~/Code/work/` automatically use
+their respective identity, authentication key, and signing method. Both
+contexts can coexist on either machine profile.
 
 ## Repository layout
 

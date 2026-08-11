@@ -6,7 +6,31 @@
 {{- $work := eq $profile "work" -}}
 {{- $personal := eq $profile "personal" -}}
 
-{{- $email := promptStringOnce . "email" "Email" -}}
+{{- $personalEmail := promptStringOnce . "personalEmail" "Personal Git email" | trim -}}
+{{- $workEmail := promptStringOnce . "workEmail" "Work Git email" | trim -}}
+{{- $personalSshPublicKey := promptStringOnce
+    . "personalSshPublicKey"
+    "Personal SSH authentication public key"
+    | trim
+-}}
+{{- $workSshPublicKey := promptStringOnce
+    . "workSshPublicKey"
+    "Work SSH authentication and signing public key"
+    | trim
+-}}
+{{- if or (eq $personalEmail "") (eq $workEmail "") -}}
+{{- fail "Personal and work Git emails must not be empty" -}}
+{{- end -}}
+{{- if not (or (hasPrefix "ssh-" $personalSshPublicKey) (hasPrefix "ecdsa-" $personalSshPublicKey) (hasPrefix "sk-" $personalSshPublicKey)) -}}
+{{- fail "Personal SSH public key must use an OpenSSH public key format" -}}
+{{- end -}}
+{{- if not (or (hasPrefix "ssh-" $workSshPublicKey) (hasPrefix "ecdsa-" $workSshPublicKey) (hasPrefix "sk-" $workSshPublicKey)) -}}
+{{- fail "Work SSH public key must use an OpenSSH public key format" -}}
+{{- end -}}
+{{- $email := $personalEmail -}}
+{{- if $work -}}
+{{- $email = $workEmail -}}
+{{- end -}}
 {{- $onepasswordAccount := promptStringOnce
     . "onepasswordAccount"
     (printf "1Password account ID or sign-in address for the %s profile" $profile)
@@ -25,6 +49,10 @@
     work = {{ $work }}
     personal = {{ $personal }}
     email = {{ $email | quote }}
+    personalEmail = {{ $personalEmail | quote }}
+    workEmail = {{ $workEmail | quote }}
+    personalSshPublicKey = {{ $personalSshPublicKey | quote }}
+    workSshPublicKey = {{ $workSshPublicKey | quote }}
     onepasswordAccount = {{ $onepasswordAccount | quote }}
     githubRateLimitTokenReference = {{ $githubRateLimitTokenReference | quote }}
 {{- if eq .chezmoi.os "darwin" }}

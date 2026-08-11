@@ -1,10 +1,11 @@
 [user]
-    name = {{ .identity.name | quote }}
-    email = {{ .email | quote }}
     useconfigonly = true
-{{- if .personal }}
-    signingkey = {{ .identity.personal.gpgSigningKey | quote }}
-{{- end }}
+
+[includeIf "gitdir:~/Code/personal/"]
+    path = ~/.config/git/personal
+
+[includeIf "gitdir:~/Code/work/"]
+    path = ~/.config/git/work
 
 [alias]
     me = log --pretty=format:\"%ad (%h) %s\" --date=short --all --no-merges --author={{ .identity.name | quote }}
@@ -19,11 +20,6 @@
 
 [column]
     ui = auto
-
-{{- if .personal }}
-[commit]
-    gpgsign = true
-{{- end }}
 
 [core]
     excludesfile = ~/.config/git/ignore
@@ -88,8 +84,4 @@
     allowPackReuse = multi
 
 [tag]
-{{- if .personal }}
-    forceSignAnnotated = true
-    gpgsign = true
-{{- end }}
     sort = version:refname
