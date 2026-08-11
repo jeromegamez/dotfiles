@@ -57,7 +57,7 @@ while IFS= read -r -d '' file; do
 
     if [[ "$file" == *.tmpl ]]; then
         echo "Linting rendered template: $file"
-        chezmoi execute-template \
+        chezmoi --verbose execute-template \
             --config /dev/null \
             --config-format toml \
             --source "$repo_root/home" \
