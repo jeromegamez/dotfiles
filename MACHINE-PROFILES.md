@@ -20,6 +20,12 @@ the primary profile selectors. Static, non-secret policy belongs in
 `.chezmoidata`; prompted, computed, and secret-backed values belong in the
 machine-local configuration or the target template that consumes them.
 
+Each machine also records a 1Password account and a secret reference for its
+GitHub PAT. The reference, not the token, is stored in chezmoi's machine-local
+configuration. mise resolves it on demand, while the Composer auth template
+resolves the same PAT into its private global `auth.json`. The reference may
+point to different 1Password accounts and items on personal and work machines.
+
 ## Choosing a chezmoi mechanism
 
 Use the narrowest mechanism that expresses the desired difference:

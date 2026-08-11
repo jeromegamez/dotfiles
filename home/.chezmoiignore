@@ -4,7 +4,3 @@
 
 .local/share/oh-my-zsh/cache/**
 .local/share/zsh/**
-
-{{ if .work }}
-.config/composer/auth.json
-{{ end }}

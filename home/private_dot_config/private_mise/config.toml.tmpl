@@ -2,3 +2,6 @@
 codex = "latest"
 node = [{{ .versions.node.default | quote }}, {{ .versions.node.pi | quote }}]
 python = {{ .versions.python.default | quote }}
+
+[settings.github]
+credential_command = {{ printf "op read --account %s %s" (.onepasswordAccount | quote) (.githubTokenReference | quote) | quote }}
