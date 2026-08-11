@@ -107,15 +107,6 @@ configuration files and contains no personal GPG retrieval command. It never
 removes the GPG home directory because that directory may contain unmanaged keys
 or data.
 
-A work-only, run-once migration removes the `gnupg`, `pinentry-mac`, and
-`gpg-suite-no-mail` packages that the old common Brewfile may have installed.
-The migration names only those packages, does not force removal when another
-installed formula depends on them, and does not touch GPG keys or configuration.
-If Homebrew reports installed dependents, the migration warns, retains that
-formula, and continues with the remaining packages. Any other uninstall failure
-remains fatal so chezmoi can retry the migration. Remove the migration script
-after every existing work machine has crossed this change.
-
 ## Choosing a chezmoi mechanism
 
 Use the narrowest mechanism that expresses the desired difference:
@@ -173,11 +164,6 @@ The current intended migrations are:
 - `~/.zprofile` to `~/.config/zsh/.zprofile`, after `~/.zshenv` sets `ZDOTDIR`;
 - `~/.zsh_history` to `~/.local/state/zsh/history`;
 - removal of `~/.zsh_sessions` after Apple shell sessions are disabled.
-
-Temporary removal sources also clean up the superseded Git profile fragments
-and public-key targets (`personal`, `work`, `work_allowed_signers`,
-`keys/personal.pub`, and `keys/work.pub`). Remove those migration markers only
-after every managed machine has crossed this migration.
 
 A `remove_` source is not a permanent substitute for an unreviewed migration. It
 should remain only when absence of the target is an intentional invariant on all

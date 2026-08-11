@@ -4,9 +4,6 @@
 {{ if .work }}
 .chezmoiscripts/darwin/import-gpg-key.sh
 {{ end }}
-{{ if .personal }}
-.chezmoiscripts/darwin/remove-legacy-personal-gpg-packages.sh
-{{ end }}
 
 .local/share/oh-my-zsh/cache/**
 .local/share/zsh/**
