@@ -16,11 +16,12 @@ managed machine. In particular, shared configuration must not:
   part of the selected profile.
 
 The `personal` and `work` values in the machine-local chezmoi configuration are
-the package and machine-policy selectors. They do not select a Git identity,
-because both Git contexts may be used on the same computer. Static, non-secret
-policy belongs in `.chezmoidata`; prompted, computed, and secret-backed values
-belong in the machine-local configuration or the target template that consumes
-them.
+the package and machine-policy selectors. Each Git context is enabled
+independently, so both may be used on the same computer. The matching Git
+context defaults to enabled and the other defaults to disabled. Static,
+non-secret policy belongs in `.chezmoidata`; prompted, computed, and
+secret-backed values belong in the machine-local configuration or the target
+template that consumes them.
 
 Each machine also records a 1Password account and a secret reference for its
 GitHub API rate-limit PAT. The reference, not the token, is stored in chezmoi's
@@ -34,31 +35,34 @@ separately.
 
 ## Git contexts
 
-Git identity is selected by repository location, independently of the machine
-profile:
+For each enabled context, Git identity is selected by repository location:
 
 - repositories under `~/Code/personal/` use the personal email, personal SSH
   authentication key, and GPG signing key;
-- the chezmoi source repository stays at its standard XDG location under
-  `~/.local/share/chezmoi/` and also uses the personal Git context;
+- when the personal context is enabled, the chezmoi source repository stays at
+  its standard XDG location under `~/.local/share/chezmoi/` and also uses that
+  context;
 - repositories under `~/Code/work/` use the work email and one work SSH key for
   both authentication and SSH commit signing;
 - repositories outside those directories have no global name or email, so
   `user.useConfigOnly` prevents an accidental commit with the wrong identity.
 
-The emails and public SSH keys are machine-local chezmoi data. Public key files
-are rendered under `~/.config/git/keys/`; their corresponding private keys stay
-in the 1Password SSH agent. Git's conditional includes set an explicit public
-key with `IdentitiesOnly=yes`, ensuring that SSH offers the intended agent key
-when multiple identities are available. The directories do not need to exist
-when chezmoi is applied.
+Only enabled contexts prompt for an email and public SSH key. These values are
+machine-local chezmoi data. Public key files are rendered under
+`~/.config/git/keys/`; their corresponding private keys stay in the 1Password
+SSH agent. Git's conditional includes set an explicit public key with
+`IdentitiesOnly=yes`, ensuring that SSH offers the intended agent key when
+multiple identities are available. The directories do not need to exist when
+chezmoi is applied. On the next apply, disabling a previously enabled context
+removes its managed fragment and public key file.
 
 The work SSH public key must be registered as both an authentication key and a
 signing key with the work GitHub account. The personal SSH public key is used
 only for authentication; personal commits continue to use GPG signing.
-The personal machine profile imports the personal GPG private key automatically.
-On a work-profile machine, the personal Git context is configured but signing
-personal commits requires deliberately installing that private key separately.
+The personal machine profile imports the personal GPG private key automatically
+when its Git context is enabled. On a work-profile machine, enabling the
+personal Git context configures its public values, but signing personal commits
+requires deliberately installing that private key separately.
 
 ## Choosing a chezmoi mechanism
 
@@ -103,8 +107,8 @@ and opinionated macOS configuration.
 
 The work profile may use the same XDG layout and shared development environment,
 but must not retrieve, store, import, or expose personal secret credentials.
-Public identity values and public SSH keys for both Git contexts may coexist so
-the directory-based Git configuration remains deterministic.
+Public identity values and public SSH keys for enabled Git contexts may coexist
+so the directory-based Git configuration remains deterministic.
 
 ## XDG migrations and removal
 

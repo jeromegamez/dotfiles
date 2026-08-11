@@ -18,6 +18,8 @@ personal_lint_data='{
     "personal": true,
     "name": "Test User",
     "email": "test@example.invalid",
+    "personalGitEnabled": true,
+    "workGitEnabled": false,
     "onepasswordAccount": "test",
     "githubRateLimitTokenReference": "op://test/test/token",
     "homebrewPrefix": "/opt/homebrew",
@@ -32,6 +34,8 @@ work_lint_data='{
     "personal": false,
     "name": "Test User",
     "email": "test@example.invalid",
+    "personalGitEnabled": false,
+    "workGitEnabled": true,
     "onepasswordAccount": "test",
     "githubRateLimitTokenReference": "op://test/test/token",
     "homebrewPrefix": "/opt/homebrew"

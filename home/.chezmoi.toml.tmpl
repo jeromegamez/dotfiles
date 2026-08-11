@@ -6,29 +6,58 @@
 {{- $work := eq $profile "work" -}}
 {{- $personal := eq $profile "personal" -}}
 
-{{- $personalEmail := promptStringOnce . "personalEmail" "Personal Git email" | trim -}}
-{{- $workEmail := promptStringOnce . "workEmail" "Work Git email" | trim -}}
-{{- $personalSshPublicKey := promptStringOnce
+{{- $personalGitEnabled := promptBoolOnce
+    . "personalGitEnabled"
+    "Configure personal Git context on this machine"
+    $personal
+-}}
+{{- $workGitEnabled := promptBoolOnce
+    . "workGitEnabled"
+    "Configure work Git context on this machine"
+    $work
+-}}
+{{- if not (or $personalGitEnabled $workGitEnabled) -}}
+{{- fail "At least one Git context must be enabled" -}}
+{{- end -}}
+
+{{- $personalEmail := "" -}}
+{{- $personalSshPublicKey := "" -}}
+{{- if $personalGitEnabled -}}
+{{- $personalEmail = promptStringOnce . "personalEmail" "Personal Git email" | trim -}}
+{{- $personalSshPublicKey = promptStringOnce
     . "personalSshPublicKey"
     "Personal SSH authentication public key"
     | trim
 -}}
-{{- $workSshPublicKey := promptStringOnce
-    . "workSshPublicKey"
-    "Work SSH authentication and signing public key"
-    | trim
--}}
-{{- if or (eq $personalEmail "") (eq $workEmail "") -}}
-{{- fail "Personal and work Git emails must not be empty" -}}
+{{- if eq $personalEmail "" -}}
+{{- fail "Personal Git email must not be empty" -}}
 {{- end -}}
 {{- if not (or (hasPrefix "ssh-" $personalSshPublicKey) (hasPrefix "ecdsa-" $personalSshPublicKey) (hasPrefix "sk-" $personalSshPublicKey)) -}}
 {{- fail "Personal SSH public key must use an OpenSSH public key format" -}}
 {{- end -}}
+{{- end -}}
+
+{{- $workEmail := "" -}}
+{{- $workSshPublicKey := "" -}}
+{{- if $workGitEnabled -}}
+{{- $workEmail = promptStringOnce . "workEmail" "Work Git email" | trim -}}
+{{- $workSshPublicKey = promptStringOnce
+    . "workSshPublicKey"
+    "Work SSH authentication and signing public key"
+    | trim
+-}}
+{{- if eq $workEmail "" -}}
+{{- fail "Work Git email must not be empty" -}}
+{{- end -}}
 {{- if not (or (hasPrefix "ssh-" $workSshPublicKey) (hasPrefix "ecdsa-" $workSshPublicKey) (hasPrefix "sk-" $workSshPublicKey)) -}}
 {{- fail "Work SSH public key must use an OpenSSH public key format" -}}
 {{- end -}}
+{{- end -}}
+
 {{- $email := $personalEmail -}}
-{{- if $work -}}
+{{- if and $work $workGitEnabled -}}
+{{- $email = $workEmail -}}
+{{- else if and $personal (not $personalGitEnabled) -}}
 {{- $email = $workEmail -}}
 {{- end -}}
 {{- $onepasswordAccount := promptStringOnce
@@ -49,10 +78,16 @@
     work = {{ $work }}
     personal = {{ $personal }}
     email = {{ $email | quote }}
+    personalGitEnabled = {{ $personalGitEnabled }}
+    workGitEnabled = {{ $workGitEnabled }}
+{{- if $personalGitEnabled }}
     personalEmail = {{ $personalEmail | quote }}
-    workEmail = {{ $workEmail | quote }}
     personalSshPublicKey = {{ $personalSshPublicKey | quote }}
+{{- end }}
+{{- if $workGitEnabled }}
+    workEmail = {{ $workEmail | quote }}
     workSshPublicKey = {{ $workSshPublicKey | quote }}
+{{- end }}
     onepasswordAccount = {{ $onepasswordAccount | quote }}
     githubRateLimitTokenReference = {{ $githubRateLimitTokenReference | quote }}
 {{- if eq .chezmoi.os "darwin" }}

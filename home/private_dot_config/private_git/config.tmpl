@@ -1,14 +1,18 @@
 [user]
     useconfigonly = true
 
+{{- if .personalGitEnabled }}
 [includeIf "gitdir:~/Code/personal/"]
     path = ~/.config/git/personal
 
 [includeIf "gitdir:~/.local/share/chezmoi/"]
     path = ~/.config/git/personal
+{{- end }}
 
+{{- if .workGitEnabled }}
 [includeIf "gitdir:~/Code/work/"]
     path = ~/.config/git/work
+{{- end }}
 
 [alias]
     me = log --pretty=format:\"%ad (%h) %s\" --date=short --all --no-merges --author={{ .identity.name | quote }}

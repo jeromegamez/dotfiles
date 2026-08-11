@@ -1,6 +1,6 @@
 auto-key-retrieve
 no-emit-version
-{{- if .personal }}
+{{- if .personalGitEnabled }}
 default-key {{ .identity.personal.gpgSigningKey }}
 {{- end }}
 use-agent
