@@ -7,19 +7,23 @@
 {{- $personal := eq $profile "personal" -}}
 
 {{- $email := promptStringOnce . "email" "Git commit email" -}}
+{{- $onepasswordAccount := promptStringOnce
+    . "onepasswordAccount"
+    (printf "1Password account ID or sign-in address for the %s profile" $profile)
+-}}
 
 [data]
     profile = {{ $profile | quote }}
     work = {{ $work }}
     personal = {{ $personal }}
-    onepasswordAccount = "UM5PFDCXWRDOXA2MBGNTMSFJ24"
+    onepasswordAccount = {{ $onepasswordAccount | quote }}
 {{- if eq .chezmoi.os "darwin" }}
     homebrewPrefix = "/opt/homebrew"
 {{- end }}
 
 [data.credentials]
-    githubToken = {{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Avoid Rate Limits" .onepasswordAccount | trim | quote }}
-    githubComposerToken = {{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Composer" .onepasswordAccount | trim | quote }}
+    githubToken = {{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Avoid Rate Limits" $onepasswordAccount | trim | quote }}
+    githubComposerToken = {{ onepasswordRead "op://private/GitHub/Personal Access Tokens/Composer" $onepasswordAccount | trim | quote }}
 
 [data.git]
     email = {{ $email | quote }}
