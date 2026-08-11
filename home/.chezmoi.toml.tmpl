@@ -6,19 +6,8 @@
 {{- $work := eq $profile "work" -}}
 {{- $personal := eq $profile "personal" -}}
 
-{{- $personalGitEnabled := promptBoolOnce
-    . "personalGitEnabled"
-    "Configure personal Git context on this machine"
-    $personal
--}}
-{{- $workGitEnabled := promptBoolOnce
-    . "workGitEnabled"
-    "Configure work Git context on this machine"
-    $work
--}}
-{{- if not (or $personalGitEnabled $workGitEnabled) -}}
-{{- fail "At least one Git context must be enabled" -}}
-{{- end -}}
+{{- $personalGitEnabled := $personal -}}
+{{- $workGitEnabled := $work -}}
 
 {{- $personalEmail := "" -}}
 {{- $personalSshPublicKey := "" -}}
@@ -55,9 +44,7 @@
 {{- end -}}
 
 {{- $email := $personalEmail -}}
-{{- if and $work $workGitEnabled -}}
-{{- $email = $workEmail -}}
-{{- else if and $personal (not $personalGitEnabled) -}}
+{{- if $work -}}
 {{- $email = $workEmail -}}
 {{- end -}}
 {{- $onepasswordAccount := promptStringOnce

@@ -31,9 +31,7 @@ During initialization, [`home/.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl)
 prompts once for:
 
 - a `personal` or `work` package profile;
-- whether to enable the personal and work Git contexts, defaulting to the
-  machine's matching context;
-- the Git commit email and public SSH key for each enabled context;
+- the Git commit email and public SSH key for the selected profile;
 - a 1Password account and the reference to one permissionless GitHub API
   rate-limit PAT.
 
@@ -49,8 +47,8 @@ credential rules, XDG migration policy, and the chezmoi mechanisms used to keep
 machine-specific behavior centralized.
 
 Git repositories under `~/Code/personal/` and `~/Code/work/` automatically use
-their respective identity, authentication key, and signing method when that
-context is enabled. Both contexts can coexist on either machine profile.
+their respective identity, authentication key, and signing method only when the
+matching machine profile is selected.
 
 ## Repository layout
 
