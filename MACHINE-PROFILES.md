@@ -153,22 +153,22 @@ The work profile may use the same XDG layout and shared development environment,
 but must not retrieve, store, import, or expose personal GPG material. It
 configures only its work identity and work SSH signing public key.
 
-## XDG migrations and removal
+## XDG layout and removal
 
 Root-level files can be removed when they are deliberately replaced by managed
 XDG targets and the migration applies to every managed machine. Before removal,
 inspect and migrate any useful contents.
 
-The current intended migrations are:
+The repository enforces the following XDG layout:
 
 - `~/.gitconfig` to `~/.config/git/config`;
 - `~/.zprofile` to `~/.config/zsh/.zprofile`, after `~/.zshenv` sets `ZDOTDIR`;
 - `~/.zsh_history` to `~/.local/state/zsh/history`;
 - removal of `~/.zsh_sessions` after Apple shell sessions are disabled.
 
-A `remove_` source is not a permanent substitute for an unreviewed migration. It
-should remain only when absence of the target is an intentional invariant on all
-managed machines.
+The corresponding `remove_` sources remain because absence of these root-level
+targets is an intentional invariant on all managed machines. A new `remove_`
+source is not a substitute for inspecting and migrating useful contents first.
 
 ## Validation
 
