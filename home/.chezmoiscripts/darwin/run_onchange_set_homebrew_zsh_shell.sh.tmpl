@@ -6,6 +6,12 @@ TARGET_SHELL="{{ joinPath .homebrewPrefix "bin" "zsh" }}"
 SHELLS_FILE="/etc/shells"
 USER_NAME="$(id -un)"
 
+log_verbose() {
+    if [[ -n "${CHEZMOI_VERBOSE:-}" ]]; then
+        echo "$@"
+    fi
+}
+
 # Get actual login shell (more reliable than $SHELL)
 CURRENT_SHELL="$(dscl . -read "/Users/$USER_NAME" UserShell | awk '{print $2}')"
 
@@ -16,7 +22,7 @@ fi
 
 {{ if .work -}}
 if [[ "$CURRENT_SHELL" == "$TARGET_SHELL" ]]; then
-    echo "Login shell already set to $TARGET_SHELL"
+    log_verbose "Login shell already set to $TARGET_SHELL"
     exit 0
 fi
 
@@ -91,7 +97,7 @@ if grep -qxF "$TARGET_SHELL" "$SHELLS_FILE"; then
 fi
 
 if [[ "$CURRENT_SHELL" == "$TARGET_SHELL" && "$SHELLS_HAS_TARGET" == true ]]; then
-    echo "Shell already set to $TARGET_SHELL"
+    log_verbose "Shell already set to $TARGET_SHELL"
     exit 0
 fi
 
@@ -110,6 +116,6 @@ if [[ "$CURRENT_SHELL" != "$TARGET_SHELL" ]]; then
     chsh -s "$TARGET_SHELL"
     echo "Shell changed successfully. New login sessions use $TARGET_SHELL"
 else
-    echo "Login shell already set to $TARGET_SHELL"
+    log_verbose "Login shell already set to $TARGET_SHELL"
 fi
 {{ end -}}
