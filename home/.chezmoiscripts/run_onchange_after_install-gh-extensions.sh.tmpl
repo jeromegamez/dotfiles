@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+{{- if eq .chezmoi.os "darwin" }}
+gh_bin={{ joinPath .homebrewPrefix "bin" "gh" | quote }}
+{{- else }}
+gh_bin="$(command -v gh || true)"
+{{- end }}
+
+if [[ ! -x "$gh_bin" ]]; then
+    echo "Missing required GitHub CLI executable: ${gh_bin:-gh}" >&2
+    exit 1
+fi
+
+# Extension listing is local-only, but gh still requires an authentication
+# context. Supply a non-secret placeholder when no token is exported.
+installed_extensions="$(GH_TOKEN="${GH_TOKEN:-not-required}" "$gh_bin" extension list)"
+
+install_extension() {
+    local repository="$1"
+
+    if awk -F '\t' \
+        -v repository="$repository" \
+        '$2 == repository { found = 1 }
+         END { exit !found }' <<<"$installed_extensions"; then
+        return
+    fi
+
+    "$gh_bin" extension install "$repository"
+}
+
+{{- range .gh.extensions }}
+install_extension {{ . | quote }}
+{{- end }}
