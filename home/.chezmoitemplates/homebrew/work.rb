@@ -1,6 +1,5 @@
 ## Work
 
-brew "copilot-cli" # Brings the power of Copilot coding agent directly to your terminal
 brew "eksctl" # Simple command-line tool for creating clusters on Amazon EKS
 brew "helm" # Kubernetes package manager
 brew "keidarcy/tap/e1s", trusted: true # manage AWS ECS resources, with a focus on Fargate
@@ -9,6 +8,7 @@ brew "mongodb/brew/mongodb-database-tools", trusted: true # Standard utilities f
 brew "terraform-docs" # Tool to generate documentation from Terraform modules
 brew "tfautomv" # Generate Terraform moved blocks automatically for painless refactoring
 
+cask "copilot-cli" # Brings the power of Copilot coding agent directly to your terminal
 cask "github-copilot-app" # Native client for GitHub Copilot
 cask "intellij-idea" # Java IDE by JetBrains
 cask "mongodb-compass" # Interactive tool for analyzing MongoDB data
