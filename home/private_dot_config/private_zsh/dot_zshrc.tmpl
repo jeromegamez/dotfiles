@@ -7,6 +7,7 @@ fi
 
 # History configuration
 HISTFILE="$XDG_STATE_HOME"/zsh/history
+mkdir -p -m 700 "${HISTFILE:h}"
 HISTSIZE=200000 # Keep larger than SAVEHIST so duplicate expiry has room
 SAVEHIST=100000
 
