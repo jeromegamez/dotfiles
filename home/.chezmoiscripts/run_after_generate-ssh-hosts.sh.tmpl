@@ -4,6 +4,7 @@ set -euo pipefail
 
 account={{ .onepasswordAccount | quote }}
 out="${HOME}/.ssh/1Password/generated-hosts.conf"
+out_dir="${out%/*}"
 
 required_commands=(op jq python3)
 missing_commands=()
@@ -28,4 +29,5 @@ op --account "$account" --format json item list --categories "SSH Key" |
     jq -s '.' |
     python3 "$helper" >"$tmp"
 
+install -d -m 700 "$out_dir"
 install -m 600 "$tmp" "$out"
