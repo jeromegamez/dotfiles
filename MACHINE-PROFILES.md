@@ -104,9 +104,8 @@ On macOS, the personal profile installs GnuPG, pinentry-mac, and GPG Suite. On
 macOS and Linux, it exports `GNUPGHOME`, manages the three known GPG
 configuration files, and imports the personal private key into that managed GPG
 home. Linux requires GnuPG and the 1Password CLI to be installed before applying
-the profile. A work render removes only those previously managed configuration
-files and contains no personal GPG retrieval command. It never removes the GPG
-home directory because that directory may contain unmanaged keys or data.
+the profile. The work profile ignores these targets entirely and contains no
+personal GPG retrieval command.
 
 ## Choosing a chezmoi mechanism
 
@@ -151,7 +150,9 @@ and opinionated macOS configuration.
 
 The work profile may use the same XDG layout and shared development environment,
 but must not retrieve, store, import, or expose personal GPG material. It
-configures only its work identity and work SSH signing public key.
+configures only its work identity and work SSH signing public key. It also leaves
+the personal Composer configuration, Firebase service account, Google Cloud
+installation hook, and broad personal macOS policy hook unmanaged.
 
 ## XDG layout and removal
 
