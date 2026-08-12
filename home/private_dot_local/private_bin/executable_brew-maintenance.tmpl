@@ -16,7 +16,7 @@ echo "==> brew update"
 $brew_bin update
 
 echo "==> brew bundle install"
-HOMEBREW_CASK_OPTS=--no-quarantine $brew_bin bundle install --file="$brewfile"
+$brew_bin bundle install --file="$brewfile"
 
 echo "==> brew upgrade"
 $brew_bin upgrade

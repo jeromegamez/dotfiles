@@ -8,7 +8,7 @@ eval "$({{ joinPath .homebrewPrefix "bin" "brew" }} shellenv)" || true
 # chezmoi.toml hash: {{ include (joinPath .chezmoi.sourceDir ".chezmoi.toml.tmpl") | sha256sum }}
 
 brewfile="${XDG_CONFIG_HOME:-$HOME/.config}/homebrew/Brewfile"
-HOMEBREW_CASK_OPTS=--no-quarantine {{ joinPath .homebrewPrefix "bin" "brew" }} bundle install --file="$brewfile"
+{{ joinPath .homebrewPrefix "bin" "brew" }} bundle install --file="$brewfile"
 
 # Keep runtime dependencies available through Homebrew's opt paths without
 # exposing their generic commands ahead of mise-managed runtimes.
