@@ -1,8 +1,17 @@
 {{ if ne .chezmoi.os "darwin" }}
 .chezmoiscripts/darwin/**
 {{ end }}
+{{ if .personal }}
+.config/git/allowed_signers
+.config/git/keys/work-signing.pub
+{{ end }}
 {{ if .work }}
+.chezmoiscripts/darwin/install-gcloud.sh
+.chezmoiscripts/darwin/install-php-composer.sh
 .chezmoiscripts/import-gpg-key.sh
+.config/composer/**
+.config/gcloud/beste_firebase_service_account.json
+.config/gnupg/**
 {{ end }}
 
 .local/share/oh-my-zsh/cache/**
