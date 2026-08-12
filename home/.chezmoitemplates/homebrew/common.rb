@@ -52,6 +52,7 @@ cask "font-maple-mono-nf" # https://font.subf.dev/en/
 cask "1password" # Password manager that keeps all passwords secure behind one password
 cask "1password-cli" # Command-line interface for 1Password
 cask "ghostty" # Terminal emulator that uses platform-native UI and GPU acceleration
+cask "jetbrains-toolbox" # JetBrains tools manager
 cask "karabiner-elements" # Keyboard customizer
 cask "mole-app" # Deep clean, analyze, and optimize app
 cask "openlogi" # Local-first alternative to Logitech Options+ for HID++ devices
