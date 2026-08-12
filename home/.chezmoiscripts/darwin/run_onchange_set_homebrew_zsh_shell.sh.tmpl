@@ -5,6 +5,40 @@ set -euo pipefail
 TARGET_SHELL="{{ joinPath .homebrewPrefix "bin" "zsh" }}"
 SHELLS_FILE="/etc/shells"
 USER_NAME="$(id -un)"
+
+# Get actual login shell (more reliable than $SHELL)
+CURRENT_SHELL="$(dscl . -read "/Users/$USER_NAME" UserShell | awk '{print $2}')"
+
+if [[ -z "$CURRENT_SHELL" ]]; then
+    echo "Could not read current login shell for $USER_NAME"
+    exit 1
+fi
+
+{{ if .work -}}
+if [[ "$CURRENT_SHELL" == "$TARGET_SHELL" ]]; then
+    echo "Login shell already set to $TARGET_SHELL"
+    exit 0
+fi
+
+echo "Current login shell is $CURRENT_SHELL"
+if [[ ! -x "$TARGET_SHELL" ]]; then
+    echo "Homebrew zsh is not available at $TARGET_SHELL"
+    echo "Install it before changing the login shell. Chezmoi will not make this privileged change on work."
+    exit 0
+fi
+
+echo "Homebrew zsh is available at $TARGET_SHELL"
+echo "Chezmoi will not change the login shell automatically on work."
+
+if ! grep -qxF "$TARGET_SHELL" "$SHELLS_FILE"; then
+    echo "Ask an administrator to add this line to $SHELLS_FILE:"
+    printf '  %s\n' "$TARGET_SHELL"
+fi
+
+echo "After $TARGET_SHELL is listed in $SHELLS_FILE, change the login shell with:"
+printf '  chsh -s %s\n' "$TARGET_SHELL"
+exit 0
+{{ else -}}
 TTY_AVAILABLE=false
 
 if [[ -t 0 && -t 1 ]]; then
@@ -46,17 +80,8 @@ prompt_confirm() {
     esac
 }
 
-# Check if target shell exists
 if [[ ! -x "$TARGET_SHELL" ]]; then
     echo "Target shell $TARGET_SHELL not found or not executable"
-    exit 1
-fi
-
-# Get actual login shell (more reliable than $SHELL)
-CURRENT_SHELL="$(dscl . -read "/Users/$USER_NAME" UserShell | awk '{print $2}')"
-
-if [[ -z "$CURRENT_SHELL" ]]; then
-    echo "Could not read current login shell for $USER_NAME"
     exit 1
 fi
 
@@ -87,3 +112,4 @@ if [[ "$CURRENT_SHELL" != "$TARGET_SHELL" ]]; then
 else
     echo "Login shell already set to $TARGET_SHELL"
 fi
+{{ end -}}
