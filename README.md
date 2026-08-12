@@ -92,7 +92,26 @@ brew install --cask 1password 1password-cli
 The dotfiles add `~/.local/bin` to `PATH`, but they have not been applied yet.
 Use the binary's full path during the bootstrap.
 
-Enable the 1Password desktop application's CLI integration and authenticate:
+Before initializing chezmoi, open the 1Password desktop app and configure its
+developer settings:
+
+1. Turn on the 1Password Developer experience.
+2. Enable the 1Password SSH Agent.
+3. Enable CLI integration with the desktop app.
+4. Under the SSH Agent's advanced settings, enable **Generate SSH config files
+   from 1Password SSH bookmarks**.
+5. Ensure the active profile's SSH keys are available to the agent. Add
+   `ssh://user@host` URLs to keys that should be associated with specific SSH
+   hosts.
+
+The SSH-config setting creates `~/.ssh/1Password/config` and the public-key
+files referenced by this repository's generated SSH host configuration. Private
+keys remain in 1Password. If a setting is marked as managed, ask the work
+administrator whether it can be enabled. See [1Password's SSH Bookmarks
+documentation](https://developer.1password.com/docs/ssh/bookmarks/) for the
+current interface and behavior.
+
+Authenticate the CLI from an interactive terminal:
 
 ```bash
 op signin
