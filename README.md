@@ -143,6 +143,18 @@ Apply the complete configuration from an interactive terminal:
 Some hooks may request confirmation, administrator access, or a login-shell
 change. Open a new terminal after the bootstrap completes.
 
+### Exclude source code from Spotlight
+
+After `~/Code` exists, exclude it once on each Mac through **System Settings ->
+Spotlight -> Search Privacy**. Click the add button and select `~/Code`.
+
+macOS does not provide a supported command-line interface for excluding an
+individual folder. `mdutil` manages complete Spotlight volumes, so it must not
+be used to disable indexing for `~/Code`. A `.metadata_never_index` marker
+inside an ordinary directory also does not exclude that directory on macOS
+Tahoe. See [Apple's Spotlight Search Privacy
+instructions](https://support.apple.com/guide/mac-help/mchl1bb43b84/mac).
+
 ## Tool ownership
 
 The standalone installer owns chezmoi. Homebrew owns applications, including
