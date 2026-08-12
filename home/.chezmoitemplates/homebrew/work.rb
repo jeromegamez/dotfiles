@@ -8,6 +8,7 @@ brew "mongodb/brew/mongodb-database-tools", trusted: true # Standard utilities f
 brew "terraform-docs" # Tool to generate documentation from Terraform modules
 brew "tfautomv" # Generate Terraform moved blocks automatically for painless refactoring
 
+cask "intellij-idea" # Java IDE by JetBrains
 cask "mongodb/brew/mongodb-compass", trusted: true # Interactive tool for analyzing MongoDB dataa
 cask "terraform-linters/tap/tflint", trusted: true # Pluggable Terraform linter
 cask "slack" # Team communication and collaboration software

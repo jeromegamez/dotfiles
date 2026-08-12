@@ -19,6 +19,7 @@ cask "fantastical" # Calendar software
 cask "feed-the-beast" # Minecraft mod downloader and manager
 cask "gpg-suite-no-mail" # GPG Suite (without GPG Mail)
 cask "keepassxc" # Password manager app
+cask "jetbrains-toolbox" # JetBrains tools manager
 cask "prismlauncher" # Minecraft launcher
 cask "signal" # Instant messaging application focusing on security
 cask "steam" # Video game digital distribution service
