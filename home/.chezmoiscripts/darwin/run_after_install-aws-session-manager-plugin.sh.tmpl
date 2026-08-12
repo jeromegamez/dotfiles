@@ -3,7 +3,9 @@
 set -euo pipefail
 
 PLUGIN_BINARY="${HOME}/.local/bin/session-manager-plugin"
-AWS_INSTALLER_IDENTITY="Developer ID Installer: AMZN Mobile LLC (94KV3E626L)"
+PLUGIN_INSTALL_DIR="${HOME}/.local/share/aws/session-manager-plugin"
+AWS_APPLICATION_IDENTITY="Developer ID Application: AMZN Mobile LLC (94KV3E626L)"
+AWS_TEAM_ID="94KV3E626L"
 temp_dir=""
 
 is_verbose() {
@@ -26,15 +28,14 @@ run_with_output_if_verbose() {
 
 # Architecture detection in template
 {{ if eq .chezmoi.arch "arm64" -}}
-PKG_URL="https://s3.amazonaws.com/session-manager-downloads/plugin/latest/mac_arm64/session-manager-plugin.pkg"
+BUNDLE_URL="https://s3.amazonaws.com/session-manager-downloads/plugin/latest/mac_arm64/sessionmanager-bundle.zip"
 {{ else -}}
-PKG_URL="https://s3.amazonaws.com/session-manager-downloads/plugin/latest/mac/session-manager-plugin.pkg"
+BUNDLE_URL="https://s3.amazonaws.com/session-manager-downloads/plugin/latest/mac/sessionmanager-bundle.zip"
 {{ end -}}
 
 cleanup() {
     if [[ -n "$temp_dir" && -d "$temp_dir" ]]; then
-        rm -f -- "$temp_dir/session-manager-plugin.pkg"
-        rmdir -- "$temp_dir" 2>/dev/null || true
+        rm -rf -- "$temp_dir"
     fi
 }
 
@@ -46,53 +47,66 @@ get_latest_version() {
 }
 
 get_installed_version() {
-    if command -v session-manager-plugin >/dev/null 2>&1; then
-        session-manager-plugin --version 2>/dev/null | awk '{print $1}'
+    if [[ -x "$PLUGIN_BINARY" ]]; then
+        "$PLUGIN_BINARY" --version 2>/dev/null | awk '{print $1}'
     fi
 }
 
-verify_package() {
-    local package_path="$1"
+verify_binary() {
+    local binary_path="$1"
     local signature
 
-    if ! signature=$(pkgutil --check-signature "$package_path"); then
-        echo "✗ AWS Session Manager package has no trusted Apple signature"
+    if ! codesign --verify --strict "$binary_path"; then
+        echo "AWS Session Manager Plugin has an invalid Apple code signature"
         exit 1
     fi
 
-    if [[ "$signature" != *"$AWS_INSTALLER_IDENTITY"* ]]; then
-        echo "✗ AWS Session Manager package has an unexpected signing identity"
+    if ! signature=$(codesign --display --verbose=2 "$binary_path" 2>&1); then
+        echo "Could not inspect the AWS Session Manager Plugin code signature"
         exit 1
     fi
 
-    if ! spctl --assess --type install "$package_path"; then
-        echo "✗ AWS Session Manager package failed the macOS security assessment"
+    if [[ "$signature" != *"Authority=$AWS_APPLICATION_IDENTITY"* || "$signature" != *"TeamIdentifier=$AWS_TEAM_ID"* ]]; then
+        echo "AWS Session Manager Plugin has an unexpected signing identity"
         exit 1
     fi
 
-    log_verbose "✓ AWS Session Manager package signature verified"
+    log_verbose "AWS Session Manager Plugin code signature verified"
 }
 
 install_plugin() {
     local message="$1"
-    local package_path
+    local archive_path
+    local bundle_dir
+    local bundle_version
+    local source_binary
 
     temp_dir=$(mktemp -d)
-    package_path="${temp_dir}/session-manager-plugin.pkg"
+    archive_path="${temp_dir}/sessionmanager-bundle.zip"
+    bundle_dir="${temp_dir}/sessionmanager-bundle"
     log_verbose "$message"
 
-    log_verbose "Downloading plugin..."
-    curl -fsSL "$PKG_URL" -o "$package_path"
+    log_verbose "Downloading plugin bundle..."
+    curl -fsSL "$BUNDLE_URL" -o "$archive_path"
+    ditto -x -k "$archive_path" "$temp_dir"
 
-    log_verbose "Verifying package signature..."
-    verify_package "$package_path"
+    source_binary="${bundle_dir}/bin/session-manager-plugin"
+    bundle_version=$(tr -d '[:space:]' <"${bundle_dir}/VERSION")
+    if [[ "$bundle_version" != "$LATEST_VERSION" ]]; then
+        echo "AWS Session Manager Plugin version mismatch: expected $LATEST_VERSION, downloaded $bundle_version"
+        exit 1
+    fi
 
-    log_verbose "Installing package..."
-    run_with_output_if_verbose sudo installer -pkg "$package_path" -target /
+    log_verbose "Verifying plugin signature..."
+    verify_binary "$source_binary"
 
-    log_verbose "Creating symlink..."
-    mkdir -p "${HOME}/.local/bin"
-    run_with_output_if_verbose ln -sfv /usr/local/sessionmanagerplugin/bin/session-manager-plugin "$PLUGIN_BINARY"
+    log_verbose "Installing plugin under $PLUGIN_INSTALL_DIR..."
+    mkdir -p "${PLUGIN_INSTALL_DIR}/bin" "${HOME}/.local/bin"
+    cp "$source_binary" "${PLUGIN_INSTALL_DIR}/bin/session-manager-plugin"
+    cp "${bundle_dir}/seelog.xml.template" "${bundle_dir}/VERSION" "${bundle_dir}/LICENSE" "$PLUGIN_INSTALL_DIR/"
+
+    log_verbose "Linking plugin into ~/.local/bin..."
+    run_with_output_if_verbose ln -sfn "${PLUGIN_INSTALL_DIR}/bin/session-manager-plugin" "$PLUGIN_BINARY"
 }
 
 LATEST_VERSION=$(get_latest_version)
@@ -100,7 +114,7 @@ INSTALLED_VERSION=$(get_installed_version)
 
 if [[ -z "$INSTALLED_VERSION" || "$INSTALLED_VERSION" != "$LATEST_VERSION" ]]; then
     install_plugin "Installing AWS Session Manager Plugin (latest: $LATEST_VERSION, installed: ${INSTALLED_VERSION:-none})..."
-    log_verbose "✓ AWS Session Manager Plugin updated successfully to $LATEST_VERSION"
+    log_verbose "AWS Session Manager Plugin updated successfully to $LATEST_VERSION"
 else
-    log_verbose "✓ AWS Session Manager Plugin is up to date ($INSTALLED_VERSION)"
+    log_verbose "AWS Session Manager Plugin is up to date ($INSTALLED_VERSION)"
 fi
