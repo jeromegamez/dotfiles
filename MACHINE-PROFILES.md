@@ -21,6 +21,14 @@ Each computer enables exactly one profile. Static, non-secret policy belongs in
 `.chezmoidata`; prompted, computed, and secret-backed values belong in the
 machine-local configuration or the target template that consumes them.
 
+Each machine also records whether it is headless, defaulting to false. On
+graphical macOS machines, a one-time lifecycle script enables Granted
+credential-process auto-login after Homebrew installs Granted. Granted continues
+to own its mutable configuration and prompts for a browser on the first `assume`
+invocation. Headless machines do not enable auto-login because an expired AWS
+SSO session would otherwise cause the credential process to wait for a browser
+login.
+
 Each machine also records a 1Password account and a secret reference for its
 GitHub API rate-limit PAT. The reference, not the token, is stored in chezmoi's
 machine-local configuration. The mise and Composer templates resolve the same

@@ -1,6 +1,9 @@
 {{ if ne .chezmoi.os "darwin" }}
 .chezmoiscripts/darwin/**
 {{ end }}
+{{ if or (not (hasKey . "headless")) (get . "headless") }}
+.chezmoiscripts/darwin/4-configure-granted.sh
+{{ end }}
 {{ if .personal }}
 .config/git/allowed_signers
 .config/git/keys/work-signing.pub

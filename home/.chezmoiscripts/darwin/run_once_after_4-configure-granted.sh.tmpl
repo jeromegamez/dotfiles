@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+granted_bin={{ joinPath .homebrewPrefix "bin" "granted" | quote }}
+
+if [[ ! -x "$granted_bin" ]]; then
+    echo "Missing Granted executable: $granted_bin" >&2
+    exit 1
+fi
+
+"$granted_bin" settings set \
+    --setting CredentialProcessAutoLogin \
+    --value true
+
+echo "✓ Granted credential-process auto-login enabled"
