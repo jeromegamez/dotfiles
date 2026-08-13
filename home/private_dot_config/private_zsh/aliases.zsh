@@ -1,4 +1,5 @@
 if command -v assume > /dev/null; then
+  export GRANTED_ENABLE_AUTO_REASSUME=true
   alias assume=". assume"
 fi
 
