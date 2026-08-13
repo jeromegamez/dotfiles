@@ -12,6 +12,7 @@ brew "yt-dlp" # Feature-rich command-line audio/video downloader
 
 cask "carbon-copy-cloner" # Hard disk backup and cloning utility
 cask "cardhop" # Contacts manager
+cask "cleanshot" # Screen capturing tool
 cask "chatgpt" # ChatGPT desktop app with Codex
 cask "discord" # Voice and text chat software
 cask "droplr" # Screenshot and screen recorder

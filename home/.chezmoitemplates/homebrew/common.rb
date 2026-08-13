@@ -57,7 +57,6 @@ cask "mole-app" # Deep clean, analyze, and optimize app
 cask "openlogi" # Local-first alternative to Logitech Options+ for HID++ devices
 cask "orbstack" # Replacement for Docker Desktop
 cask "raycast" # Control your tools with a few keystrokes
-cask "shottr" # Screenshot measurement and annotation tool
 cask "sublime-merge" # Git client
 cask "thaw" # Menu bar manager
 cask "zed" # Multiplayer code editor

@@ -22,6 +22,7 @@ cask "github-copilot-app" # Native client for GitHub Copilot
 cask "intellij-idea" # Java IDE by JetBrains
 cask "mongodb-compass" # Interactive tool for analyzing MongoDB data
 cask "terraform-linters/tap/tflint", trusted: true # Pluggable Terraform linter
+cask "shottr" # Screenshot measurement and annotation tool
 cask "slack" # Team communication and collaboration software
 cask "tuple" # Remote pair programming app
 cask "yaak" # REST, GraphQL and gRPC client
