@@ -54,7 +54,7 @@ zstyle ':completion:*' completer _complete _match _approximate  # enable fuzzy m
 zstyle ':completion:*:match:*' original only          # show only original matches
 zstyle ':completion:*:approximate:*' max-errors 2     # allow up to 2 typos in fuzzy matching
 zstyle ':completion:*' list-prompt '%S%M matches%s'   # show match count at bottom
-zstyle ':completion:*' format ''                     # hide completion category headers
+zstyle ':completion:*:descriptions' format ''        # hide completion category headers
 zstyle ':completion:*' group-name ''                  # group completions by category
 
 [[ -o interactive ]] && bindkey -e
