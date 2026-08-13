@@ -29,20 +29,22 @@ setopt SHARE_HISTORY            # share history between sessions
 # Enable completions (after PATH is set)
 # Regenerate completion cache once per day, track freshness via stamp file.
 zmodload zsh/datetime
+zmodload zsh/stat
 autoload -Uz compinit
 _zcompdump="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 _zcompdump_stamp="$_zcompdump.lastcheck"
 mkdir -p "${_zcompdump:h}"
 
-_zcompdump_mtime=0
-[[ -f "$_zcompdump_stamp" ]] && _zcompdump_mtime=$(stat -f %m "$_zcompdump_stamp" 2>/dev/null || printf '0')
+typeset -A _zcompdump_stat
+[[ -f "$_zcompdump_stamp" ]] && zstat -H _zcompdump_stat -- "$_zcompdump_stamp"
+_zcompdump_mtime=${_zcompdump_stat[mtime]:-0}
 
 if [[ -f "$_zcompdump" ]] && (( EPOCHSECONDS - _zcompdump_mtime < 86400 )); then
     compinit -C -d "$_zcompdump"
 else
     compinit -d "$_zcompdump" && touch "$_zcompdump_stamp"
 fi
-unset _zcompdump_mtime _zcompdump _zcompdump_stamp
+unset _zcompdump_mtime _zcompdump_stat _zcompdump _zcompdump_stamp
 
 # Completion configuration
 zstyle ':completion::complete:*' use-cache on          # cache completions for better performance
