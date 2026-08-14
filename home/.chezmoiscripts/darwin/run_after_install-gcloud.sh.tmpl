@@ -3,6 +3,7 @@
 set -euo pipefail
 
 SDK_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/google-cloud-sdk"
+managed_gcloud_bin="${SDK_DIR}/bin/gcloud"
 gcloud_bin=""
 temp_parent="${TMPDIR:-/tmp}"
 temp_parent="${temp_parent%/}"
@@ -49,7 +50,9 @@ DOWNLOAD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-
 DOWNLOAD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-darwin-x86_64.tar.gz"
 {{ end -}}
 
-if command -v gcloud >/dev/null 2>&1; then
+if [[ -x "$managed_gcloud_bin" ]]; then
+    gcloud_bin="$managed_gcloud_bin"
+elif command -v gcloud >/dev/null 2>&1; then
     gcloud_bin="$(command -v gcloud)"
 else
     log_verbose "Installing Google Cloud CLI..."
@@ -79,7 +82,7 @@ else
         --install-python false \
         >/dev/null 2>&1
 
-    gcloud_bin="${SDK_DIR}/bin/gcloud"
+    gcloud_bin="$managed_gcloud_bin"
     if [[ ! -x "$gcloud_bin" ]]; then
         echo "✗ Google Cloud CLI install failed"
         exit 1
