@@ -2,11 +2,10 @@
 
 set -euo pipefail
 
-homebrew_bin={{ joinPath .homebrewPrefix "bin" | quote }}
-granted_bin="$(PATH="$homebrew_bin:$PATH" command -v granted || true)"
+granted_bin={{ joinPath .homebrewPrefix "bin" "granted" | quote }}
 
-if [[ -z "$granted_bin" || ! -x "$granted_bin" ]]; then
-    echo "Missing Granted executable in PATH (including $homebrew_bin)" >&2
+if [[ ! -x "$granted_bin" ]]; then
+    echo "Missing Granted executable: $granted_bin" >&2
     exit 1
 fi
 
