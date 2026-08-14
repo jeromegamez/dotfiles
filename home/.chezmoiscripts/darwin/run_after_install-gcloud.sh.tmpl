@@ -5,6 +5,7 @@ set -euo pipefail
 SDK_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/google-cloud-sdk"
 managed_gcloud_bin="${SDK_DIR}/bin/gcloud"
 gcloud_bin=""
+installed_gcloud=false
 temp_parent="${TMPDIR:-/tmp}"
 temp_parent="${temp_parent%/}"
 
@@ -88,8 +89,12 @@ else
         exit 1
     fi
 
-    log_verbose "✓ Google Cloud CLI installed successfully"
+    installed_gcloud=true
 fi
 
 log_verbose "Updating Google Cloud CLI and components..."
 run_with_output_if_verbose "$gcloud_bin" components update --quiet
+
+if [[ "$installed_gcloud" == true ]]; then
+    echo "✓ Installed Google Cloud CLI"
+fi

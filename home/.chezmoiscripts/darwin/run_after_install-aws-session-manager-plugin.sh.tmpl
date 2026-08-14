@@ -112,9 +112,12 @@ install_plugin() {
 LATEST_VERSION=$(get_latest_version)
 INSTALLED_VERSION=$(get_installed_version)
 
-if [[ -z "$INSTALLED_VERSION" || "$INSTALLED_VERSION" != "$LATEST_VERSION" ]]; then
+if [[ -z "$INSTALLED_VERSION" ]]; then
     install_plugin "Installing AWS Session Manager Plugin (latest: $LATEST_VERSION, installed: ${INSTALLED_VERSION:-none})..."
-    log_verbose "AWS Session Manager Plugin updated successfully to $LATEST_VERSION"
+    echo "✓ Installed AWS Session Manager Plugin $LATEST_VERSION"
+elif [[ "$INSTALLED_VERSION" != "$LATEST_VERSION" ]]; then
+    install_plugin "Updating AWS Session Manager Plugin (latest: $LATEST_VERSION, installed: $INSTALLED_VERSION)..."
+    echo "✓ Updated AWS Session Manager Plugin from $INSTALLED_VERSION to $LATEST_VERSION"
 else
     log_verbose "AWS Session Manager Plugin is up to date ($INSTALLED_VERSION)"
 fi

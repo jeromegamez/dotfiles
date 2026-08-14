@@ -46,3 +46,5 @@ if [ ! -f "${COMPOSER_PATH}/${COMPOSER_FILE_NAME}" ]; then
 fi
 
 "$PHP_BIN" "${COMPOSER_PATH}/${COMPOSER_FILE_NAME}" global update --quiet --with-all-dependencies
+
+echo "✓ Updated global Composer packages"

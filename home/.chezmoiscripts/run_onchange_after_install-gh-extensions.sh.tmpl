@@ -33,3 +33,5 @@ install_extension() {
 {{- range .gh.extensions }}
 install_extension {{ . | quote }}
 {{- end }}
+
+echo "✓ Synchronized GitHub CLI extensions"

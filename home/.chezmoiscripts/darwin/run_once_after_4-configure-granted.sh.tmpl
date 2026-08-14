@@ -13,13 +13,12 @@ if [[ -n "${CHEZMOI_VERBOSE:-}" ]]; then
     "$granted_bin" settings set \
         --setting CredentialProcessAutoLogin \
         --value true
-    echo "✓ Granted credential-process auto-login enabled"
 else
     output=""
     if output=$("$granted_bin" settings set \
         --setting CredentialProcessAutoLogin \
         --value true 2>&1); then
-        exit 0
+        :
     else
         status=$?
         if [[ -n "$output" ]]; then
@@ -28,3 +27,5 @@ else
         exit "$status"
     fi
 fi
+
+echo "✓ Enabled Granted credential-process auto-login"
