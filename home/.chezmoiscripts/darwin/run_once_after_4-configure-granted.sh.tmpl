@@ -2,15 +2,30 @@
 
 set -euo pipefail
 
-granted_bin={{ joinPath .homebrewPrefix "bin" "granted" | quote }}
+homebrew_bin={{ joinPath .homebrewPrefix "bin" | quote }}
+granted_bin="$(PATH="$homebrew_bin:$PATH" command -v granted || true)"
 
-if [[ ! -x "$granted_bin" ]]; then
-    echo "Missing Granted executable: $granted_bin" >&2
+if [[ -z "$granted_bin" || ! -x "$granted_bin" ]]; then
+    echo "Missing Granted executable in PATH (including $homebrew_bin)" >&2
     exit 1
 fi
 
-"$granted_bin" settings set \
-    --setting CredentialProcessAutoLogin \
-    --value true
-
-echo "✓ Granted credential-process auto-login enabled"
+if [[ -n "${CHEZMOI_VERBOSE:-}" ]]; then
+    "$granted_bin" settings set \
+        --setting CredentialProcessAutoLogin \
+        --value true
+    echo "✓ Granted credential-process auto-login enabled"
+else
+    output=""
+    if output=$("$granted_bin" settings set \
+        --setting CredentialProcessAutoLogin \
+        --value true 2>&1); then
+        exit 0
+    else
+        status=$?
+        if [[ -n "$output" ]]; then
+            printf '%s\n' "$output" >&2
+        fi
+        exit "$status"
+    fi
+fi
