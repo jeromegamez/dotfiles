@@ -10,7 +10,7 @@ eval "$({{ joinPath .homebrewPrefix "bin" "brew" }} shellenv)" || true
 xdg_config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
 brewfile="$xdg_config_home/homebrew/Brewfile"
 XDG_CONFIG_HOME="$xdg_config_home" \
-    {{ joinPath .homebrewPrefix "bin" "brew" }} bundle install --file="$brewfile"
+    {{ joinPath .homebrewPrefix "bin" "brew" }} bundle install --no-upgrade --file="$brewfile"
 
 # Keep runtime dependencies available through Homebrew's opt paths without
 # exposing their generic commands ahead of mise-managed runtimes.

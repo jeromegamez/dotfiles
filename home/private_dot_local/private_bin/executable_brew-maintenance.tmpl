@@ -16,10 +16,11 @@ echo "==> brew update"
 $brew_bin update
 
 echo "==> brew bundle install"
-$brew_bin bundle install --file="$brewfile"
+$brew_bin bundle install --no-upgrade --file="$brewfile"
 
 echo "==> brew upgrade"
-$brew_bin upgrade
+HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS=1 \
+    $brew_bin upgrade
 
 echo "==> brew autoremove"
 $brew_bin autoremove
