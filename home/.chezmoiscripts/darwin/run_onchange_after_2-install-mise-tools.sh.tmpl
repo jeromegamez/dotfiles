@@ -2,9 +2,16 @@
 
 set -euo pipefail
 
+mise_bin={{ joinPath .homebrewPrefix "bin" "mise" | quote }}
+
 # mise config hash: {{ include (joinPath .chezmoi.sourceDir "private_dot_config/private_mise/config.toml.tmpl") | sha256sum }}
 # runtime versions hash: {{ dict "node" .versions.node "python" .versions.python | toJson | sha256sum }}
 
-mise install --yes
+if [[ ! -x "$mise_bin" ]]; then
+    echo "Missing mise executable: $mise_bin" >&2
+    exit 1
+fi
+
+"$mise_bin" install --yes
 
 echo "✓ mise-managed tools installed"
