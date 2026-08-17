@@ -1,30 +1,35 @@
 # Dotfiles
 
-Personal macOS development environment managed with
+Personal and work machine configuration managed with
 [chezmoi](https://www.chezmoi.io/). The repository defines shell configuration,
-developer tools, applications, language runtimes, credentials-backed files, and
-selected macOS preferences.
+developer tools, language runtimes, credentials-backed files, applications, and
+selected system preferences.
 
-The setup targets Apple Silicon Macs and assumes Homebrew is installed at
-`/opt/homebrew`.
+The shared configuration supports macOS and Linux. Automated package and
+application installation and system configuration target Apple Silicon macOS
+and assume Homebrew is installed at `/opt/homebrew`. Linux prerequisites and
+software installation remain outside chezmoi.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) before changing the repository.
 
 ## How it works
 
 - **chezmoi** renders the source files under `home/` into their locations in the
   home directory.
-- **Homebrew** installs command-line tools, applications, fonts, and Mac App
-  Store applications from a generated Brewfile.
+- **Homebrew** installs macOS command-line tools, applications, fonts, and Mac
+  App Store applications from a generated Brewfile.
 - **mise** provides the Node.js and Python versions used from the shell.
 - **uv** manages Python projects while using mise-provided Python runtimes.
-- **1Password CLI** supplies secret values, the personal GPG key, and generated
-  SSH host configuration. Private SSH keys remain in the 1Password SSH agent.
-  Secrets are not stored in this repository.
-- **Lifecycle scripts** install supporting tools, configure the login shell,
-  and apply selected macOS defaults and security settings.
+- **1Password CLI** supplies profile-specific secret values and generated SSH
+  host configuration. On personal machines it also supplies the personal GPG
+  key. Private SSH keys remain in the 1Password SSH agent. Secrets are not
+  stored in this repository.
+- **macOS lifecycle scripts** install supporting tools, configure the login
+  shell, and apply selected defaults and security settings.
 
-A full `chezmoi apply` can install software, request administrator privileges,
-change system preferences, and restart affected macOS services. It is more than
-a file-copy operation.
+On macOS, a full `chezmoi apply` can install software, request administrator
+privileges, change system preferences, and restart affected services. It is
+more than a file-copy operation.
 
 ## Machine configuration
 
@@ -46,8 +51,7 @@ chezmoi init --prompt
 ```
 
 See [`MACHINE-PROFILES.md`](MACHINE-PROFILES.md) for the profile boundaries,
-credential rules, XDG migration policy, and the chezmoi mechanisms used to keep
-machine-specific behavior centralized.
+credential rules, Git safeguards, platform policy, and validation principles.
 
 The selected profile supplies the default Git identity and signing method
 globally: personal uses GPG and work uses an SSH key held by 1Password. SSH
@@ -84,11 +88,17 @@ Install the chezmoi binary in `~/.local/bin` with the official installer:
 sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "$HOME/.local/bin"
 ```
 
-Install the remaining prerequisites:
+On Apple Silicon macOS, install the remaining prerequisites:
 
 ```bash
 brew install --cask 1password 1password-cli
 ```
+
+On Linux, install the native 1Password application and CLI using the
+distribution's supported method. The work profile additionally requires Git
+2.34 or newer, compatible OpenSSH signing support, and the 1Password SSH agent.
+The personal profile requires GnuPG. Chezmoi does not install these Linux
+prerequisites.
 
 The dotfiles add `~/.local/bin` to `PATH`, but they have not been applied yet.
 Use the binary's full path during the bootstrap.
@@ -141,8 +151,8 @@ Apply the complete configuration from an interactive terminal:
 ~/.local/bin/chezmoi --verbose apply
 ```
 
-Some hooks may request confirmation, administrator access, or a login-shell
-change. Open a new terminal after the bootstrap completes.
+On macOS, some hooks may request confirmation, administrator access, or a
+login-shell change. Open a new terminal after the bootstrap completes.
 
 ### Exclude source code from Spotlight
 
@@ -164,7 +174,7 @@ as well as the Node.js and Python runtimes selected by the shell. Homebrew may
 retain its own Node.js and Python copies as dependencies of other formulae.
 
 The default mise runtimes are declared in
-[`home/private_dot_config/private_mise/config.toml`](home/private_dot_config/private_mise/config.toml).
+[`home/private_dot_config/private_mise/config.toml.tmpl`](home/private_dot_config/private_mise/config.toml.tmpl).
 Pi is installed under `~/.local/share/pi` and its launcher always executes it
 with Node.js 25. Reproducible Pi packages are listed in
 [`home/.chezmoidata/pi.yaml`](home/.chezmoidata/pi.yaml); Pi's mutable settings
