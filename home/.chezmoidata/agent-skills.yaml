@@ -8,5 +8,3 @@ agentSkills:
     - source: https://github.com/JuliusBrussee/caveman/tree/v2.1.0
       skills:
         - caveman
-        - caveman-compress
-        - caveman-learn
