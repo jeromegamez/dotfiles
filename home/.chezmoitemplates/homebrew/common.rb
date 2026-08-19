@@ -17,7 +17,7 @@ brew "fzf-tab" # Replace Zsh completion selection menu with fzf
 brew "forgit" # Interactive Git commands powered by fzf
 brew "gh" # GitHub command-line tool
 brew "git" # Distributed revision control system
-brew "go-task/tap/go-task", trusted: true # Task is a task runner/build tool that aims to be simpler and easier to use
+brew "go-task" # Task is a task runner/build tool that aims to be simpler and easier to use
 brew "gnu-tar" # GNU version of the tar archiving utility
 brew "jq" # Lightweight and flexible command-line JSON processor
 brew "lazygit" # Terminal UI for Git
