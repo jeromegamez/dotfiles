@@ -4,9 +4,9 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Update shared agent skill dependencies",
+      "description": "Update agent tooling dependencies",
       "managerFilePatterns": [
-        "/^home\\/\\.chezmoidata\\/agent-skills\\.yaml$/"
+        "/^home\\/\\.chezmoidata\\/(?:agent-skills|cc-safety-net)\\.yaml$/"
       ],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+version: \\\"(?<currentValue>[^\\\"]+)\\\"",

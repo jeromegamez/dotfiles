@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+{{ $agentPaths := list
+    (joinPath .chezmoi.homeDir ".local" "bin")
+    (joinPath .chezmoi.homeDir ".local" "share" "mise" "shims")
+    (joinPath .chezmoi.homeDir ".opencode" "bin")
+    (joinPath .homebrewPrefix "bin")
+    "/usr/local/bin"
+    "/usr/bin"
+    "/bin"
+-}}
+
+set -euo pipefail
+
+mise_bin={{ joinPath .homebrewPrefix "bin" "mise" | quote }}
+node_runtime={{ printf "node@%s" .versions.node.default | quote }}
+cc_safety_net_cli={{ printf "%s@%s" .ccSafetyNet.cli.package .ccSafetyNet.cli.version | quote }}
+agent_path={{ join ":" $agentPaths | quote }}
+
+# Make script hash change when an agent first appears in a known install path.
+{{ range .ccSafetyNet.agents -}}
+# {{ .command }}={{ findExecutable .command $agentPaths | quote }}
+{{ end -}}
+
+if [[ ! -x "$mise_bin" ]]; then
+    echo "Missing mise executable: $mise_bin" >&2
+    exit 1
+fi
+
+export PATH="$agent_path${PATH:+:$PATH}"
+
+installed_targets=()
+codex_detected=false
+
+{{ range .ccSafetyNet.agents -}}
+if command -v {{ .command | quote }} >/dev/null 2>&1; then
+    installed_targets+=({{ .target | quote }})
+fi
+{{ end }}
+if ((${#installed_targets[@]} == 0)); then
+    echo "No supported agents detected; skipping CC Safety Net"
+    exit 0
+fi
+
+for target in "${installed_targets[@]}"; do
+    if [[ "$target" == "--codex" ]]; then
+        codex_detected=true
+    fi
+
+    "$mise_bin" exec "$node_runtime" -- npx --yes "$cc_safety_net_cli" install "$target"
+done
+
+"$mise_bin" exec "$node_runtime" -- npx --yes "$cc_safety_net_cli" update
+
+echo "✓ Installed or updated CC Safety Net for detected agents"
+
+if [[ "$codex_detected" == true ]]; then
+    echo "Codex: open /hooks once to review and trust CC Safety Net"
+fi

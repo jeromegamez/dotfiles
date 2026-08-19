@@ -1,0 +1,16 @@
+ccSafetyNet:
+  cli:
+    package: cc-safety-net
+    # renovate: datasource=npm depName=cc-safety-net
+    version: "2.0.7"
+  agents:
+    - command: claude
+      target: --claude-code
+    - command: codex
+      target: --codex
+    - command: copilot
+      target: --copilot-cli
+    - command: opencode
+      target: --opencode
+    - command: pi
+      target: --pi
