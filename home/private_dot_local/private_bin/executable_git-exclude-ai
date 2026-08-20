@@ -12,16 +12,11 @@ fi
 # Create .git/info directory if it doesn't exist
 mkdir -p .git/info
 
-# List of common AI instruction files to exclude
+# Optional AI notes that are not auto-loaded by default
 AI_FILES=(
-    ".aiignore"
-    ".claude"
-    ".zed"
-    "AGENTS.md"
     "AI_INSTRUCTIONS.md"
     "AI_NOTES.md"
     "ANTHROPIC.md"
-    "CLAUDE.md"
     "COPILOT.md"
     "GPT.md"
     "LLM_INSTRUCTIONS.md"
@@ -29,7 +24,7 @@ AI_FILES=(
 
 # Add each file to the exclude list if not already present
 for file in "${AI_FILES[@]}"; do
-    if grep -q "^$file$" .git/info/exclude 2>/dev/null; then
+    if grep -Fqx -- "$file" .git/info/exclude 2>/dev/null; then
         echo "$file is already excluded from git tracking."
     else
         echo "$file" >>.git/info/exclude
