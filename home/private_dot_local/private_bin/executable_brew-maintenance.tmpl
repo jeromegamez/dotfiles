@@ -37,49 +37,11 @@ for runtime_formula in "${runtime_formulae[@]}"; do
     fi
 done
 
-cellar="$($brew_bin --cellar)"
-if find "$cellar" -mindepth 2 -maxdepth 2 ! -user "$(id -un)" -print -quit | grep -q .; then
-    echo "==> Fix Homebrew cellar ownership"
-    sudo chown -R "$(id -un):$(id -gn)" "$cellar"
+echo "==> brew cleanup"
+if ! $brew_bin cleanup; then
+    echo "✗ brew cleanup failed"
+    echo "Review only the paths reported by Homebrew, repair their ownership manually, and rerun brew-maintenance."
+    exit 1
 fi
 
-fix_cleanup_permissions() {
-    local cleanup_output cleanup_paths cleanup_path
-
-    cleanup_output="$($brew_bin cleanup 2>&1)" && {
-        printf '%s\n' "$cleanup_output"
-        return 0
-    }
-
-    printf '%s\n' "$cleanup_output"
-
-    cleanup_paths="$(printf '%s\n' "$cleanup_output" | awk '
-        /Fix your permissions on:/ { flag = 1; next }
-        flag && /^  / { sub(/^  /, ""); print; next }
-        flag && !/^  / { flag = 0 }
-    ')"
-
-    if [[ -z "$cleanup_paths" ]]; then
-        return 1
-    fi
-
-    while IFS= read -r cleanup_path; do
-        [[ -n "$cleanup_path" ]] || continue
-        echo "==> Fix Homebrew permissions: $cleanup_path"
-        sudo chown -R "$(id -un):$(id -gn)" "$cleanup_path"
-    done <<<"$cleanup_paths"
-
-    return 2
-}
-
-for _attempt in 1 2 3; do
-    echo "==> brew cleanup"
-    if fix_cleanup_permissions; then
-        echo "✓ Homebrew maintenance done"
-        exit 0
-    fi
-
-done
-
-echo "✗ brew cleanup failed after permission repair attempts"
-exit 1
+echo "✓ Homebrew maintenance done"
