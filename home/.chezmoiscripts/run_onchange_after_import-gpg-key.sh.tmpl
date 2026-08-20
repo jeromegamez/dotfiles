@@ -4,6 +4,8 @@ set -euo pipefail
 
 umask 077
 
+# GPG signing fingerprint hash: {{ .identity.personal.gpgSigningKey | sha256sum }}
+
 export GNUPGHOME="${XDG_CONFIG_HOME:-${HOME}/.config}/gnupg"
 install -d -m 700 "$GNUPGHOME"
 
