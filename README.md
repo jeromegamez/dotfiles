@@ -176,7 +176,7 @@ retain its own Node.js and Python copies as dependencies of other formulae.
 The default mise runtimes are declared in
 [`home/private_dot_config/private_mise/config.toml.tmpl`](home/private_dot_config/private_mise/config.toml.tmpl).
 Pi is installed under `~/.local/share/pi` and its launcher always executes it
-with Node.js 25. Reproducible Pi packages are listed in
+with Node.js 25. Required rolling Pi packages are listed in
 [`home/.chezmoidata/pi.yaml`](home/.chezmoidata/pi.yaml); Pi's mutable settings
 remain unmanaged.
 
