@@ -63,7 +63,7 @@ else
     log_verbose "Downloading Google Cloud SDK..."
     curl -fsSL "$DOWNLOAD_URL" -o "$archive_path"
 
-    log_verbose "Verifying archive..."
+    log_verbose "Checking archive readability..."
     tar -tzf "$archive_path" >/dev/null
 
     log_verbose "Extracting archive..."
