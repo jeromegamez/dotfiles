@@ -208,9 +208,10 @@ chezmoi --verbose apply
 Useful maintenance commands:
 
 ```bash
-brew-maintenance       # update Homebrew and installed packages
-mise upgrade           # update mise-managed runtimes
-pi update --all        # update Pi and its packages using Node.js 25
+brew-maintenance         # update Homebrew and installed packages
+mise upgrade             # update mise-managed runtimes
+gcloud components update # update Google Cloud CLI and its components
+pi update --all          # update Pi and its packages using Node.js 25
 ./scripts/lint-shell.sh
 ```
 
