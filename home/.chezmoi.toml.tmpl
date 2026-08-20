@@ -1,3 +1,7 @@
+{{- if hasKey . "credentials" -}}
+{{- fail "Obsolete [data.credentials] configuration detected. Remove the table from chezmoi's configuration, delete configuration backups containing it, rerun 'chezmoi init --prompt', and rotate affected credentials if the table contained plaintext values rather than 1Password references." -}}
+{{- end -}}
+
 {{- $profile := promptChoiceOnce
     . "profile"
     "Select this machine's profile"

@@ -21,10 +21,7 @@ personal_lint_data='{
     "email": "test@example.invalid",
     "onepasswordAccount": "test",
     "githubRateLimitTokenReference": "op://test/test/token",
-    "homebrewPrefix": "/opt/homebrew",
-    "credentials": {
-        "gitlabToken": "test"
-    }
+    "homebrewPrefix": "/opt/homebrew"
 }'
 
 work_lint_data='{
