@@ -4,6 +4,8 @@ set -eufo pipefail
 
 umask 077
 
+# Composer package declarations hash: {{ include (joinPath .chezmoi.sourceDir "private_dot_config/private_composer/composer.json") | sha256sum }}
+
 temp_dir=""
 installer=""
 cleanup() {
