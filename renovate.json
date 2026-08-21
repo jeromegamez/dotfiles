@@ -6,7 +6,7 @@
       "customType": "regex",
       "description": "Update agent tooling dependencies",
       "managerFilePatterns": [
-        "/^home\\/\\.chezmoidata\\/(?:agent-skills|cc-safety-net)\\.yaml$/"
+        "/^home\\/\\.chezmoidata\\/agent-skills\\.yaml$/"
       ],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+version: \\\"(?<currentValue>[^\\\"]+)\\\"",
