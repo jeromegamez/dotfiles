@@ -177,8 +177,16 @@ The default mise runtimes are declared in
 [`home/private_dot_config/private_mise/config.toml.tmpl`](home/private_dot_config/private_mise/config.toml.tmpl).
 Pi is installed under `~/.local/share/pi` and its launcher always executes it
 with Node.js 25. Required rolling Pi packages are listed in
-[`home/.chezmoidata/pi.yaml`](home/.chezmoidata/pi.yaml); Pi's mutable settings
-remain unmanaged.
+[`home/.chezmoidata/pi.yaml`](home/.chezmoidata/pi.yaml); other mutable Pi
+settings remain unmanaged. Bootstrap installs missing components but does not
+upgrade an existing Pi installation or package. Pi and its required packages are
+intentionally unpinned; `pi update --all` is the explicit approval boundary for
+rolling upgrades.
+
+The main Pi bootstrap explicitly disables npm's release-age delay. Required
+package installs and updates use Pi's configured npm command and may inherit the
+user's npm release-age policy. Chezmoi apply does not perform routine Pi
+upgrades.
 
 ## Maintenance
 

@@ -73,8 +73,24 @@ else
 fi
 settings_temp=""
 
-echo "==> Install or update required Pi packages"
-"$pi_launcher" update --extensions
+install_required_package() {
+    local package="$1"
+    local package_name="${package#npm:}"
+
+    if [[ "$package" != npm:* || ! "$package_name" =~ ^(@[a-z0-9._~-]+/)?[a-z0-9._~-]+$ ]]; then
+        echo "Unsupported required Pi package source: $package" >&2
+        exit 1
+    fi
+
+    if [[ ! -d "$settings_dir/npm/node_modules/$package_name" ]]; then
+        echo "==> Install required Pi package $package"
+        "$pi_launcher" install "$package"
+    fi
+}
+
+while IFS= read -r package; do
+    install_required_package "$package"
+done < <(jq -r '.[]' <<<"$required_packages")
 
 legacy_package_dir="$homebrew_prefix/lib/node_modules/$pi_package"
 if [[ -d "$legacy_package_dir" ]]; then
