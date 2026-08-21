@@ -9,8 +9,7 @@
         "/^home\\/\\.chezmoidata\\/agent-skills\\.yaml$/"
       ],
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+version: \\\"(?<currentValue>[^\\\"]+)\\\"",
-        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+- source: https://github\\.com/[^/]+/[^/]+/tree/(?<currentValue>\\S+)"
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+version: \\\"(?<currentValue>[^\\\"]+)\\\""
       ]
     }
   ]

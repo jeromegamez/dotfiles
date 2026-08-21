@@ -4,7 +4,9 @@ agentSkills:
     # renovate: datasource=npm depName=skills
     version: "1.5.22"
   sources:
-    # renovate: datasource=github-tags depName=JuliusBrussee/caveman
-    - source: https://github.com/JuliusBrussee/caveman/tree/v2.1.0
+    - source: juliusbrussee/caveman
       skills:
         - caveman
+    - source: cursor/plugins
+      skills:
+        - unslop
