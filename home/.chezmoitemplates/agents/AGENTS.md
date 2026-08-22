@@ -42,7 +42,7 @@ OSS maintainer. Favor stability, backwards compatibility, small diffs.
 
 ## Git
 
-- Commit only when asked; push only when explicitly requested. No AI attribution. Follow repo commit style.
+- Commit completed implementation work unless asked not to; never include unrelated changes. Push only when explicitly requested. No AI attribution. Follow repo commit style.
 
 ## PHP
 
