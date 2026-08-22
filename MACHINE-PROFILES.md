@@ -17,6 +17,19 @@ machine state belong in the source or generated configuration rather than here.
 - Ignoring a target makes it unmanaged; it does not remove material that already
   exists on a machine.
 
+## Profile lifecycle
+
+Profile selection is immutable after bootstrap. Changing `profile`, `personal`,
+or `work` in machine-local configuration is unsupported because the new profile
+may ignore credentials and generated files left by the old one.
+
+Repurposing a machine is a fresh bootstrap, not a profile toggle. Remove the old
+profile's credentials and generated material, discard its machine-local chezmoi
+configuration, then run `chezmoi init --prompt` for the new profile. Review the
+diff and dry run before applying. Afterwards, verify the active 1Password
+account, Git identity and signing, SSH authentication, and absence of
+opposite-profile credentials.
+
 ## Profile boundaries
 
 ### Shared
