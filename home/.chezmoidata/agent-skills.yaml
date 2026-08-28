@@ -10,3 +10,6 @@ agentSkills:
     - source: cursor/plugins
       skills:
         - unslop
+    - source: mattpocock/skills
+      skills:
+        - "*"
