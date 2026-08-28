@@ -3,3 +3,4 @@ pi:
   packages:
     - npm:pi-caveman
     - npm:pi-web-access
+    - npm:@tintinweb/pi-subagents
