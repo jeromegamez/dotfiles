@@ -2,8 +2,12 @@ agentAddons:
   pi:
     packages:
       - npm:pi-web-access
-      - npm:@tintinweb/pi-subagents
       - npm:@dietrichgebert/ponytail
+      - npm:@juicesharp/rpiv-advisor
+      - npm:@juicesharp/rpiv-ask-user-question
+      - npm:@juicesharp/rpiv-btw
+      - npm:@juicesharp/rpiv-todo
+      - npm:@tintinweb/pi-subagents
   codex:
     marketplaces:
       - marketplace: DietrichGebert/ponytail
