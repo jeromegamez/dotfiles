@@ -83,21 +83,20 @@ command=({{ joinPath $.homebrewPrefix "bin" "copilot" | quote }})
 {{ end -}}
 
 if [[ ! -x "${command[0]}" ]]; then
-    echo "Missing {{ $agent }} executable: ${command[0]}" >&2
-    exit 1
+    echo "==> Skip {{ $agent }} plugins: ${command[0]} not installed"
+else
+{{- range $config.marketplaces }}
+{{- $marketplaceName := default (trimSuffix ".git" (base .marketplace)) (get . "name") }}
+    "${command[@]}" plugin marketplace add {{ .marketplace | quote }}
+{{- range .plugins }}
+{{- if eq $agent "codex" }}
+    "${command[@]}" plugin add {{ printf "%s@%s" . $marketplaceName | quote }}
+{{- else }}
+    "${command[@]}" plugin install {{ printf "%s@%s" . $marketplaceName | quote }}
+{{- end }}
+{{- end }}
+{{- end }}
 fi
-
-{{ range $config.marketplaces -}}
-{{ $marketplaceName := default (trimSuffix ".git" (base .marketplace)) (get . "name") -}}
-"${command[@]}" plugin marketplace add {{ .marketplace | quote }}
-{{ range .plugins -}}
-{{ if eq $agent "codex" -}}
-"${command[@]}" plugin add {{ printf "%s@%s" . $marketplaceName | quote }}
-{{ else -}}
-"${command[@]}" plugin install {{ printf "%s@%s" . $marketplaceName | quote }}
-{{ end -}}
-{{ end -}}
-{{ end -}}
 {{ end -}}
 {{ end -}}
 echo "✓ Installed required agent add-ons"
