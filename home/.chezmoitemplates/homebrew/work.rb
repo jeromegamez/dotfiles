@@ -16,9 +16,7 @@ brew "terraform-docs" # Tool to generate documentation from Terraform modules
 brew "terrastruct/tap/tala", trusted: true # Advanced diagram layout engine for D2
 brew "tfautomv" # Generate Terraform moved blocks automatically for painless refactoring
 
-cask "copilot-cli" # Brings the power of Copilot coding agent directly to your terminal
 cask "corretto@25" # OpenJDK distribution from Amazon
-cask "github-copilot-app" # Native client for GitHub Copilot
 cask "intellij-idea" # Java IDE by JetBrains
 cask "mongodb-compass" # Interactive tool for analyzing MongoDB data
 cask "terraform-linters/tap/tflint", trusted: true # Pluggable Terraform linter

@@ -52,6 +52,8 @@ cask "font-maple-mono-nf" # https://font.subf.dev/en/
 cask "1password" # Password manager that keeps all passwords secure behind one password
 cask "1password-cli" # Command-line interface for 1Password
 cask "chatgpt" # ChatGPT desktop app with Codex
+cask "copilot-cli" # Brings the power of Copilot coding agent directly to your terminal
+cask "github-copilot-app" # Native client for GitHub Copilot
 cask "ghostty" # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "karabiner-elements" # Keyboard customizer
 cask "lm-studio" # Discover, download, and run local LLMs
