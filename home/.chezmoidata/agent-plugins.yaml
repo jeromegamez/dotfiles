@@ -1,0 +1,5 @@
+agentPlugins:
+  # Each marketplace accepts: marketplace (source), optional name, and plugins.
+  # Marketplace name defaults to source repository name.
+  codex: []
+  copilot: []

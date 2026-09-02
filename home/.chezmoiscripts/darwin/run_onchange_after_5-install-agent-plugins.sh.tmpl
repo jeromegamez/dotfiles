@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# agent-plugins configuration fingerprint: {{ .agentPlugins | toJson | sha256sum }}
+set -euo pipefail
+
+{{ range $agent, $marketplaces := .agentPlugins -}}
+{{ if $marketplaces -}}
+{{ if eq $agent "codex" -}}
+command=({{ joinPath $.homebrewPrefix "bin" "mise" | quote }} exec codex -- codex)
+{{ else if eq $agent "copilot" -}}
+command=({{ joinPath $.homebrewPrefix "bin" "copilot" | quote }})
+{{ else -}}
+{{ fail (printf "Unsupported plugin agent: %s" $agent) }}
+{{ end -}}
+
+if [[ ! -x "${command[0]}" ]]; then
+    echo "Missing {{ $agent }} executable: ${command[0]}" >&2
+    exit 1
+fi
+
+{{ range $marketplaces -}}
+{{ $marketplaceName := default (trimSuffix ".git" (base .marketplace)) (get . "name") -}}
+"${command[@]}" plugin marketplace add {{ .marketplace | quote }}
+{{ range .plugins -}}
+{{ if eq $agent "codex" -}}
+"${command[@]}" plugin add {{ printf "%s@%s" . $marketplaceName | quote }}
+{{ else -}}
+"${command[@]}" plugin install {{ printf "%s@%s" . $marketplaceName | quote }}
+{{ end -}}
+{{ end -}}
+{{ end -}}
+{{ end -}}
+{{ end -}}
+echo "✓ Installed required agent plugins"
