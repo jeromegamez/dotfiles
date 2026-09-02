@@ -2,7 +2,7 @@ agentSkills:
   cli:
     package: skills
     # renovate: datasource=npm depName=skills
-    version: "1.5.22"
+    version: "1.5.23"
   sources:
     - source: juliusbrussee/caveman
       skills:

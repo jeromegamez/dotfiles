@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# agent-skills configuration fingerprint: {{ .agentSkills | toJson | sha256sum }}
 set -euo pipefail
 
 mise_bin={{ joinPath .homebrewPrefix "bin" "mise" | quote }}
