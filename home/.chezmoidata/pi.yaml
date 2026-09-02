@@ -4,3 +4,4 @@ pi:
     - npm:pi-caveman
     - npm:pi-web-access
     - npm:@tintinweb/pi-subagents
+    - npm:@dietrichgebert/ponytail
