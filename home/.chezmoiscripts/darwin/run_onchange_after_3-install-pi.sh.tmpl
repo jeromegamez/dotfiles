@@ -9,7 +9,7 @@ pi_prefix="$data_home/pi"
 pi_entrypoint="$pi_prefix/bin/pi"
 pi_launcher="$HOME/.local/bin/pi"
 pi_node={{ printf "node@%s" .versions.node.pi | quote }}
-pi_package={{ .pi.package | quote }}
+pi_package="@earendil-works/pi-coding-agent"
 if [[ ! -x "$pi_entrypoint" ]]; then
     echo "==> Install Pi with mise-managed $pi_node"
     "$mise_bin" exec "$pi_node" -- npm install \
