@@ -5,6 +5,12 @@ agentAddons:
       - npm:@tintinweb/pi-subagents
       - npm:@dietrichgebert/ponytail
   codex:
-    marketplaces: []
+    marketplaces:
+      - marketplace: DietrichGebert/ponytail
+        plugins:
+          - ponytail
   copilot:
-    marketplaces: []
+    marketplaces:
+      - marketplace: DietrichGebert/ponytail
+        plugins:
+          - ponytail
