@@ -10,18 +10,6 @@ pi_entrypoint="$pi_prefix/bin/pi"
 pi_launcher="$HOME/.local/bin/pi"
 pi_node={{ printf "node@%s" .versions.node.pi | quote }}
 pi_package={{ .pi.package | quote }}
-settings_dir="$HOME/.pi/agent"
-settings_file="$settings_dir/settings.json"
-settings_temp=""
-required_packages={{ .pi.packages | toJson | quote }}
-
-cleanup() {
-    if [[ -n "$settings_temp" && -f "$settings_temp" ]]; then
-        unlink "$settings_temp"
-    fi
-}
-trap cleanup EXIT
-
 if [[ ! -x "$pi_entrypoint" ]]; then
     echo "==> Install Pi with mise-managed $pi_node"
     "$mise_bin" exec "$pi_node" -- npm install \
@@ -40,57 +28,6 @@ if [[ ! -x "$pi_launcher" ]]; then
 fi
 
 "$pi_launcher" --version
-
-mkdir -p "$settings_dir"
-settings_temp="$(mktemp "$settings_dir/.settings.json.XXXXXX")"
-
-merge_settings() {
-    jq \
-        --arg mise_bin "$mise_bin" \
-        --arg pi_node "$pi_node" \
-        --arg npm_prefix "NPM_CONFIG_PREFIX=$pi_prefix" \
-        --argjson required_packages "$required_packages" \
-        '
-            .npmCommand = [$mise_bin, "exec", $pi_node, "--", "env", $npm_prefix, "npm"]
-            | .packages = reduce $required_packages[] as $package (
-                (.packages // []);
-                if index($package) then . else . + [$package] end
-            )
-        '
-}
-
-if [[ -f "$settings_file" ]]; then
-    merge_settings <"$settings_file" >"$settings_temp"
-else
-    printf '{}\n' | merge_settings >"$settings_temp"
-fi
-
-chmod 600 "$settings_temp"
-if [[ -f "$settings_file" ]] && cmp -s "$settings_temp" "$settings_file"; then
-    unlink "$settings_temp"
-else
-    mv "$settings_temp" "$settings_file"
-fi
-settings_temp=""
-
-install_required_package() {
-    local package="$1"
-    local package_name="${package#npm:}"
-
-    if [[ "$package" != npm:* || ! "$package_name" =~ ^(@[a-z0-9._~-]+/)?[a-z0-9._~-]+$ ]]; then
-        echo "Unsupported required Pi package source: $package" >&2
-        exit 1
-    fi
-
-    if [[ ! -d "$settings_dir/npm/node_modules/$package_name" ]]; then
-        echo "==> Install required Pi package $package"
-        "$pi_launcher" install "$package"
-    fi
-}
-
-while IFS= read -r package; do
-    install_required_package "$package"
-done < <(jq -r '.[]' <<<"$required_packages")
 
 legacy_package_dir="$homebrew_prefix/lib/node_modules/$pi_package"
 if [[ -d "$legacy_package_dir" ]]; then

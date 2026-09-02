@@ -1,0 +1,10 @@
+agentAddons:
+  pi:
+    packages:
+      - npm:pi-web-access
+      - npm:@tintinweb/pi-subagents
+      - npm:@dietrichgebert/ponytail
+  codex:
+    marketplaces: []
+  copilot:
+    marketplaces: []
