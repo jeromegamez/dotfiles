@@ -1,7 +1,6 @@
 pi:
   package: "@earendil-works/pi-coding-agent"
   packages:
-    - npm:pi-caveman
     - npm:pi-web-access
     - npm:@tintinweb/pi-subagents
     - npm:@dietrichgebert/ponytail

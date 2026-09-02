@@ -4,9 +4,6 @@ agentSkills:
     # renovate: datasource=npm depName=skills
     version: "1.5.23"
   sources:
-    - source: juliusbrussee/caveman
-      skills:
-        - caveman
     - source: cursor/plugins
       skills:
         - unslop
