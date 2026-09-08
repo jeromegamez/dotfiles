@@ -58,7 +58,6 @@ cask "ghostty" # Terminal emulator that uses platform-native UI and GPU accelera
 cask "karabiner-elements" # Keyboard customizer
 cask "mole-app" # Deep clean, analyze, and optimize app
 cask "openlogi" # Local-first alternative to Logitech Options+ for HID++ devices
-cask "orbstack" # Replacement for Docker Desktop
 cask "raycast" # Control your tools with a few keystrokes
 cask "sublime-merge" # Git client
 cask "thaw" # Menu bar manager

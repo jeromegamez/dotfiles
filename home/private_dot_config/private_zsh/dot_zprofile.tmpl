@@ -15,9 +15,16 @@ eval "$({{ .homebrewPrefix }}/bin/brew shellenv)"
 # shims so dependency runtimes are not selected accidentally.
 path=("$XDG_BIN_DIR" "$MISE_SHIMS_DIR" $path)
 
+{{ if .personal -}}
 if [[ -f ${HOME}/.orbstack/shell/init.zsh ]]; then
     source ${HOME}/.orbstack/shell/init.zsh
 fi
+{{ else if .work -}}
+if [[ -d "$HOME/.rd/bin" ]]; then
+    path+=("$HOME/.rd/bin")
+    export DOCKER_HOST="unix://$HOME/.rd/docker.sock"
+fi
+{{ end -}}
 {{ end }}
 
 # 1Password SSH Agent

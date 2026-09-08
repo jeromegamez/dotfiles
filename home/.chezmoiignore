@@ -1,6 +1,9 @@
 {{ if ne .chezmoi.os "darwin" }}
 .chezmoiscripts/darwin/**
 {{ end }}
+{{ if or (ne .chezmoi.os "darwin") (not .work) }}
+Library/Preferences/io.rancherdesktop.profile.defaults.plist
+{{ end }}
 {{ if or (not (hasKey . "headless")) (get . "headless") }}
 .chezmoiscripts/darwin/4-configure-granted.sh
 {{ end }}
