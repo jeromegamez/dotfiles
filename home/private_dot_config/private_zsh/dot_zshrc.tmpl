@@ -78,7 +78,7 @@ if command -v starship &>/dev/null; then
 fi
 
 # Replace the standard completion menu after compinit and fzf initialization.
-if [[ -f "{{ .homebrewPrefix }}/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh" ]]; then
+if command -v fzf &>/dev/null && [[ -f "{{ .homebrewPrefix }}/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh" ]]; then
     zstyle ':completion:*' menu no
     source "{{ .homebrewPrefix }}/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
 fi
