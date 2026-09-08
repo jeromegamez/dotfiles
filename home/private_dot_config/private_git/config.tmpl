@@ -61,7 +61,7 @@
 
 [merge]
     conflictstyle = zdiff3
-{{- if eq .chezmoi.os "darwin" }}
+{{- if and (eq .chezmoi.os "darwin") (isExecutable (joinPath .homebrewPrefix "bin" "smerge")) }}
     tool = smerge
 {{- end }}
 
