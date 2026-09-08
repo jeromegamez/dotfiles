@@ -1,5 +1,7 @@
-{{ if and (eq .chezmoi.os "darwin") (isExecutable (joinPath .chezmoi.homeDir ".orbstack/bin/orb")) -}}
-Include ~/.orbstack/ssh/config
+{{ if eq .chezmoi.os "darwin" -}}
+Match exec "test -x ~/.orbstack/bin/orb"
+    Include ~/.orbstack/ssh/config
+Match all
 {{ end -}}
 Include ~/.ssh/1Password/generated-hosts.conf
 Include ~/.ssh/1Password/config
