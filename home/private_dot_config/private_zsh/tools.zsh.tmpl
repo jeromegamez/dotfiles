@@ -63,4 +63,10 @@ if command -v fzf &>/dev/null; then
     fi
 
     source <(fzf --zsh)
+
+    # Replace the standard completion menu after fzf initialization.
+    if [[ -f "{{ .homebrewPrefix }}/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh" ]]; then
+        zstyle ':completion:*' menu no
+        source "{{ .homebrewPrefix }}/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
+    fi
 fi
