@@ -1,6 +1,7 @@
 agentAddons:
   pi:
     packages:
+      - npm:pi-caveman
       - npm:pi-web-access
       - npm:@dietrichgebert/ponytail
       - npm:@juicesharp/rpiv-advisor
