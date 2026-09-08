@@ -10,7 +10,9 @@ path=("$HOMEBREW_GNUBIN_DIR" $path)
 {{ if eq .chezmoi.os "darwin" -}}
 # Homebrew
 unset HOMEBREW_PATH
-eval "$({{ .homebrewPrefix }}/bin/brew shellenv)"
+if [[ -x "{{ .homebrewPrefix }}/bin/brew" ]]; then
+    eval "$("{{ .homebrewPrefix }}/bin/brew" shellenv)"
+fi
 # Homebrew's shellenv prepends its prefix; restore user launchers and mise
 # shims so dependency runtimes are not selected accidentally.
 path=("$XDG_BIN_DIR" "$MISE_SHIMS_DIR" $path)
