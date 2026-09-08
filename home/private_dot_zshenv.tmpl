@@ -27,7 +27,10 @@ fpath=(
     ${fpath:#{{ .homebrewPrefix }}/Cellar/zsh/*/share/zsh/functions}
 )
 
-if [[ -x "{{ joinPath .homebrewPrefix "bin" "nvim" }}" ]]; then
+if [[ -x "{{ joinPath .homebrewPrefix "bin" "zed" }}" ]]; then
+    export EDITOR="{{ .homebrewPrefix }}/bin/zed --wait"
+    export VISUAL=$EDITOR
+elif [[ -x "{{ joinPath .homebrewPrefix "bin" "nvim" }}" ]]; then
     export EDITOR={{ joinPath .homebrewPrefix "bin" "nvim" | quote }}
     export VISUAL=$EDITOR
 fi
