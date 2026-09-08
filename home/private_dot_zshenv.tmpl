@@ -27,7 +27,9 @@ fpath=(
     ${fpath:#{{ .homebrewPrefix }}/Cellar/zsh/*/share/zsh/functions}
 )
 
-export EDITOR={{ joinPath .homebrewPrefix "bin" "nvim" }}
-export VISUAL=$EDITOR
+if [[ -x "{{ joinPath .homebrewPrefix "bin" "nvim" }}" ]]; then
+    export EDITOR={{ joinPath .homebrewPrefix "bin" "nvim" | quote }}
+    export VISUAL=$EDITOR
+fi
 {{- end }}
 ZDOTDIR=$XDG_CONFIG_HOME/zsh
