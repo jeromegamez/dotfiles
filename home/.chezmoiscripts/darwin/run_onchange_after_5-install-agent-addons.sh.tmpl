@@ -75,7 +75,7 @@ done < <(jq -r '.[]' <<<"$required_packages")
 {{ range $agent, $config := .agentAddons -}}
 {{ if and (ne $agent "pi") $config.marketplaces -}}
 {{ if eq $agent "codex" -}}
-command=({{ joinPath $.homebrewPrefix "bin" "mise" | quote }} exec codex -- codex)
+command=("$HOME/.local/bin/codex")
 {{ else if eq $agent "copilot" -}}
 command=({{ joinPath $.homebrewPrefix "bin" "copilot" | quote }})
 {{ else -}}

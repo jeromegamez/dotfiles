@@ -168,10 +168,13 @@ instructions](https://support.apple.com/guide/mac-help/mchl1bb43b84/mac).
 
 ## Tool ownership
 
-The standalone installer owns chezmoi. Homebrew owns applications, including
-the ChatGPT desktop app, and general command-line tools. mise owns the Codex CLI
-as well as the Node.js and Python runtimes selected by the shell. Homebrew may
+The standalone installers own chezmoi and the Codex CLI. Homebrew owns
+applications, including the ChatGPT desktop app, and general command-line tools.
+mise owns the Node.js and Python runtimes selected by the shell. Homebrew may
 retain its own Node.js and Python copies as dependencies of other formulae.
+
+The macOS lifecycle installs Codex CLI when it is missing. Update it with
+`codex update`.
 
 The default mise runtimes are declared in
 [`home/private_dot_config/private_mise/config.toml.tmpl`](home/private_dot_config/private_mise/config.toml.tmpl).
@@ -218,6 +221,7 @@ Useful maintenance commands:
 ```bash
 brew-maintenance         # update Homebrew and installed packages
 mise upgrade             # update mise-managed runtimes
+codex update             # update Codex CLI
 gcloud components update # update Google Cloud CLI and its components
 pi update --all          # update Pi and its packages using Node.js 25
 ./scripts/lint-shell.sh
