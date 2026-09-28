@@ -75,10 +75,6 @@ a forge's verification status. Each forge maintains its own signing-key registry
 Configuration, package installation, and system settings target Apple Silicon
 macOS.
 
-Persistent machine capability, such as `headless`, controls whether
-browser-dependent behavior is appropriate. Current terminal interactivity must
-not stand in for machine capability.
-
 ## Validation
 
 Changes affecting profiles must be rendered with representative, non-secret data

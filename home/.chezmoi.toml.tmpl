@@ -9,11 +9,6 @@
 -}}
 {{- $work := eq $profile "work" -}}
 {{- $personal := eq $profile "personal" -}}
-{{- $headless := promptBoolOnce
-    . "headless"
-    "Is this machine headless?"
-    false
--}}
 
 {{- $email := promptStringOnce
     . "email"
@@ -57,7 +52,6 @@
     profile = {{ $profile | quote }}
     work = {{ $work }}
     personal = {{ $personal }}
-    headless = {{ $headless }}
     email = {{ $email | quote }}
 {{- if $work }}
     workGitSigningPublicKey = {{ $workGitSigningPublicKey | quote }}
