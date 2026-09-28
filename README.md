@@ -5,10 +5,9 @@ Personal and work machine configuration managed with
 developer tools, language runtimes, credentials-backed files, applications, and
 selected system preferences.
 
-The shared configuration supports macOS and Linux. Automated package and
-application installation and system configuration target Apple Silicon macOS
-and assume Homebrew is installed at `/opt/homebrew`. Linux prerequisites and
-software installation remain outside chezmoi.
+This configuration targets Apple Silicon macOS. Automated package and
+application installation and system configuration use Homebrew at
+`/opt/homebrew`.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) before changing the repository.
 
@@ -31,55 +30,6 @@ On macOS, a full `chezmoi apply` can install software, request administrator
 privileges, change system preferences, and restart affected services. It is
 more than a file-copy operation.
 
-## Machine configuration
-
-During initialization, [`home/.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl)
-prompts once for:
-
-- a `personal` or `work` package profile;
-- whether the machine is headless;
-- the active profile's email address;
-- on work, the public key used for SSH commit and tag signing;
-- a 1Password account and the reference to one low-privilege GitHub API PAT for
-  public-data readers and rate-limit elevation.
-
-The answers are stored in chezmoi's machine-local configuration, not in the
-repository. Prompt for them again with:
-
-```bash
-chezmoi init --prompt
-```
-
-See [`MACHINE-PROFILES.md`](MACHINE-PROFILES.md) for the profile boundaries,
-credential rules, Git safeguards, platform policy, and validation principles.
-
-The selected profile supplies the default Git identity and signing method
-globally: personal uses GPG and work uses an SSH key held by 1Password. SSH
-authentication is selected separately by SSH host configuration and 1Password
-Bookmarks. Repositories under `~/Code/reference/`, the opposite profile's
-`~/Code/` tree, and the chezmoi source on work receive an empty identity guard.
-
-Organize repositories by trust profile and then forge, for example
-`~/Code/personal/github.com/owner/repository`,
-`~/Code/work/gitlab.com/group/repository`, and
-`~/Code/reference/codeberg.org/owner/repository`. Forge directories organize
-repositories; they do not select identity or credentials.
-
-## Repository layout
-
-| Path | Purpose |
-| --- | --- |
-| `home/` | Source state rendered into the home directory |
-| `home/.chezmoiscripts/darwin/` | macOS bootstrap and configuration hooks |
-| `home/.chezmoitemplates/homebrew/` | Common and profile-specific Homebrew packages |
-| `home/.chezmoidata/` | Declarative data such as required Pi packages |
-| `scripts/lint-shell.sh` | ShellCheck and shfmt validation for scripts and rendered templates |
-| `export-checklist.md` | Manual application data to migrate between Macs |
-
-chezmoi filename conventions describe the target and its permissions. For
-example, `private_dot_config/private_git/config.tmpl` renders as
-`~/.config/git/config`, with private permissions and template expansion.
-
 ## Bootstrap
 
 Install the chezmoi binary in `~/.local/bin` with the official installer:
@@ -88,17 +38,14 @@ Install the chezmoi binary in `~/.local/bin` with the official installer:
 sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "$HOME/.local/bin"
 ```
 
-On Apple Silicon macOS, install the remaining prerequisites:
+On Apple Silicon macOS, install [Homebrew](https://brew.sh/) and make it
+available in the current terminal:
 
 ```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 brew install --cask 1password 1password-cli
 ```
-
-On Linux, install the native 1Password application and CLI using the
-distribution's supported method. The work profile additionally requires Git
-2.34 or newer, compatible OpenSSH signing support, and the 1Password SSH agent.
-The personal profile requires GnuPG. Chezmoi does not install these Linux
-prerequisites.
 
 The dotfiles add `~/.local/bin` to `PATH`, but they have not been applied yet.
 Use the binary's full path during the bootstrap.
@@ -128,7 +75,8 @@ Authenticate the CLI from an interactive terminal:
 op signin
 ```
 
-Initialize the repository without applying it immediately:
+Initialize the repository without applying it immediately. See
+[Machine configuration](#machine-configuration) for the prompts:
 
 ```bash
 ~/.local/bin/chezmoi --verbose init \
@@ -165,6 +113,55 @@ be used to disable indexing for `~/Code`. A `.metadata_never_index` marker
 inside an ordinary directory also does not exclude that directory on macOS
 Tahoe. See [Apple's Spotlight Search Privacy
 instructions](https://support.apple.com/guide/mac-help/mchl1bb43b84/mac).
+
+## Machine configuration
+
+During initialization, [`home/.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl)
+prompts once for:
+
+- a `personal` or `work` package profile;
+- whether the machine is headless;
+- the active profile's email address;
+- on work, the public key used for SSH commit and tag signing;
+- a 1Password account and the reference to one low-privilege GitHub API PAT for
+  public-data readers and rate-limit elevation.
+
+The answers are stored in chezmoi's machine-local configuration, not in the
+repository. To change them later, run:
+
+```bash
+chezmoi init --prompt
+```
+
+See [`MACHINE-PROFILES.md`](MACHINE-PROFILES.md) for the profile boundaries,
+credential rules, Git safeguards, platform policy, and validation principles.
+
+The selected profile supplies the default Git identity and signing method
+globally: personal uses GPG and work uses an SSH key held by 1Password. SSH
+authentication is selected separately by SSH host configuration and 1Password
+Bookmarks. Repositories under `~/Code/reference/`, the opposite profile's
+`~/Code/` tree, and the chezmoi source on work receive an empty identity guard.
+
+Organize repositories by trust profile and then forge, for example
+`~/Code/personal/github.com/owner/repository`,
+`~/Code/work/gitlab.com/group/repository`, and
+`~/Code/reference/codeberg.org/owner/repository`. Forge directories organize
+repositories; they do not select identity or credentials.
+
+## Repository layout
+
+| Path | Purpose |
+| --- | --- |
+| `home/` | Source state rendered into the home directory |
+| `home/.chezmoiscripts/darwin/` | macOS bootstrap and configuration hooks |
+| `home/.chezmoitemplates/homebrew/` | Common and profile-specific Homebrew packages |
+| `home/.chezmoidata/` | Declarative data such as required Pi packages |
+| `scripts/lint-shell.sh` | ShellCheck and shfmt validation for scripts and rendered templates |
+| `export-checklist.md` | Manual application data to migrate between Macs |
+
+chezmoi filename conventions describe the target and its permissions. For
+example, `private_dot_config/private_git/config.tmpl` renders as
+`~/.config/git/config`, with private permissions and template expansion.
 
 ## Tool ownership
 

@@ -1,8 +1,8 @@
 # Machine profiles
 
-This repository manages configuration for personal and work machines on macOS
-and Linux. Each machine selects exactly one profile. The selection is stored in
-chezmoi's machine-local configuration, not in the repository.
+This repository manages configuration for personal and work machines on Apple
+Silicon macOS. Each machine selects exactly one profile. The selection is
+stored in chezmoi's machine-local configuration, not in the repository.
 
 This document defines durable policy. Current packages, paths, templates, and
 machine state belong in the source or generated configuration rather than here.
@@ -72,10 +72,8 @@ a forge's verification status. Each forge maintains its own signing-key registry
 
 ## Platform policy
 
-Shared configuration should remain portable across macOS and Linux. Automated
-package installation and system configuration target Apple Silicon macOS.
-Linux-specific prerequisites remain external and must be validated on each
-machine.
+Configuration, package installation, and system settings target Apple Silicon
+macOS.
 
 Persistent machine capability, such as `headless`, controls whether
 browser-dependent behavior is appropriate. Current terminal interactivity must

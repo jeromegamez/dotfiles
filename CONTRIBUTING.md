@@ -5,7 +5,7 @@ layout, and maintenance workflows.
 
 ## Scope
 
-- Support macOS (`darwin`) and Linux. Do not add Windows compatibility.
+- Target Apple Silicon macOS (`darwin`).
 - Treat `home/` as the source of truth. Do not edit generated files in the home
   directory.
 - Keep changes focused and preserve unrelated worktree changes.
