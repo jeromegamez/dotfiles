@@ -50,15 +50,16 @@ brew install --cask 1password 1password-cli
 The dotfiles add `~/.local/bin` to `PATH`, but they have not been applied yet.
 Use the binary's full path during the bootstrap.
 
-Before initializing chezmoi, open the 1Password desktop app and configure its
-developer settings:
+Before initializing chezmoi, sign in to the 1Password desktop app and configure
+it:
 
-1. Turn on the 1Password Developer experience.
-2. Enable the 1Password SSH Agent.
-3. Enable CLI integration with the desktop app.
-4. Under the SSH Agent's advanced settings, enable **Generate SSH config files
+1. Enable Touch ID under Settings > Security for CLI integration.
+2. Turn on the 1Password Developer experience.
+3. Enable the 1Password SSH Agent.
+4. Enable CLI integration with the desktop app.
+5. Under the SSH Agent's advanced settings, enable **Generate SSH config files
    from 1Password SSH bookmarks**.
-5. Ensure the active profile's SSH keys are available to the agent. Add
+6. Ensure the active profile's SSH keys are available to the agent. Add
    `ssh://user@host` URLs to keys that should be associated with specific SSH
    hosts.
 
@@ -106,12 +107,7 @@ login-shell change. Open a new terminal after the bootstrap completes.
 
 After `~/Code` exists, exclude it once on each Mac through **System Settings ->
 Spotlight -> Search Privacy**. Click the add button and select `~/Code`.
-
-macOS does not provide a supported command-line interface for excluding an
-individual folder. `mdutil` manages complete Spotlight volumes, so it must not
-be used to disable indexing for `~/Code`. A `.metadata_never_index` marker
-inside an ordinary directory also does not exclude that directory on macOS
-Tahoe. See [Apple's Spotlight Search Privacy
+See [Apple's Spotlight Search Privacy
 instructions](https://support.apple.com/guide/mac-help/mchl1bb43b84/mac).
 
 ## Machine configuration
@@ -119,21 +115,22 @@ instructions](https://support.apple.com/guide/mac-help/mchl1bb43b84/mac).
 During initialization, [`home/.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl)
 prompts once for:
 
-- a `personal` or `work` package profile;
+- a `personal` or `work` machine profile;
 - the active profile's email address;
 - on work, the public key used for SSH commit and tag signing;
 - a 1Password account and the reference to one low-privilege GitHub API PAT for
   public-data readers and rate-limit elevation.
 
 The answers are stored in chezmoi's machine-local configuration, not in the
-repository. To change them later, run:
+repository. To change answers while keeping the same profile, run:
 
 ```bash
-chezmoi init --prompt
+chezmoi --verbose init --prompt
 ```
 
-See [`MACHINE-PROFILES.md`](MACHINE-PROFILES.md) for the profile boundaries,
-credential rules, Git safeguards, platform policy, and validation principles.
+Switching profiles requires a fresh bootstrap. See
+[`MACHINE-PROFILES.md`](MACHINE-PROFILES.md) for the steps and credential
+boundaries.
 
 The selected profile supplies the default Git identity and signing method
 globally: personal uses GPG and work uses an SSH key held by 1Password. SSH
@@ -174,18 +171,11 @@ The macOS lifecycle installs Codex CLI when it is missing. Update it with
 
 The default mise runtimes are declared in
 [`home/private_dot_config/private_mise/config.toml.tmpl`](home/private_dot_config/private_mise/config.toml.tmpl).
-Pi is installed under `~/.local/share/pi` and its launcher always executes it
-with Node.js 25. Required rolling Pi packages are listed in
-[`home/.chezmoidata/pi.yaml`](home/.chezmoidata/pi.yaml); other mutable Pi
-settings remain unmanaged. Bootstrap installs missing components but does not
-upgrade an existing Pi installation or package. Pi and its required packages are
-intentionally unpinned; `pi update --all` is the explicit approval boundary for
-rolling upgrades.
-
-The main Pi bootstrap explicitly disables npm's release-age delay. Required
-package installs and updates use Pi's configured npm command and may inherit the
-user's npm release-age policy. Chezmoi apply does not perform routine Pi
-upgrades.
+Pi is installed under `~/.local/share/pi` and launched with mise-managed
+Node.js. Required packages are listed in
+[`home/.chezmoidata/agent-addons.yaml`](home/.chezmoidata/agent-addons.yaml).
+Chezmoi installs missing components without upgrading existing ones. Other Pi
+settings remain unmanaged.
 
 ## Maintenance
 
@@ -219,13 +209,13 @@ brew-maintenance         # update Homebrew and installed packages
 mise upgrade             # update mise-managed runtimes
 codex update             # update Codex CLI
 gcloud components update # update Google Cloud CLI and its components
-pi update --all          # update Pi and its packages using Node.js 25
+pi update --all          # update Pi and its packages
 ./scripts/lint-shell.sh
 ```
 
 Install a Pi package for local evaluation with `pi install npm:package-name`.
-Add it to `home/.chezmoidata/pi.yaml` when it should be installed on every
-managed Mac.
+Add it to `home/.chezmoidata/agent-addons.yaml` when it should be installed on
+every managed Mac.
 
 Use [`export-checklist.md`](export-checklist.md) for application data that
 cannot be reproduced automatically.
