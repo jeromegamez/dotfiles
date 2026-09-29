@@ -103,6 +103,10 @@ Apply the complete configuration from an interactive terminal:
 On macOS, some hooks may request confirmation, administrator access, or a
 login-shell change. Open a new terminal after the bootstrap completes.
 
+Before installing applications, a hook checks whether Rosetta 2 can run Intel
+executables and installs it if needed. Installation requires internet access,
+accepts Apple's license automatically, and may request your administrator password.
+
 ### Exclude source code from Spotlight
 
 After `~/Code` exists, exclude it once on each Mac through **System Settings ->
