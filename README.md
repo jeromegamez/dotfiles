@@ -50,6 +50,13 @@ brew install --cask 1password 1password-cli
 The dotfiles add `~/.local/bin` to `PATH`, but they have not been applied yet.
 Use the binary's full path during the bootstrap.
 
+Grant the terminal app running chezmoi **Full Disk Access** under **System
+Settings > Privacy & Security > Full Disk Access**, then quit and reopen it.
+The macOS configuration hook needs this permission to write Safari preferences.
+Without it, `defaults` can fail with `Could not write domain`, stopping the
+apply. See [Apple's file-access
+documentation](https://support.apple.com/guide/security/secddd1d86a6/web).
+
 Before initializing chezmoi, sign in to the 1Password desktop app and configure
 it:
 
