@@ -52,8 +52,11 @@ if [[ ! -x "$managed_gcloud_bin" ]] && ! command -v gcloud >/dev/null 2>&1; then
         exit 1
     fi
 
+    mkdir -p "$SDK_DIR"
+    cp -R "$sdk_source_dir/." "$SDK_DIR"
+
     log_verbose "Running installation script..."
-    bash "$sdk_source_dir/install.sh" \
+    bash "$SDK_DIR/install.sh" \
         --usage-reporting false \
         --path-update false \
         --command-completion false \
