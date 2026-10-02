@@ -1,0 +1,4 @@
+{
+	"theme": "auto",
+	"terminal_command": "osascript -e 'on run argv' -e 'tell application \"Ghostty\"' -e 'set t to new tab with configuration {initial working directory:(item 1 of argv)}' -e 'focus (focused terminal of t)' -e 'end tell' -e 'end run' \"$dir\"",
+}
