@@ -25,6 +25,7 @@ brew "make" # Utility for directing compilation
 brew "mas" # Mac App Store command-line interface
 brew "mise" # Polyglot runtime manager
 brew "neovim" # Ambitious Vim-fork focused on extensibility and agility
+brew "openjdk" # Java development kit
 brew "poppler" # PDF rendering library
 brew "ripgrep" # Search tool like grep and The Silver Searcher
 brew "rmlint" # Extremely fast tool to remove dupes and other lint from your filesystem

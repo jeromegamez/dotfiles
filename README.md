@@ -177,6 +177,10 @@ applications, including the ChatGPT desktop app, and general command-line tools.
 mise owns the Node.js and Python runtimes selected by the shell. Homebrew may
 retain its own Node.js and Python copies as dependencies of other formulae.
 
+Homebrew owns Java. A lifecycle hook registers its JDK with macOS so `java`
+works without a custom `PATH` or `JAVA_HOME`. Existing registrations are not
+replaced.
+
 The macOS lifecycle installs Codex CLI when it is missing. Update it with
 `codex update`.
 

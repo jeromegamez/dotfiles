@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+jdk_bundle={{ joinPath .homebrewPrefix "opt/openjdk/libexec/openjdk.jdk" | quote }}
+system_jdk="/Library/Java/JavaVirtualMachines/openjdk.jdk"
+
+if [[ -L "$system_jdk" && "$(readlink "$system_jdk")" == "$jdk_bundle" ]]; then
+    exit 0
+fi
+
+if [[ -e "$system_jdk" || -L "$system_jdk" ]]; then
+    echo "Refusing to replace existing Java registration at $system_jdk" >&2
+    exit 1
+fi
+
+sudo ln -s "$jdk_bundle" "$system_jdk"
