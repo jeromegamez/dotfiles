@@ -56,7 +56,6 @@ cask "copilot-cli" # Brings the power of Copilot coding agent directly to your t
 cask "github-copilot-app" # Native client for GitHub Copilot
 cask "ghostty" # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "karabiner-elements" # Keyboard customizer
-cask "mole-app" # Deep clean, analyze, and optimize app
 cask "openlogi" # Local-first alternative to Logitech Options+ for HID++ devices
 cask "raycast" # Control your tools with a few keystrokes
 cask "sublime-merge" # Git client
