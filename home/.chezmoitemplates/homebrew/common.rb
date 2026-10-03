@@ -59,6 +59,7 @@ cask "karabiner-elements" # Keyboard customizer
 cask "openlogi" # Local-first alternative to Logitech Options+ for HID++ devices
 cask "raycast" # Control your tools with a few keystrokes
 cask "sublime-merge" # Git client
+cask "t3-code" # Minimal GUI for AI code agents
 cask "thaw" # Menu bar manager
 cask "zed" # Multiplayer code editor
 

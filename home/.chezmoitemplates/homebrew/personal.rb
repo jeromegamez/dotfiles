@@ -22,6 +22,7 @@ cask "gpg-suite-no-mail" # GPG Suite (without GPG Mail)
 cask "keepassxc" # Password manager app
 cask "jetbrains-toolbox" # JetBrains tools manager
 cask "microsoft-office" # Office suite
+cask "microsoft-teams" # Meet, chat, call, and collaborate in just one place
 cask "mole-app" # Deep clean, analyze, and optimize app
 cask "orbstack" # Replacement for Docker Desktop
 cask "prismlauncher" # Minecraft launcher
