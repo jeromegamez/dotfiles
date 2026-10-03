@@ -20,10 +20,12 @@ agentSkills:
         - grilling
         - handoff
         - implement
+        - implement-spec
         - improve-codebase-architecture
         - prototype
         - research
         - resolving-merge-conflicts
+        - retro
         - setup-matt-pocock-skills
         - tdd
         - teach
