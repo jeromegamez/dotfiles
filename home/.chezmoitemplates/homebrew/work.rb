@@ -15,6 +15,7 @@ brew "mongodb/brew/mongodb-database-tools", trusted: true # Standard utilities f
 brew "terraform-docs" # Tool to generate documentation from Terraform modules
 brew "terrastruct/tap/tala", trusted: true # Advanced diagram layout engine for D2
 brew "tfautomv" # Generate Terraform moved blocks automatically for painless refactoring
+brew "trivy" # Vulnerability scanner for container images, file systems, and Git repos
 
 cask "corretto@25" # OpenJDK distribution from Amazon
 cask "intellij-idea" # Java IDE by JetBrains
