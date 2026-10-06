@@ -1,0 +1,11 @@
+{
+  "providers": {
+    "github-copilot": {
+      "modelOverrides": {
+        "gpt-6.1-sol": {
+          "contextWindow": 272000
+        }
+      }
+    }
+  }
+}
