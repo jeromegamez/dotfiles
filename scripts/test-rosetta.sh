@@ -8,16 +8,19 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 script="$repo_root/home/.chezmoiscripts/darwin/run_before_install-rosetta.sh"
 
-# An available Intel runtime must skip installation and administrator access.
+# An installed package must skip installation even if an Intel probe fails.
 (
-    arch() { return 0; }
+    arch() { return 1; }
+    pkgutil() {
+        [[ "$*" == '--pkg-info com.apple.pkg.RosettaUpdateAuto' ]]
+    }
     sudo() { exit 1; }
     source "$script"
 )
 
-# A missing runtime must invoke Apple's installer with license acceptance.
+# A missing package must invoke Apple's installer with license acceptance.
 (
-    arch() { return 1; }
+    pkgutil() { return 1; }
     installed=false
     sudo() {
         [[ "$*" == '/usr/sbin/softwareupdate --install-rosetta --agree-to-license' ]]
@@ -29,7 +32,7 @@ script="$repo_root/home/.chezmoiscripts/darwin/run_before_install-rosetta.sh"
 
 # Installer errors must fail the hook.
 if (
-    arch() { return 1; }
+    pkgutil() { return 1; }
     sudo() { return 42; }
     source "$script"
 ); then

@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-if arch -x86_64 /usr/bin/true >/dev/null 2>&1; then
+if pkgutil --pkg-info com.apple.pkg.RosettaUpdateAuto >/dev/null 2>&1; then
     exit 0
 fi
 
