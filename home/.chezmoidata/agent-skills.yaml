@@ -4,7 +4,7 @@ agentSkills:
     # renovate: datasource=npm depName=skills
     version: "1.7.1"
   sources:
-    - source: cursor/plugins
+    - source: https://github.com/cursor/plugins/tree/main/pstack/skills/unslop
       skills:
         - unslop
     - source: mattpocock/skills
