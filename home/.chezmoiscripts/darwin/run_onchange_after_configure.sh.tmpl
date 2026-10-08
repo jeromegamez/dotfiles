@@ -122,11 +122,6 @@ defaults write com.apple.finder _FXSortFoldersFirstOnDesktop -bool true
 defaults write com.apple.dock show-recents -bool false
 defaults write com.apple.dock tilesize -int 36
 defaults write com.apple.dock minimize-to-application -bool false
-{{ if .personal -}}
-# Private macOS preference; keep it isolated from managed work computers.
-# Make Dock icons of hidden applications translucent
-defaults write com.apple.dock showhidden -bool true
-{{ end -}}
 # Enable highlight hover effect for the grid view of a stack (Dock)
 defaults write com.apple.dock mouse-over-hilite-stack -bool true
 
@@ -134,10 +129,9 @@ defaults write com.apple.dock mouse-over-hilite-stack -bool true
 defaults write com.apple.dock appswitcher-dock-display -bool true
 
 ### Safari
-{{ if .personal -}}
+
 # Private macOS preference implementing the current full-website-address option.
 defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
-{{ end -}}
 defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 defaults write com.apple.Safari ShowFavoritesBar -bool true
 {{ if .personal -}}
@@ -173,14 +167,12 @@ defaults write com.apple.ActivityMonitor IconType -int 5
 # Don't reorder Spaces based on most recent use
 defaults write com.apple.dock "mru-spaces" -bool "false"
 
-{{ if .personal -}}
 # Private macOS preferences; Apple does not document these settings.
 # Move windows by dragging any part of the window
 defaults write -g NSWindowShouldDragOnGesture -bool true
 
 # Sidebars default to an inline/integrated appearance - they take up space in the layout and push content aside rather than floating over it
 defaults write -g NSSplitViewItemSidebarDefaultsToFloatingAppearance -bool false
-{{ end -}}
 
 ### Accessibility
 
