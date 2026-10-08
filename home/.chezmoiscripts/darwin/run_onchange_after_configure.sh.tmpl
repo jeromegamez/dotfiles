@@ -32,6 +32,10 @@ defaults write NSGlobalDomain NSAutomaticTextCompletionEnabled -bool true
 # Enable keyboard navigation between controls (e.g. use Tab in modal dialogs)
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
+# Expand Save dialogs by default
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+
 # Trackpad: enable tap to click for the current user
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
