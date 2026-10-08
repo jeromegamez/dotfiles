@@ -47,6 +47,9 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeF
 sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
 
 sudo systemsetup -settimezone {{ .macos.timezone | quote }} >/dev/null 2>&1
+
+# Suppress "Disk Not Ejected Properly" notifications (private preference, requires restart).
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.DiskArbitration.diskarbitrationd.plist DADisableEjectNotification -bool YES
 {{ end -}}
 
 ### Energy saving
