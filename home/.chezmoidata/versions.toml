@@ -4,7 +4,7 @@
 
 [versions.node]
     default = "lts"
-    pi = "25"
+    pi = "26"
 
 [versions.python]
-    default = "3.14"
+    default = "3.15"
