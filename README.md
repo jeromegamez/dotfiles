@@ -186,8 +186,10 @@ The macOS lifecycle installs Codex CLI when it is missing. Update it with
 
 The default mise runtimes are declared in
 [`home/private_dot_config/private_mise/config.toml.tmpl`](home/private_dot_config/private_mise/config.toml.tmpl).
-Pi is installed under `~/.local/share/pi` and launched with mise-managed
-Node.js. Required packages are listed in
+The official Pi installer pins dependencies under `~/.pi/agent/install`.
+The chezmoi-managed launcher uses mise-managed Node.js for Pi and its updates.
+The Pi hook migrates the previous npm installation under `~/.local/share/pi`
+when needed. Required packages are listed in
 [`home/.chezmoidata/agent-addons.yaml`](home/.chezmoidata/agent-addons.yaml).
 Chezmoi installs missing components without upgrading existing ones. Other Pi
 settings remain unmanaged.

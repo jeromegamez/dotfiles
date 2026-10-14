@@ -6,7 +6,6 @@ set -euo pipefail
 {{ with .agentAddons.pi -}}
 mise_bin={{ joinPath $.homebrewPrefix "bin" "mise" | quote }}
 pi_node={{ printf "node@%s" $.versions.node.pi | quote }}
-pi_prefix="${XDG_DATA_HOME:-$HOME/.local/share}/pi"
 pi_launcher="$HOME/.local/bin/pi"
 settings_dir="$HOME/.pi/agent"
 settings_file="$settings_dir/settings.json"
@@ -27,10 +26,9 @@ merge_settings() {
     jq \
         --arg mise_bin "$mise_bin" \
         --arg pi_node "$pi_node" \
-        --arg npm_prefix "NPM_CONFIG_PREFIX=$pi_prefix" \
         --argjson required_packages "$required_packages" \
         '
-            .npmCommand = [$mise_bin, "exec", $pi_node, "--", "env", $npm_prefix, "npm"]
+            .npmCommand = [$mise_bin, "exec", $pi_node, "--", "npm"]
             | .packages = reduce $required_packages[] as $package (
                 (.packages // []);
                 if index($package) then . else . + [$package] end
@@ -67,9 +65,13 @@ install_required_package() {
     fi
 }
 
-while IFS= read -r package; do
-    install_required_package "$package"
-done < <(jq -r '.[]' <<<"$required_packages")
+if [[ -x "$settings_dir/bin/pi" || -x "${XDG_DATA_HOME:-$HOME/.local/share}/pi/bin/pi" ]]; then
+    while IFS= read -r package; do
+        install_required_package "$package"
+    done < <(jq -r '.[]' <<<"$required_packages")
+else
+    echo "==> Skip Pi packages: Pi is not installed"
+fi
 {{ end -}}
 
 {{ range $agent, $config := .agentAddons -}}
