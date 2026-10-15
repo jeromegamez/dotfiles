@@ -123,6 +123,9 @@ defaults write com.apple.dock showhidden -bool true
 # Enable highlight hover effect for the grid view of a stack (Dock)
 defaults write com.apple.dock mouse-over-hilite-stack -bool true
 
+# Show app switcher only on the display that has the Dock
+defaults write com.apple.dock appswitcher-dock-display -bool true
+
 ### Safari
 {{ if .personal -}}
 # Private macOS preference implementing the current full-website-address option.
