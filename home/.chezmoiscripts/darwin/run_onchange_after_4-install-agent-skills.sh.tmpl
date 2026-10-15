@@ -18,6 +18,7 @@ install_args=(
     {{ .source | quote }}
     --global
     --agent universal
+    --full-depth
 )
 {{ range .skills -}}
 install_args+=(--skill {{ . | quote }})
