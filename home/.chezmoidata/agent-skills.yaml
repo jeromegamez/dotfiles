@@ -2,7 +2,7 @@ agentSkills:
   cli:
     package: skills
     # renovate: datasource=npm depName=skills
-    version: "1.7.1"
+    version: "1.7.2"
   sources:
     - source: cursor/plugins
       skills:
