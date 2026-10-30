@@ -37,6 +37,9 @@ OSS maintainer. Favor stability, backwards compatibility, small diffs.
 ## Git
 
 - Commit completed implementation work unless asked not to; never include unrelated changes. Push only when explicitly requested. No AI attribution. Follow repo commit style.
+- When a ticket ID is given, prefix branch names with it: `XXX-1234-feature`.
+- Never prefix commits with ticket IDs.
+- With a ticket ID, use PR title `XXX-1234 - Title` and start the body with a standalone ticket link: `[XXX-1234](ticket-url)`.
 
 ## PHP
 
