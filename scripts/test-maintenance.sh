@@ -42,6 +42,7 @@ for tool in brew-maintenance chezmoi codex pi; do
 done
 cp "$test_dir/update-tool" "$test_dir/runtime/bin/mise"
 cp "$test_dir/update-tool" "$test_dir/bin/gcloud"
+cp "$test_dir/update-tool" "$test_dir/bin/gh"
 mkdir -p "$test_home/.pi/agent/bin"
 cp "$test_dir/update-tool" "$test_home/.pi/agent/bin/pi"
 
@@ -54,6 +55,7 @@ mise:upgrade --global
 codex:update
 gcloud:components update --quiet
 pi:update --all
+gh:extensions upgrade --all
 EXPECTED
 cmp "$test_dir/expected.log" "$MAINTENANCE_TEST_LOG"
 
@@ -69,6 +71,7 @@ cmp "$test_dir/expected-short.log" "$MAINTENANCE_TEST_LOG"
 # Profiles without optional tools, or with a Pi wrapper but no Pi, must still work.
 chmod -x "$test_bin_dir/codex" "$test_home/.pi/agent/bin/pi"
 mv "$test_dir/bin/gcloud" "$test_dir/gcloud"
+mv "$test_dir/bin/gh" "$test_dir/gh"
 : >"$MAINTENANCE_TEST_LOG"
 run_script bash "$test_dir/maintenance"
 cmp "$test_dir/expected-short.log" "$MAINTENANCE_TEST_LOG"

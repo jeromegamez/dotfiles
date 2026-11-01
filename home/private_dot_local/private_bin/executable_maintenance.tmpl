@@ -25,4 +25,9 @@ if [[ -x "$HOME/.pi/agent/bin/pi" || -x "${XDG_DATA_HOME:-$HOME/.local/share}/pi
     "$XDG_BIN_DIR/pi" update --all
 fi
 
+if command -v gh >/dev/null 2>&1; then
+    echo "==> gh extensions upgrade --all"
+    gh extensions upgrade --all
+fi
+
 echo "✓ Maintenance done"

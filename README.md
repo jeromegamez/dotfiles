@@ -232,9 +232,11 @@ maintenance
 
 This calls `brew-maintenance`, upgrades chezmoi to the latest release, upgrades
 global mise runtimes within their
-configured version ranges, and runs `codex update`, `gcloud components update --quiet`,
-and `pi update --all` when installed. Other tools retain their confirmation prompts,
-and a failed step stops the command. It does not pull or apply dotfiles.
+configured version ranges, and runs `codex update`,
+`gcloud components update --quiet`, `pi update --all`, and
+`gh extensions upgrade --all` when installed. Other tools retain their
+confirmation prompts, and a failed step stops the command. It does not pull or
+apply dotfiles.
 `brew-maintenance` remains available for Homebrew-only updates.
 
 Apply hooks already install configured runtimes and missing tools, synchronize
