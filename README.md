@@ -177,6 +177,11 @@ applications, including the ChatGPT desktop app, and general command-line tools.
 mise owns the Node.js and Python runtimes selected by the shell. Homebrew may
 retain its own Node.js and Python copies as dependencies of other formulae.
 
+The minimum required chezmoi version is recorded in
+[`.chezmoiversion`](.chezmoiversion). Newer versions remain supported.
+Renovate proposes updates to this baseline, with automerge disabled for release
+review. `maintenance` upgrades the standalone chezmoi binary to the latest release.
+
 Homebrew owns Java. A lifecycle hook registers its JDK with macOS so `java`
 works without a custom `PATH` or `JAVA_HOME`. Existing registrations are not
 replaced.
@@ -219,16 +224,24 @@ chezmoi --verbose apply --dry-run
 chezmoi --verbose apply
 ```
 
-Useful maintenance commands:
+After applying configuration changes, run routine tool updates with:
 
 ```bash
-brew-maintenance         # update Homebrew and installed packages
-mise upgrade             # update mise-managed runtimes
-codex update             # update Codex CLI
-gcloud components update # update Google Cloud CLI and its components
-pi update --all          # update Pi and its packages
-./scripts/lint-shell.sh
+maintenance
 ```
+
+This calls `brew-maintenance`, upgrades chezmoi to the latest release, upgrades
+global mise runtimes within their
+configured version ranges, and runs `codex update`, `gcloud components update --quiet`,
+and `pi update --all` when installed. Other tools retain their confirmation prompts,
+and a failed step stops the command. It does not pull or apply dotfiles.
+`brew-maintenance` remains available for Homebrew-only updates.
+
+Apply hooks already install configured runtimes and missing tools, synchronize
+declared add-ons, and update the AWS Session Manager plugin. Global Composer
+packages are updated when their declarations or installation hook change.
+Keep reviewing dotfile changes before applying them. Run
+`./scripts/lint-shell.sh` when changing shell sources.
 
 Install a Pi package for local evaluation with `pi install npm:package-name`.
 Add it to `home/.chezmoidata/agent-addons.yaml` when it should be installed on

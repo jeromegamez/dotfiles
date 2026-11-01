@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+"$XDG_BIN_DIR/brew-maintenance"
+
+echo "==> chezmoi upgrade"
+"$XDG_BIN_DIR/chezmoi" --verbose upgrade
+
+echo "==> mise upgrade --global"
+{{ joinPath .homebrewPrefix "bin" "mise" | quote }} upgrade --global
+
+if [[ -x "$XDG_BIN_DIR/codex" ]]; then
+    echo "==> codex update"
+    "$XDG_BIN_DIR/codex" update
+fi
+
+if command -v gcloud >/dev/null 2>&1; then
+    echo "==> gcloud components update --quiet"
+    gcloud components update --quiet
+fi
+
+if [[ -x "$HOME/.pi/agent/bin/pi" || -x "${XDG_DATA_HOME:-$HOME/.local/share}/pi/bin/pi" ]]; then
+    echo "==> pi update --all"
+    "$XDG_BIN_DIR/pi" update --all
+fi
+
+echo "✓ Maintenance done"

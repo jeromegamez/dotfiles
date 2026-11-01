@@ -11,6 +11,24 @@
       "matchStrings": [
         "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+version: \\\"(?<currentValue>[^\\\"]+)\\\""
       ]
+    },
+    {
+      "customType": "regex",
+      "description": "Update the reviewed minimum chezmoi version",
+      "managerFilePatterns": [
+        "/^\\.chezmoiversion$/"
+      ],
+      "matchStrings": [
+        "^(?<currentValue>\\d+\\.\\d+\\.\\d+)\\s*$"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "twpayne/chezmoi"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["twpayne/chezmoi"],
+      "automerge": false
     }
   ]
 }
