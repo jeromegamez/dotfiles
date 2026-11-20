@@ -38,10 +38,6 @@ COMPOSER_BIN_DIR="${XDG_CONFIG_HOME}/composer/vendor/bin"
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 [[ -f "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc" ]] && source "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc"
 
-{{ if .personal -}}
-export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
-{{ end }}
-
 # See https://stackoverflow.com/a/52230415/284325
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 

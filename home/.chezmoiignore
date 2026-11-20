@@ -14,7 +14,7 @@ Library/Preferences/io.rancherdesktop.profile.defaults.plist
 .chezmoiscripts/import-gpg-key.sh
 .config/composer/**
 .config/gcloud/beste_firebase_service_account.json
-.config/gnupg/**
+.gnupg/**
 {{ end }}
 
 .local/share/oh-my-zsh/cache/**
