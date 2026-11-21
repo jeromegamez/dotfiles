@@ -21,7 +21,7 @@ $brew_bin bundle install --no-upgrade --file="$brewfile"
 echo "==> brew upgrade"
 HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS=1 \
     HOMEBREW_NO_UPGRADE_QUIT_CASKS=1 \
-    $brew_bin upgrade
+    $brew_bin upgrade --no-ask
 
 echo "==> brew autoremove"
 $brew_bin autoremove

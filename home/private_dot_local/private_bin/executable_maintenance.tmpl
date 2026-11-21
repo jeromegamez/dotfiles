@@ -7,8 +7,8 @@ set -euo pipefail
 echo "==> chezmoi upgrade"
 "$XDG_BIN_DIR/chezmoi" --verbose upgrade
 
-echo "==> mise upgrade --global"
-{{ joinPath .homebrewPrefix "bin" "mise" | quote }} upgrade --global
+echo "==> mise upgrade --global --yes"
+{{ joinPath .homebrewPrefix "bin" "mise" | quote }} upgrade --global --yes
 
 if [[ -x "$XDG_BIN_DIR/codex" ]]; then
     echo "==> codex update"
@@ -28,6 +28,13 @@ fi
 if command -v gh >/dev/null 2>&1; then
     echo "==> gh extensions upgrade --all"
     gh extensions upgrade --all
+fi
+
+if [[ -x "$XDG_BIN_DIR/composer" ]]; then
+    echo "==> composer self-update"
+    "$XDG_BIN_DIR/composer" self-update
+    echo "==> composer global update --with-all-dependencies"
+    "$XDG_BIN_DIR/composer" global update --with-all-dependencies
 fi
 
 echo "✓ Maintenance done"
