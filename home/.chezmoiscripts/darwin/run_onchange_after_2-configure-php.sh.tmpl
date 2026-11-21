@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+php_versions=(
+{{- range .versions.php.installed }}
+    {{ . | quote }}
+{{- end }}
+)
+
+for version in "${php_versions[@]}"; do
+    conf_dir="{{ .homebrewPrefix }}/etc/php/${version}/conf.d"
+    if [[ ! -d "$conf_dir" ]]; then
+        continue
+    fi
+
+    cat <<'EOF' >"${conf_dir}/99-memory-limits.ini"
+memory_limit = -1
+xdebug.mode = off
+EOF
+done
+
+echo "✓ Configured PHP settings"

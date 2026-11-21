@@ -1,6 +1,6 @@
 [versions.php]
-    default = "8.5"
-    installed = ["8.4", "8.5"]
+    default = "8.6"
+    installed = ["8.4", "8.5", "8.6"]
 
 [versions.node]
     default = "lts"
