@@ -1,8 +1,0 @@
-{{ if .personal -}}
-{{- if and (eq .chezmoi.os "darwin") (isExecutable (joinPath .homebrewPrefix "bin" "pinentry-mac")) -}}
-pinentry-program {{ .homebrewPrefix }}/bin/pinentry-mac
-{{- end }}
-default-cache-ttl 28800
-max-cache-ttl 86400
-enable-ssh-support
-{{ end -}}

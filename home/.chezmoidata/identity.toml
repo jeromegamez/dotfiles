@@ -3,4 +3,4 @@
     githubUsername = "jeromegamez"
 
 [identity.personal]
-    gpgSigningKey = "65059809B0BF29FCC9B2539C4E902530D3BC24D1"
+    gitSigningPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILzBYqepoLfC8ceqidB0Sr5vuvsPdnPETh1TCP2NE//K"

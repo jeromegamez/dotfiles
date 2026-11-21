@@ -11,7 +11,7 @@ machine state belong in the source or generated configuration rather than here.
 
 - Shared configuration must be safe and non-destructive on every profile.
 - A profile must never retrieve or expose another profile's credentials.
-- Work machines must not receive personal GPG or 1Password material.
+- Work machines must not receive personal 1Password material or credentials.
 - Profile-specific prompts and secret references belong in machine-local
   configuration. Shared static, non-secret policy belongs in `.chezmoidata`.
 - Ignoring a target makes it unmanaged; it does not remove material that already
@@ -40,20 +40,19 @@ policy.
 
 ### Personal
 
-The personal profile may enable personal credentials, GPG signing, applications,
+The personal profile may enable personal credentials, SSH signing, applications,
 and opinionated macOS configuration. It must not retrieve work credentials.
 
 ### Work
 
 The work profile may use shared settings and tools, but configures only its work
-identity and SSH signing public key. Personal credentials, GPG material, personal
+identity and SSH signing public key. Personal credentials, personal
 applications, and personal system policy remain unmanaged.
 
 ## Git and SSH
 
-The active profile supplies one default Git identity and signing method:
-personal uses GPG and work uses SSH signing. `user.useConfigOnly` prevents Git
-from guessing a missing identity.
+The active profile supplies one default Git identity and SSH signing key.
+`user.useConfigOnly` prevents Git from guessing a missing identity.
 
 Reference repositories, opposite-profile repositories, and the chezmoi source
 on work use a no-identity guard. It clears the default identity and sets

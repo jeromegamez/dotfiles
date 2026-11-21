@@ -4,8 +4,6 @@ brew "ansible" # Automate deployment, configuration, and upgrading
 brew "ansible-lint" # Checks ansible playbooks for practices and behaviour
 brew "cookiecutter" # Utility that creates projects from templates
 brew "fastfetch" # Like neofetch, but much faster because written mostly in C
-brew "gnupg" # GNU Pretty Good Privacy (PGP) package
-brew "pinentry-mac" # Pinentry for GPG on Mac
 brew "restic" # Fast, efficient and secure backup program
 brew "streamrip" # Scriptable music downloader for Qobuz, Tidal, SoundCloud, and Deezer
 brew "yt-dlp" # Feature-rich command-line audio/video downloader
@@ -18,7 +16,6 @@ cask "droplr" # Screenshot and screen recorder
 cask "fantastical" # Calendar software
 cask "fastmail" # Email client
 cask "feed-the-beast" # Minecraft mod downloader and manager
-cask "gpg-suite-no-mail" # GPG Suite (without GPG Mail)
 cask "keepassxc" # Password manager app
 cask "jetbrains-toolbox" # JetBrains tools manager
 cask "microsoft-office" # Office suite

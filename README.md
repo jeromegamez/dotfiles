@@ -20,9 +20,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) before changing the repository.
 - **mise** provides the Node.js and Python versions used from the shell.
 - **uv** manages Python projects while using mise-provided Python runtimes.
 - **1Password CLI** supplies profile-specific secret values and generated SSH
-  host configuration. On personal machines it also supplies the personal GPG
-  key. Private SSH keys remain in the 1Password SSH agent. Secrets are not
-  stored in this repository.
+  host configuration. Private SSH keys remain in the 1Password SSH agent.
+  Secrets are not stored in this repository.
 - **macOS lifecycle scripts** install supporting tools, configure the login
   shell, and apply selected defaults and security settings.
 

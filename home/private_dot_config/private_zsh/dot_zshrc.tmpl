@@ -1,10 +1,3 @@
-# Interactive environment
-if [[ -t 0 ]]; then
-    export GPG_TTY="$(tty)"
-else
-    unset GPG_TTY
-fi
-
 # History configuration
 HISTFILE="$XDG_STATE_HOME"/zsh/history
 HISTSIZE=200000 # Keep larger than SAVEHIST so duplicate expiry has room
