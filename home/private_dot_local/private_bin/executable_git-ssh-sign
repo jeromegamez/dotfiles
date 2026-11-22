@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ -n "${AGENT_UNATTENDED:-}" ]]; then
+    key="${HOME}/.ssh/id_ed25519_agent"
+    args=()
+    while (($# > 0)); do
+        if [[ "$1" == "-f" && $# -gt 1 ]]; then
+            args+=("-f" "$key")
+            shift 2
+        else
+            args+=("$1")
+            shift
+        fi
+    done
+    exec ssh-keygen "${args[@]}"
+fi
+
+exec /Applications/1Password.app/Contents/MacOS/op-ssh-sign "$@"

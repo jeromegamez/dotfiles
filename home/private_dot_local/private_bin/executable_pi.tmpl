@@ -16,4 +16,8 @@ if [[ ! -x "$pi_entrypoint" ]]; then
     exit 127
 fi
 
+{{- if .personal }}
+export AGENT_UNATTENDED=1
+{{- end }}
+
 exec "$mise_bin" exec "$pi_node" -- "$pi_entrypoint" "$@"

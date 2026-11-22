@@ -3,6 +3,14 @@ Match exec "test -x ~/.orbstack/bin/orb"
     Include ~/.orbstack/ssh/config
 Match all
 {{ end -}}
+{{- if .personal }}
+Match host github.com,gitlab.com,codeberg.org exec "test -n \"$AGENT_UNATTENDED\" && test -f ~/.ssh/id_ed25519_agent"
+    IdentityAgent none
+    IdentitiesOnly yes
+    IdentityFile ~/.ssh/id_ed25519_agent
+Match all
+{{- end }}
+
 Include ~/.ssh/1Password/generated-hosts.conf
 Include ~/.ssh/1Password/config
 
