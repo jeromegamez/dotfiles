@@ -1,0 +1,24 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $cfg := dict -}}
+{{- if (trim .chezmoi.stdin) -}}
+{{-   $cfg = fromJson .chezmoi.stdin -}}
+{{- end -}}
+{{- $cfg = setValueAtPath "defaultProjectTrust" "trusted" $cfg -}}
+{{- $cfg = setValueAtPath "quietStartup" "header" $cfg -}}
+{{- $cfg = setValueAtPath "showCacheMissNotices" true $cfg -}}
+{{- $cfg = setValueAtPath "npmCommand" (list (joinPath .homebrewPrefix "bin" "mise") "exec" (printf "node@%s" .versions.node.pi) "--" "npm") $cfg -}}
+{{- $packages := list -}}
+{{- if and (hasKey $cfg "packages") (index $cfg "packages") -}}
+{{-   range (index $cfg "packages") -}}
+{{-     $packages = append $packages . -}}
+{{-   end -}}
+{{- end -}}
+{{- with .agentAddons.pi -}}
+{{-   range .packages -}}
+{{-     if not (has . $packages) -}}
+{{-       $packages = append $packages . -}}
+{{-     end -}}
+{{-   end -}}
+{{- end -}}
+{{- $cfg = setValueAtPath "packages" $packages $cfg -}}
+{{- $cfg | toPrettyJson -}}

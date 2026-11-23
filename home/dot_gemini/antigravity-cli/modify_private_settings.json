@@ -1,0 +1,21 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $cfg := dict -}}
+{{- if (trim .chezmoi.stdin) -}}
+{{-   $cfg = fromJson .chezmoi.stdin -}}
+{{- end -}}
+{{- $cfg = setValueAtPath "allowNonWorkspaceAccess" true $cfg -}}
+{{- $cfg = setValueAtPath "queuedMessages" "send-immediately" $cfg -}}
+{{- $cfg = setValueAtPath "toolPermission" "always-proceed" $cfg -}}
+{{- $workspaces := list -}}
+{{- if and (hasKey $cfg "trustedWorkspaces") (index $cfg "trustedWorkspaces") -}}
+{{-   range (index $cfg "trustedWorkspaces") -}}
+{{-     $workspaces = append $workspaces . -}}
+{{-   end -}}
+{{- end -}}
+{{- range (list (joinPath .chezmoi.homeDir ".local" "share" "chezmoi") (joinPath .chezmoi.homeDir "Code")) -}}
+{{-   if not (has . $workspaces) -}}
+{{-     $workspaces = append $workspaces . -}}
+{{-   end -}}
+{{- end -}}
+{{- $cfg = setValueAtPath "trustedWorkspaces" $workspaces $cfg -}}
+{{- $cfg | toPrettyJson -}}

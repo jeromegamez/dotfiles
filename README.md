@@ -196,8 +196,10 @@ for Pi and its updates.
 The Pi hook migrates the previous npm installation under `~/.local/share/pi`
 when needed. Required packages are listed in
 [`home/.chezmoidata/agent-addons.yaml`](home/.chezmoidata/agent-addons.yaml).
-Chezmoi installs missing components without upgrading existing ones. Other Pi
-settings remain unmanaged.
+Chezmoi installs missing components without upgrading existing ones.
+
+Selected settings for Pi and Antigravity are merged with `modify_` templates so
+app-managed state in those files is preserved.
 
 AI harness installation, agent configuration and add-ons are configured only
 on personal machines. Existing work-machine installations and files are not
