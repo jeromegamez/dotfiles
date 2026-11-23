@@ -21,6 +21,7 @@ chezmoi_profile() {
 work_managed="$(chezmoi_profile work managed --include files,symlinks,scripts)"
 personal_managed="$(chezmoi_profile personal managed --include files,symlinks,scripts)"
 for target in \
+    .chezmoiscripts/darwin/2-install-antigravity.sh \
     .chezmoiscripts/darwin/2-install-codex.sh \
     .chezmoiscripts/darwin/3-install-pi.sh \
     .chezmoiscripts/darwin/4-install-agent-skills.sh \
@@ -31,6 +32,8 @@ for target in \
     .codex/AGENTS.md \
     .copilot/copilot-instructions.md \
     .config/opencode/AGENTS.md \
+    .gemini/AGENTS.md \
+    .gemini/config/skills \
     .local/bin/git-exclude-ai \
     .local/bin/pi \
     .pi/agent/models.json; do
@@ -46,7 +49,7 @@ done
 
 work_brewfile="$(chezmoi_profile work execute-template '{{ includeTemplate "homebrew/Brewfile.tmpl" . }}')"
 personal_brewfile="$(chezmoi_profile personal execute-template '{{ includeTemplate "homebrew/Brewfile.tmpl" . }}')"
-for cask in chatgpt copilot-cli github-copilot-app t3-code; do
+for cask in antigravity chatgpt copilot-cli github-copilot-app t3-code; do
     if grep -Fq "cask \"$cask\"" <<<"$work_brewfile"; then
         echo "Work unexpectedly installs $cask" >&2
         exit 1

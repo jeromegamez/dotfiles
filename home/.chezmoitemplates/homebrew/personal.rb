@@ -8,6 +8,7 @@ brew "restic" # Fast, efficient and secure backup program
 brew "streamrip" # Scriptable music downloader for Qobuz, Tidal, SoundCloud, and Deezer
 brew "yt-dlp" # Feature-rich command-line audio/video downloader
 
+cask "antigravity" # Google Antigravity agent orchestration platform
 cask "ardia-browser/tap/ardia" # Ardia browser
 cask "carbon-copy-cloner" # Hard disk backup and cloning utility
 cask "cardhop" # Contacts manager
