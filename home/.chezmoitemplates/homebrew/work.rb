@@ -18,6 +18,8 @@ brew "tfautomv" # Generate Terraform moved blocks automatically for painless ref
 brew "trivy" # Vulnerability scanner for container images, file systems, and Git repos
 
 cask "corretto@25" # OpenJDK distribution from Amazon
+cask "copilot-cli" # Brings the power of Copilot coding agent directly to your terminal
+cask "github-copilot-app" # Native client for GitHub Copilo
 cask "intellij-idea" # Java IDE by JetBrains
 cask "mongodb-compass" # Interactive tool for analyzing MongoDB data
 cask "rancher" # Kubernetes and container management on the desktop
@@ -25,4 +27,3 @@ cask "terraform-linters/tap/tflint", trusted: true # Pluggable Terraform linter
 cask "shottr" # Screenshot measurement and annotation tool
 cask "slack" # Team communication and collaboration software
 cask "tuple" # Remote pair programming app
-cask "yaak" # REST, GraphQL and gRPC client

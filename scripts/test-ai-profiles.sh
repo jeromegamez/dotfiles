@@ -57,6 +57,13 @@ for cask in chatgpt copilot-cli github-copilot-app t3-code; do
     fi
 done
 
+if grep -Fq 'cask "openlogi"' <<<"$work_brewfile" ||
+    ! grep -Fq 'cask "openlogi"' <<<"$personal_brewfile" ||
+    grep -Fq 'cask "yaak"' <<<"$work_brewfile"; then
+    echo "Work software exclusions are not reflected in the Brewfiles" >&2
+    exit 1
+fi
+
 work_mise="$(chezmoi_profile work execute-template --file "$repo_root/home/private_dot_config/private_mise/config.toml.tmpl")"
 personal_mise="$(chezmoi_profile personal execute-template --file "$repo_root/home/private_dot_config/private_mise/config.toml.tmpl")"
 pi_node="$(chezmoi_profile personal execute-template '{{ .versions.node.pi | quote }}')"

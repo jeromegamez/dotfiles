@@ -25,6 +25,7 @@ cask "jetbrains-toolbox" # JetBrains tools manager
 cask "microsoft-office" # Office suite
 cask "microsoft-teams" # Meet, chat, call, and collaborate in just one place
 cask "mole-app" # Deep clean, analyze, and optimize app
+cask "openlogi" # Local-first alternative to Logitech Options+ for HID++ devices
 cask "orbstack" # Replacement for Docker Desktop
 cask "prismlauncher" # Minecraft launcher
 cask "signal" # Instant messaging application focusing on security
