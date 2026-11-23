@@ -32,6 +32,7 @@ OSS maintainer. Favor stability, backwards compatibility, small diffs.
 - No destructive actions (git reset --hard, force push, deleting files/branches) unless explicitly requested.
 - Focused tests only; no smoke-test slop.
 - Comments clarify intent, not mechanics. Keep them in sync.
+- Describe what _is_, not what _isn't_. Document what's relevant and the current state, not the way that led us here.
 - Never commit or paste secrets, credentials, or .env contents.
 - Run QA tooling once at the end, when configured. Don't run it when you're confident your changes don't need it. Report unrelated pre-existing failures instead of fixing them.
 - Don't start dev servers or background tools; assume they're running or tell me to start them.
