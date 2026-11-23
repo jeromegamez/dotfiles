@@ -12,6 +12,7 @@ brew "kubernetes-cli" # Kubernetes command-line interface
 brew "kustomize" # Template-free customization of Kubernetes YAML manifests
 brew "kubie" # Much more powerful alternative to kubectx and kubens
 brew "mongodb/brew/mongodb-database-tools", trusted: true # Standard utilities for interacting with MongoDB.
+brew "tenv" # OpenTofu / Terraform / Terragrunt / Terramate / Atmos version manager
 brew "terraform-docs" # Tool to generate documentation from Terraform modules
 brew "terrastruct/tap/tala", trusted: true # Advanced diagram layout engine for D2
 brew "tfautomv" # Generate Terraform moved blocks automatically for painless refactoring

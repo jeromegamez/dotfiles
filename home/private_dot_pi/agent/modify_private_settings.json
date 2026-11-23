@@ -6,7 +6,7 @@
 {{- $cfg = setValueAtPath "defaultProjectTrust" "trusted" $cfg -}}
 {{- $cfg = setValueAtPath "quietStartup" "header" $cfg -}}
 {{- $cfg = setValueAtPath "showCacheMissNotices" true $cfg -}}
-{{- $cfg = setValueAtPath "npmCommand" (list (joinPath .homebrewPrefix "bin" "mise") "exec" (printf "node@%s" .versions.node.pi) "--" "npm") $cfg -}}
+{{- $cfg = deleteValueAtPath "npmCommand" $cfg -}}
 {{- $packages := list -}}
 {{- if and (hasKey $cfg "packages") (index $cfg "packages") -}}
 {{-   range (index $cfg "packages") -}}

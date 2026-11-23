@@ -13,9 +13,8 @@ unset HOMEBREW_PATH
 if [[ -x "{{ .homebrewPrefix }}/bin/brew" ]]; then
     eval "$("{{ .homebrewPrefix }}/bin/brew" shellenv)"
 fi
-# Homebrew's shellenv prepends its prefix; restore user launchers and mise
-# shims so dependency runtimes are not selected accidentally.
-path=("$XDG_BIN_DIR" "$MISE_SHIMS_DIR" $path)
+# Homebrew's shellenv prepends its prefix; keep user launchers first.
+path=("$XDG_BIN_DIR" $path)
 
 if [[ -x "$HOME/.orbstack/bin/orb" && -f "$HOME/.orbstack/shell/init.zsh" ]]; then
     source "$HOME/.orbstack/shell/init.zsh"

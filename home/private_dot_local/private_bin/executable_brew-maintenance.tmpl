@@ -26,17 +26,6 @@ HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS=1 \
 echo "==> brew autoremove"
 $brew_bin autoremove
 
-echo "==> Hide Homebrew runtime commands"
-runtime_formulae=(
-    node
-    {{ printf "python@%s" .versions.python.default | quote }}
-)
-for runtime_formula in "${runtime_formulae[@]}"; do
-    if $brew_bin list --formula "$runtime_formula" >/dev/null 2>&1; then
-        $brew_bin unlink "$runtime_formula"
-    fi
-done
-
 echo "==> brew cleanup"
 if ! $brew_bin cleanup; then
     echo "✗ brew cleanup failed"

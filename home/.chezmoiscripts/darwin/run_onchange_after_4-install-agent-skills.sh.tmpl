@@ -3,14 +3,16 @@
 # agent-skills configuration fingerprint: {{ .agentSkills | toJson | sha256sum }}
 set -euo pipefail
 
-mise_bin={{ joinPath .homebrewPrefix "bin" "mise" | quote }}
-node_runtime={{ printf "node@%s" .versions.node.default | quote }}
+homebrew_bin={{ joinPath .homebrewPrefix "bin" | quote }}
+npx_bin="$homebrew_bin/npx"
 skills_cli={{ printf "%s@%s" .agentSkills.cli.package .agentSkills.cli.version | quote }}
 
-if [[ ! -x "$mise_bin" ]]; then
-    echo "Missing mise executable: $mise_bin" >&2
+if [[ ! -x "$npx_bin" ]]; then
+    echo "Missing npx executable: $npx_bin" >&2
     exit 1
 fi
+
+export PATH="$homebrew_bin:$PATH"
 
 {{ range .agentSkills.sources -}}
 install_args=(
@@ -25,6 +27,6 @@ install_args+=(--skill {{ . | quote }})
 {{ end -}}
 install_args+=(--yes)
 
-"$mise_bin" exec "$node_runtime" -- npx --yes "$skills_cli" "${install_args[@]}"
+"$npx_bin" --yes "$skills_cli" "${install_args[@]}"
 {{ end }}
 echo "✓ Installed required global agent skills"

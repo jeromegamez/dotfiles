@@ -1,10 +1,3 @@
 [versions.php]
     default = "8.6"
     installed = ["8.4", "8.5", "8.6"]
-
-[versions.node]
-    default = "lts"
-    pi = "26"
-
-[versions.python]
-    default = "3.15"

@@ -7,9 +7,6 @@ set -euo pipefail
 echo "==> chezmoi upgrade"
 "$XDG_BIN_DIR/chezmoi" --verbose upgrade
 
-echo "==> mise upgrade --global --yes"
-{{ joinPath .homebrewPrefix "bin" "mise" | quote }} upgrade --global --yes
-
 {{ if .personal -}}
 if [[ -x "$XDG_BIN_DIR/agy" ]]; then
     echo "==> agy update"

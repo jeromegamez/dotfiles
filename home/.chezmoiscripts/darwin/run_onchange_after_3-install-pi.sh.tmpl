@@ -2,14 +2,15 @@
 
 set -euo pipefail
 
-mise_bin={{ joinPath .homebrewPrefix "bin" "mise" | quote }}
 homebrew_prefix={{ .homebrewPrefix | quote }}
+homebrew_bin="$homebrew_prefix/bin"
+node_bin="$homebrew_bin/node"
+npm_bin="$homebrew_bin/npm"
 data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
 pi_prefix="$data_home/pi"
 pi_agent_dir="$HOME/.pi/agent"
 pi_entrypoint="$pi_agent_dir/bin/pi"
 pi_launcher="$HOME/.local/bin/pi"
-pi_node={{ printf "node@%s" .versions.node.pi | quote }}
 pi_package="@earendil-works/pi-coding-agent"
 installer=""
 
@@ -20,14 +21,18 @@ cleanup() {
 }
 trap cleanup EXIT
 
+if [[ ! -x "$node_bin" || ! -x "$npm_bin" ]]; then
+    echo "Missing Homebrew Node.js runtime under $homebrew_bin" >&2
+    exit 1
+fi
+
 if [[ ! -x "$pi_entrypoint" || ! -f "$pi_agent_dir/install/current-version" ]]; then
-    echo "==> Install managed Pi with mise-managed $pi_node"
+    echo "==> Install managed Pi"
     installer="$(mktemp "${TMPDIR:-/tmp}/pi-installer.XXXXXX")"
     curl -fsSL https://pi.dev/install.sh -o "$installer"
-    # Expose the real npm install, hide our wrapper, and keep installer links out of Homebrew.
-    PATH="$pi_prefix/bin:$pi_agent_dir/bin:/usr/bin:/bin:/usr/sbin:/sbin" \
+    PATH="$pi_prefix/bin:$pi_agent_dir/bin:$homebrew_bin:/usr/bin:/bin:/usr/sbin:/sbin" \
         PI_CODING_AGENT_DIR="$pi_agent_dir" \
-        "$mise_bin" exec "$pi_node" -- sh "$installer"
+        sh "$installer"
     if [[ ! -x "$pi_entrypoint" || ! -f "$pi_agent_dir/install/current-version" ]]; then
         echo "==> Skip Pi setup: no managed installation was activated"
         exit 0
@@ -39,12 +44,11 @@ if [[ ! -x "$pi_launcher" ]]; then
     exit 1
 fi
 
-"$mise_bin" exec "$pi_node" -- "$pi_entrypoint" --version
 "$pi_launcher" --version
 
 if [[ -d "$homebrew_prefix/lib/node_modules/$pi_package" ]]; then
     echo "==> Remove legacy Pi installation from the Homebrew npm prefix"
-    "$mise_bin" exec "$pi_node" -- npm uninstall \
+    "$npm_bin" uninstall \
         --global \
         --ignore-scripts \
         --prefix "$homebrew_prefix" \
@@ -53,4 +57,4 @@ if [[ -d "$homebrew_prefix/lib/node_modules/$pi_package" ]]; then
         "$pi_package"
 fi
 
-echo "✓ Pi uses mise-managed $pi_node"
+echo "✓ Pi uses Homebrew Node.js"

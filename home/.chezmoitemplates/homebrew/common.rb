@@ -23,8 +23,8 @@ brew "jq" # Lightweight and flexible command-line JSON processor
 brew "lazygit" # Terminal UI for Git
 brew "make" # Utility for directing compilation
 brew "mas" # Mac App Store command-line interface
-brew "mise" # Polyglot runtime manager
 brew "neovim" # Ambitious Vim-fork focused on extensibility and agility
+brew "node" # Open-source, cross-platform JavaScript runtime environment
 brew "openjdk" # Java development kit
 brew "poppler" # PDF rendering library
 brew "ripgrep" # Search tool like grep and The Silver Searcher

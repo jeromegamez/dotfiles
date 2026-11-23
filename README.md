@@ -17,8 +17,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) before changing the repository.
   home directory.
 - **Homebrew** installs macOS command-line tools, applications, fonts, and Mac
   App Store applications from a generated Brewfile.
-- **mise** provides the Node.js and Python versions used from the shell.
-- **uv** manages Python projects while using mise-provided Python runtimes.
+- **uv** manages Python runtimes, projects, and packages.
 - **1Password CLI** supplies profile-specific secret values and generated SSH
   host configuration. Private SSH keys remain in the 1Password SSH agent.
   Secrets are not stored in this repository.
@@ -171,10 +170,9 @@ example, `private_dot_config/private_git/config.tmpl` renders as
 
 ## Tool ownership
 
-The standalone installers own chezmoi and the Codex CLI. Homebrew owns
-applications, including the ChatGPT desktop app, and general command-line tools.
-mise owns the Node.js and Python runtimes selected by the shell. Homebrew may
-retain its own Node.js and Python copies as dependencies of other formulae.
+The standalone installers own chezmoi, Antigravity CLI, Codex CLI, and Pi.
+Homebrew owns applications, Node.js, `tenv` (work machines), and general
+command-line tools. `uv` owns Python runtimes and project environments.
 
 The minimum required chezmoi version is recorded in
 [`.chezmoiversion`](.chezmoiversion). Newer versions remain supported.
@@ -188,11 +186,9 @@ replaced.
 The personal macOS lifecycle installs Codex CLI when it is missing. Update it
 with `codex update`.
 
-The default mise runtimes are declared in
-[`home/private_dot_config/private_mise/config.toml.tmpl`](home/private_dot_config/private_mise/config.toml.tmpl).
 On personal machines, the official Pi installer pins dependencies under
-`~/.pi/agent/install`. The chezmoi-managed launcher uses mise-managed Node.js
-for Pi and its updates.
+`~/.pi/agent/install`. The chezmoi-managed launcher uses Homebrew Node.js for Pi
+and its updates.
 The Pi hook migrates the previous npm installation under `~/.local/share/pi`
 when needed. Required packages are listed in
 [`home/.chezmoidata/agent-addons.yaml`](home/.chezmoidata/agent-addons.yaml).
@@ -259,10 +255,10 @@ After applying configuration changes, run routine tool updates with:
 maintenance
 ```
 
-This calls `brew-maintenance`, upgrades chezmoi to the latest release, upgrades
-global mise runtimes within their configured version ranges, and runs
+This calls `brew-maintenance`, upgrades chezmoi to the latest release, and runs
 `gcloud components update --quiet` and `gh extensions upgrade --all` when
-installed. On personal machines, it also updates Codex and Pi when installed.
+installed. On personal machines, it also updates Antigravity, Codex, and Pi when
+installed.
 Other tools retain their confirmation prompts, and a failed step stops the
 command. It does not pull or apply dotfiles.
 `brew-maintenance` remains available for Homebrew-only updates.
