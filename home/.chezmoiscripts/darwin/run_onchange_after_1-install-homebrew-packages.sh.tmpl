@@ -12,12 +12,6 @@ brewfile="$xdg_config_home/homebrew/Brewfile"
 XDG_CONFIG_HOME="$xdg_config_home" \
     {{ joinPath .homebrewPrefix "bin" "brew" }} bundle install --verbose --no-upgrade --file="$brewfile"
 
-# Re-link node on machines where the previous mise setup unlinked it.
-if {{ joinPath .homebrewPrefix "bin" "brew" }} list --formula node >/dev/null 2>&1 &&
-    [[ ! -x {{ joinPath .homebrewPrefix "bin" "node" | quote }} ]]; then
-    {{ joinPath .homebrewPrefix "bin" "brew" }} link node
-fi
-
 # compinit rejects completion paths whose parent directories are group-writable.
 zsh_completion_parent={{ joinPath .homebrewPrefix "share" | quote }}
 if [[ -O "$zsh_completion_parent" ]]; then
