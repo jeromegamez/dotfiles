@@ -201,10 +201,12 @@ Chezmoi installs missing components without upgrading existing ones.
 Selected settings for Pi and Antigravity are merged with `modify_` templates so
 app-managed state in those files is preserved.
 
-AI harness installation, agent configuration and add-ons are configured only
-on personal machines. Existing work-machine installations and files are not
-removed by this configuration. Homebrew maintenance can still upgrade
-previously installed applications.
+GitHub Copilot (`copilot-cli`, `github-copilot-app`, and
+`~/.copilot/copilot-instructions.md`) is shared across personal and work
+machines. Other AI harnesses, agent configurations, skills, and add-ons are
+configured only on personal machines. Existing work-machine installations and
+files are not removed by this configuration. Homebrew maintenance can still
+upgrade previously installed applications.
 
 ## Unattended agent Git and SSH auth (personal only)
 

@@ -19,7 +19,6 @@ Library/Preferences/io.rancherdesktop.profile.defaults.plist
 .agents/**
 .claude/**
 .codex/**
-.copilot/**
 .config/composer/**
 .config/gcloud/beste_firebase_service_account.json
 .config/git/keys/personal-signing.pub

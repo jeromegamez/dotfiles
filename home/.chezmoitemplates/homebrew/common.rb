@@ -52,7 +52,9 @@ cask "font-maple-mono-nf" # https://font.subf.dev/en/
 
 cask "1password" # Password manager that keeps all passwords secure behind one password
 cask "1password-cli" # Command-line interface for 1Password
+cask "copilot-cli" # Brings the power of Copilot coding agent directly to your terminal
 cask "ghostty" # Terminal emulator that uses platform-native UI and GPU acceleration
+cask "github-copilot-app" # Native client for GitHub Copilot
 cask "karabiner-elements" # Keyboard customizer
 cask "raycast" # Control your tools with a few keystrokes
 cask "sublime-merge" # Git client

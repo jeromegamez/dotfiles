@@ -14,13 +14,11 @@ cask "carbon-copy-cloner" # Hard disk backup and cloning utility
 cask "cardhop" # Contacts manager
 cask "chatgpt" # ChatGPT desktop app with Codex
 cask "cleanshot" # Screen capturing tool
-cask "copilot-cli" # Brings the power of Copilot coding agent directly to your terminal
 cask "discord" # Voice and text chat software
 cask "droplr" # Screenshot and screen recorder
 cask "fantastical" # Calendar software
 cask "fastmail" # Email client
 cask "feed-the-beast" # Minecraft mod downloader and manager
-cask "github-copilot-app" # Native client for GitHub Copilot
 cask "keepassxc" # Password manager app
 cask "jetbrains-toolbox" # JetBrains tools manager
 cask "microsoft-office" # Office suite
