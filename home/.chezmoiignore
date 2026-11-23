@@ -14,6 +14,7 @@ Library/Preferences/io.rancherdesktop.profile.defaults.plist
 .config/composer/**
 .config/gcloud/beste_firebase_service_account.json
 .config/git/keys/personal-signing.pub
+.local/bin/git-exclude-ai
 {{ end }}
 
 .local/share/oh-my-zsh/cache/**
