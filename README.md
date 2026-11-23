@@ -108,8 +108,8 @@ Apply the complete configuration from an interactive terminal:
 On macOS, some hooks may request confirmation, administrator access, or a
 login-shell change. Open a new terminal after the bootstrap completes.
 
-Before installing applications, a hook checks Rosetta 2's package receipt
-and installs it if needed. Installation requires internet access,
+Before installing applications, a one-time hook checks whether Rosetta 2 is
+installed and installs it if needed. Installation requires internet access,
 accepts Apple's license automatically, and may request your administrator password.
 
 ### Exclude source code from Spotlight
