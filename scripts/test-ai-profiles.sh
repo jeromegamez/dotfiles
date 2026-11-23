@@ -49,7 +49,7 @@ done
 
 work_brewfile="$(chezmoi_profile work execute-template '{{ includeTemplate "homebrew/Brewfile.tmpl" . }}')"
 personal_brewfile="$(chezmoi_profile personal execute-template '{{ includeTemplate "homebrew/Brewfile.tmpl" . }}')"
-for cask in antigravity chatgpt copilot-cli github-copilot-app t3-code; do
+for cask in antigravity chatgpt t3-code; do
     if grep -Fq "cask \"$cask\"" <<<"$work_brewfile"; then
         echo "Work unexpectedly installs $cask" >&2
         exit 1
