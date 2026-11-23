@@ -204,20 +204,21 @@ configured only on personal machines. Existing work-machine installations and
 files are not removed by this configuration. Homebrew maintenance can still
 upgrade previously installed applications.
 
-## Unattended agent Git and SSH auth (personal only)
+## Unattended agent Git signing (personal only)
 
 Interactive sessions use 1Password for SSH auth and commit/tag signing, which
 blocks when 1Password or macOS locks. On `personal` machines, set
-`AGENT_UNATTENDED=1` for unattended or overnight agent runs:
+`AGENT_UNATTENDED=1` for unattended or overnight agent runs so local commits
+and tags do not block:
 
-- `~/.ssh/config` switches `github.com`, `gitlab.com`, and `codeberg.org` to
-  `~/.ssh/id_ed25519_agent` (`IdentityAgent none`).
 - `~/.local/bin/git-ssh-sign` delegates Git SSH signing to `ssh-keygen` with
   `~/.ssh/id_ed25519_agent` instead of `op-ssh-sign`.
+- SSH authentication (such as `git push`) continues to use the default
+  1Password SSH agent.
 
 On a new personal machine, generate the local key once, re-apply chezmoi (so
 its `.pub` is added to `~/.config/git/allowed_signers`), and register the
-public key on GitHub as both an Authentication Key and a Signing Key:
+public key on GitHub as a Signing Key:
 
 ```bash
 ssh-keygen -t ed25519 -N "" -C "agent-unattended@jerome.gamez.name" -f ~/.ssh/id_ed25519_agent
