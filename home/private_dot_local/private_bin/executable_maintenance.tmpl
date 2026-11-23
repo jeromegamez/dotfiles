@@ -11,6 +11,11 @@ echo "==> mise upgrade --global --yes"
 {{ joinPath .homebrewPrefix "bin" "mise" | quote }} upgrade --global --yes
 
 {{ if .personal -}}
+if [[ -x "$XDG_BIN_DIR/agy" ]]; then
+    echo "==> agy update"
+    "$XDG_BIN_DIR/agy" update
+fi
+
 if [[ -x "$XDG_BIN_DIR/codex" ]]; then
     echo "==> codex update"
     "$XDG_BIN_DIR/codex" update

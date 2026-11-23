@@ -38,7 +38,7 @@ printf '%s:%s\n' "$tool" "$*" >>"$MAINTENANCE_TEST_LOG"
 [[ "${MAINTENANCE_TEST_FAIL:-}" != "$tool" ]]
 TOOL
 chmod +x "$test_dir/update-tool"
-for tool in brew-maintenance chezmoi codex pi; do
+for tool in agy brew-maintenance chezmoi codex pi; do
     cp "$test_dir/update-tool" "$test_bin_dir/$tool"
 done
 cp "$test_dir/update-tool" "$test_dir/runtime/bin/mise"
@@ -53,6 +53,7 @@ cat >"$test_dir/expected.log" <<'EXPECTED'
 brew-maintenance:
 chezmoi:--verbose upgrade
 mise:upgrade --global --yes
+agy:update
 codex:update
 gcloud:components update --quiet
 pi:update --all
@@ -63,7 +64,7 @@ cmp "$test_dir/expected.log" "$MAINTENANCE_TEST_LOG"
 # Work maintenance must not update existing personal AI tools.
 : >"$MAINTENANCE_TEST_LOG"
 run_script bash "$test_dir/work-maintenance"
-grep -vE '^(codex|pi):' "$test_dir/expected.log" >"$test_dir/expected-work.log"
+grep -vE '^(agy|codex|pi):' "$test_dir/expected.log" >"$test_dir/expected-work.log"
 cmp "$test_dir/expected-work.log" "$MAINTENANCE_TEST_LOG"
 
 # Stop at the failed updater instead of reporting success or running later steps.
@@ -76,7 +77,7 @@ head -n 3 "$test_dir/expected.log" >"$test_dir/expected-short.log"
 cmp "$test_dir/expected-short.log" "$MAINTENANCE_TEST_LOG"
 
 # Profiles without optional tools, or with a Pi wrapper but no Pi, must still work.
-chmod -x "$test_bin_dir/codex" "$test_home/.pi/agent/bin/pi"
+chmod -x "$test_bin_dir/agy" "$test_bin_dir/codex" "$test_home/.pi/agent/bin/pi"
 mv "$test_dir/bin/gcloud" "$test_dir/gcloud"
 mv "$test_dir/bin/gh" "$test_dir/gh"
 : >"$MAINTENANCE_TEST_LOG"
