@@ -185,18 +185,24 @@ Homebrew owns Java. A lifecycle hook registers its JDK with macOS so `java`
 works without a custom `PATH` or `JAVA_HOME`. Existing registrations are not
 replaced.
 
-The macOS lifecycle installs Codex CLI when it is missing. Update it with
-`codex update`.
+The personal macOS lifecycle installs Codex CLI when it is missing. Update it
+with `codex update`.
 
 The default mise runtimes are declared in
 [`home/private_dot_config/private_mise/config.toml.tmpl`](home/private_dot_config/private_mise/config.toml.tmpl).
-The official Pi installer pins dependencies under `~/.pi/agent/install`.
-The chezmoi-managed launcher uses mise-managed Node.js for Pi and its updates.
+On personal machines, the official Pi installer pins dependencies under
+`~/.pi/agent/install`. The chezmoi-managed launcher uses mise-managed Node.js
+for Pi and its updates.
 The Pi hook migrates the previous npm installation under `~/.local/share/pi`
 when needed. Required packages are listed in
 [`home/.chezmoidata/agent-addons.yaml`](home/.chezmoidata/agent-addons.yaml).
 Chezmoi installs missing components without upgrading existing ones. Other Pi
 settings remain unmanaged.
+
+AI harness installation, agent configuration and add-ons are configured only
+on personal machines. Existing work-machine installations and files are not
+removed by this configuration. Homebrew maintenance can still upgrade
+previously installed applications.
 
 ## Unattended agent Git and SSH auth (personal only)
 
@@ -250,12 +256,11 @@ maintenance
 ```
 
 This calls `brew-maintenance`, upgrades chezmoi to the latest release, upgrades
-global mise runtimes within their
-configured version ranges, and runs `codex update`,
-`gcloud components update --quiet`, `pi update --all`, and
-`gh extensions upgrade --all` when installed. Other tools retain their
-confirmation prompts, and a failed step stops the command. It does not pull or
-apply dotfiles.
+global mise runtimes within their configured version ranges, and runs
+`gcloud components update --quiet` and `gh extensions upgrade --all` when
+installed. On personal machines, it also updates Codex and Pi when installed.
+Other tools retain their confirmation prompts, and a failed step stops the
+command. It does not pull or apply dotfiles.
 `brew-maintenance` remains available for Homebrew-only updates.
 
 Apply hooks already install configured runtimes and missing tools, synchronize
@@ -266,7 +271,7 @@ Keep reviewing dotfile changes before applying them. Run
 
 Install a Pi package for local evaluation with `pi install npm:package-name`.
 Add it to `home/.chezmoidata/agent-addons.yaml` when it should be installed on
-every managed Mac.
+every personal Mac.
 
 Use [`export-checklist.md`](export-checklist.md) for application data that
 cannot be reproduced automatically.

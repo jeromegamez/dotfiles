@@ -15,8 +15,9 @@ export XDG_STATE_HOME=$HOME/.local/state
 MISE_SHIMS_DIR="$XDG_DATA_HOME/mise/shims"
 path=("$XDG_BIN_DIR" "$MISE_SHIMS_DIR" $path)
 
-# opencode
+{{ if .personal -}}
 [[ -d "${HOME}/.opencode/bin" ]] && path=("${HOME}/.opencode/bin" $path)
+{{ end }}
 
 {{ if eq .chezmoi.os "darwin" -}}
 typeset -U fpath

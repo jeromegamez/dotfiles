@@ -17,7 +17,7 @@ render() {
         --config /dev/null \
         --config-format toml \
         --source "$repo_root/home" \
-        --override-data "{\"homebrewPrefix\": \"$test_dir/runtime\"}" \
+        --override-data "{\"homebrewPrefix\": \"$test_dir/runtime\", \"personal\": $2, \"work\": $3}" \
         <"$repo_root/$1"
 }
 
@@ -27,7 +27,8 @@ run_script() {
         PATH="$test_dir/bin:/usr/bin:/bin:/usr/sbin:/sbin" "$@"
 }
 
-render home/private_dot_local/private_bin/executable_maintenance.tmpl >"$test_dir/maintenance"
+render home/private_dot_local/private_bin/executable_maintenance.tmpl true false >"$test_dir/maintenance"
+render home/private_dot_local/private_bin/executable_maintenance.tmpl false true >"$test_dir/work-maintenance"
 
 cat >"$test_dir/update-tool" <<'TOOL'
 #!/usr/bin/env bash
@@ -51,13 +52,19 @@ run_script bash "$test_dir/maintenance"
 cat >"$test_dir/expected.log" <<'EXPECTED'
 brew-maintenance:
 chezmoi:--verbose upgrade
-mise:upgrade --global
+mise:upgrade --global --yes
 codex:update
 gcloud:components update --quiet
 pi:update --all
 gh:extensions upgrade --all
 EXPECTED
 cmp "$test_dir/expected.log" "$MAINTENANCE_TEST_LOG"
+
+# Work maintenance must not update existing personal AI tools.
+: >"$MAINTENANCE_TEST_LOG"
+run_script bash "$test_dir/work-maintenance"
+grep -vE '^(codex|pi):' "$test_dir/expected.log" >"$test_dir/expected-work.log"
+cmp "$test_dir/expected-work.log" "$MAINTENANCE_TEST_LOG"
 
 # Stop at the failed updater instead of reporting success or running later steps.
 : >"$MAINTENANCE_TEST_LOG"

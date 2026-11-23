@@ -8,13 +8,24 @@ Library/Preferences/io.rancherdesktop.profile.defaults.plist
 .config/git/keys/work-signing.pub
 {{ end }}
 {{ if .work }}
+.chezmoiscripts/darwin/2-install-codex.sh
 .chezmoiscripts/darwin/2-configure-php.sh
+.chezmoiscripts/darwin/3-install-pi.sh
+.chezmoiscripts/darwin/4-install-agent-skills.sh
+.chezmoiscripts/darwin/5-install-agent-addons.sh
 .chezmoiscripts/darwin/install-gcloud.sh
 .chezmoiscripts/darwin/install-php-composer.sh
+.agents/**
+.claude/**
+.codex/**
+.copilot/**
 .config/composer/**
 .config/gcloud/beste_firebase_service_account.json
 .config/git/keys/personal-signing.pub
+.config/opencode/**
 .local/bin/git-exclude-ai
+.local/bin/pi
+.pi/**
 {{ end }}
 
 .local/share/oh-my-zsh/cache/**

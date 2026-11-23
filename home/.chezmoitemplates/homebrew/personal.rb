@@ -11,12 +11,15 @@ brew "yt-dlp" # Feature-rich command-line audio/video downloader
 cask "ardia-browser/tap/ardia" # Ardia browser
 cask "carbon-copy-cloner" # Hard disk backup and cloning utility
 cask "cardhop" # Contacts manager
+cask "chatgpt" # ChatGPT desktop app with Codex
 cask "cleanshot" # Screen capturing tool
+cask "copilot-cli" # Brings the power of Copilot coding agent directly to your terminal
 cask "discord" # Voice and text chat software
 cask "droplr" # Screenshot and screen recorder
 cask "fantastical" # Calendar software
 cask "fastmail" # Email client
 cask "feed-the-beast" # Minecraft mod downloader and manager
+cask "github-copilot-app" # Native client for GitHub Copilot
 cask "keepassxc" # Password manager app
 cask "jetbrains-toolbox" # JetBrains tools manager
 cask "microsoft-office" # Office suite
@@ -26,6 +29,7 @@ cask "orbstack" # Replacement for Docker Desktop
 cask "prismlauncher" # Minecraft launcher
 cask "signal" # Instant messaging application focusing on security
 cask "steam" # Video game digital distribution service
+cask "t3-code" # Minimal GUI for AI code agents
 cask "tailscale-app" # Mesh VPN based on WireGuard
 cask "telegram" # Messaging app with a focus on speed and security
 cask "whatsapp" # Native desktop client for WhatsApp

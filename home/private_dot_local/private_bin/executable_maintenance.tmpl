@@ -10,21 +10,23 @@ echo "==> chezmoi upgrade"
 echo "==> mise upgrade --global --yes"
 {{ joinPath .homebrewPrefix "bin" "mise" | quote }} upgrade --global --yes
 
+{{ if .personal -}}
 if [[ -x "$XDG_BIN_DIR/codex" ]]; then
     echo "==> codex update"
     "$XDG_BIN_DIR/codex" update
 fi
-
+{{ end -}}
 if command -v gcloud >/dev/null 2>&1; then
     echo "==> gcloud components update --quiet"
     gcloud components update --quiet
 fi
 
+{{ if .personal -}}
 if [[ -x "$HOME/.pi/agent/bin/pi" || -x "${XDG_DATA_HOME:-$HOME/.local/share}/pi/bin/pi" ]]; then
     echo "==> pi update --all"
     "$XDG_BIN_DIR/pi" update --all
 fi
-
+{{ end -}}
 if command -v gh >/dev/null 2>&1; then
     echo "==> gh extensions upgrade --all"
     gh extensions upgrade --all
