@@ -1,37 +1,13 @@
 # Initialize shell tools and integrations
 
-# Cache generated completions until the corresponding executable changes.
-_load_completion_cache() {
-    local cache_name=$1 command_name=$2
-    shift 2
+_source_cached_init chezmoi chezmoi chezmoi completion zsh
 
-    local executable=${commands[$command_name]}
-    [[ -n "$executable" ]] || return
-
-    local cache_dir="$XDG_CACHE_HOME/zsh/completions"
-    local cache_file="$cache_dir/$cache_name.zsh"
-    local cache_tmp="$cache_file.$$"
-    mkdir -p "$cache_dir"
-
-    if [[ ! -s "$cache_file" || "$executable" -nt "$cache_file" ]]; then
-        if command "$@" >| "$cache_tmp"; then
-            mv "$cache_tmp" "$cache_file"
-        else
-            rm -f "$cache_tmp"
-        fi
-    fi
-
-    [[ -s "$cache_file" ]] && source "$cache_file"
-}
-
-_load_completion_cache uv uv uv generate-shell-completion zsh
-_load_completion_cache uvx uvx uvx --generate-shell-completion zsh
-_load_completion_cache chezmoi chezmoi chezmoi completion zsh
-unfunction _load_completion_cache
+if [[ -f "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc" ]]; then
+    source "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc"
+fi
 
 if command -v aws_completer &>/dev/null; then
-    autoload -Uz bashcompinit
-    bashcompinit
+    (( $+functions[complete] )) || { autoload -Uz bashcompinit && bashcompinit; }
     complete -C "${commands[aws_completer]}" aws
 fi
 
@@ -40,18 +16,8 @@ if command -v op &>/dev/null; then
     [[ -f "${XDG_CONFIG_HOME}/op/plugins.sh" ]] && source "${XDG_CONFIG_HOME}/op/plugins.sh"
 fi
 
-if [[ -f "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc" ]]; then
-    source "$XDG_DATA_HOME/google-cloud-sdk/completion.zsh.inc"
-fi
-
-if command -v direnv &>/dev/null; then
-    eval "$(direnv hook zsh)"
-fi
-
-# Initialize zoxide
-if command -v zoxide &>/dev/null; then
-    eval "$(zoxide init zsh)"
-fi
+_source_cached_init direnv direnv direnv hook zsh
+_source_cached_init zoxide zoxide zoxide init zsh
 
 # Initialize fzf (fuzzy finder)
 if command -v fzf &>/dev/null; then
@@ -62,11 +28,13 @@ if command -v fzf &>/dev/null; then
         export FZF_ALT_C_COMMAND='fd --type d'
     fi
 
-    source <(fzf --zsh)
+    _source_cached_init fzf fzf fzf --zsh
 
     # Replace the standard completion menu after fzf initialization.
+{{- if eq .chezmoi.os "darwin" }}
     if [[ -f "{{ .homebrewPrefix }}/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh" ]]; then
         zstyle ':completion:*' menu no
         source "{{ .homebrewPrefix }}/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
     fi
+{{- end }}
 fi
