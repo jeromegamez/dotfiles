@@ -2,20 +2,22 @@
 
 set -euo pipefail
 
-"$XDG_BIN_DIR/brew-maintenance"
+xdg_bin_dir="${XDG_BIN_DIR:-$HOME/.local/bin}"
+
+"$xdg_bin_dir/brew-maintenance"
 
 echo "==> chezmoi upgrade"
-"$XDG_BIN_DIR/chezmoi" --verbose upgrade
+"$xdg_bin_dir/chezmoi" --verbose upgrade
 
 {{ if .personal -}}
-if [[ -x "$XDG_BIN_DIR/agy" ]]; then
+if [[ -x "$xdg_bin_dir/agy" ]]; then
     echo "==> agy update"
-    "$XDG_BIN_DIR/agy" update
+    "$xdg_bin_dir/agy" update
 fi
 
-if [[ -x "$XDG_BIN_DIR/codex" ]]; then
+if [[ -x "$xdg_bin_dir/codex" ]]; then
     echo "==> codex update"
-    "$XDG_BIN_DIR/codex" update
+    "$xdg_bin_dir/codex" update
 fi
 {{ end -}}
 if command -v gcloud >/dev/null 2>&1; then
@@ -26,7 +28,7 @@ fi
 {{ if .personal -}}
 if [[ -x "$HOME/.pi/agent/bin/pi" || -x "${XDG_DATA_HOME:-$HOME/.local/share}/pi/bin/pi" ]]; then
     echo "==> pi update --all"
-    "$XDG_BIN_DIR/pi" update --all
+    "$xdg_bin_dir/pi" update --all
 fi
 {{ end -}}
 if command -v gh >/dev/null 2>&1; then
@@ -34,11 +36,11 @@ if command -v gh >/dev/null 2>&1; then
     gh extensions upgrade --all
 fi
 
-if [[ -x "$XDG_BIN_DIR/composer" ]]; then
+if [[ -x "$xdg_bin_dir/composer" ]]; then
     echo "==> composer self-update"
-    "$XDG_BIN_DIR/composer" self-update
+    "$xdg_bin_dir/composer" self-update
     echo "==> composer global update --with-all-dependencies"
-    "$XDG_BIN_DIR/composer" global update --with-all-dependencies
+    "$xdg_bin_dir/composer" global update --with-all-dependencies
 fi
 
 echo "✓ Maintenance done"
