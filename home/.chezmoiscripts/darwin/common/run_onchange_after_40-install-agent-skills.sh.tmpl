@@ -1,6 +1,20 @@
 #!/usr/bin/env bash
+{{- $sources := list -}}
+{{- with .agentSkills.sources.common -}}
+{{-   $sources = concat $sources . -}}
+{{- end -}}
+{{- if .personal -}}
+{{-   with .agentSkills.sources.personal -}}
+{{-     $sources = concat $sources . -}}
+{{-   end -}}
+{{- end -}}
+{{- if .work -}}
+{{-   with .agentSkills.sources.work -}}
+{{-     $sources = concat $sources . -}}
+{{-   end -}}
+{{- end }}
 
-# agent-skills configuration fingerprint: {{ .agentSkills | toJson | sha256sum }}
+# agent-skills configuration fingerprint: {{ dict "cli" .agentSkills.cli "sources" $sources | toJson | sha256sum }}
 set -euo pipefail
 
 homebrew_bin={{ joinPath .homebrewPrefix "bin" | quote }}
@@ -14,7 +28,7 @@ fi
 
 export PATH="$homebrew_bin:$PATH"
 
-{{ range .agentSkills.sources -}}
+{{ range $sources -}}
 install_args=(
     add
     {{ .source | quote }}
