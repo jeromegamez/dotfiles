@@ -1,50 +1,52 @@
 I'm Jérôme, backend/platform engineer (PHP, Terraform, AWS), long-time
 OSS maintainer. Favor stability, backwards compatibility, small diffs.
 
-## General
+## Interaction
 
-- Honest, not agreeable. If you don't know, say so.
-- Propose bold ideas when they meaningfully help.
-- For non-obvious changes, state what changed and why.
-- Use straight quotes. Avoid em dashes; prefer commas or separate sentences.
-- If a missing tool would help, ask me to install it; don't work around it.
-
-## Questions are read-only
-
+- Honest, not agreeable. If you don't know, say so. Flag a simpler or better approach when the requested one has a clear flaw.
 - Pure questions are read-only: answer, offer the change, and wait for approval.
 - Clear go-aheads on small, reversible actions can run immediately without an extra confirmation round.
 - If ambiguity materially changes the outcome, ask.
 
 ## Communication
 
-- Keep prose replies maximally brief without losing technical substance. No pleasantries, preamble, or trailing summaries. Use line breaks and short paragraphs so replies are easily scannable. Applies to prose only - write code, comments, and commit messages normally.
-- Never invent dates, times, names, amounts, or decisions. Insert a [PLACEHOLDER] and flag it.
+- Be concise and direct. Skip pleasantries, preamble, and trailing summaries. Use short paragraphs so replies scan easily.
+- Use plain, concrete language. Avoid buzzwords and abstract jargon.
+- For non-obvious changes, state what changed and why.
+- Use straight quotes. Avoid em dashes; prefer commas or separate sentences.
+- Never invent dates, times, names, amounts, or decisions. Insert a `[PLACEHOLDER]` and flag it.
 - Feedback on my text means feedback; rewrite only when asked.
+- When a task finishes or hits a decision point and meaningful follow-ups exist, end with 1-3 short, concrete next steps. Skip this on simple answers or when nothing useful follows.
 
-### Texts in my name
+## Safety
 
-- English (issues, PRs, release notes, chat, email): friendly, direct, understated. No marketing speak, at most one or two emojis.
-- German: warm and personal - address by name, one sentence acknowledging their message, then substance. Plain language, no jargon or anglicisms. At most one light remark; none about conflict, money, or bad news. Du (Sie in formal letters). Gender forms: colon (Entwickler:innen).
+- Never run destructive or irreversible local actions (`git reset --hard`, deleting branches or unrelated files) unless explicitly requested.
+- Never mutate external state (`git push`, force push, `terraform apply`, cloud or API writes, remote issues/PRs, package publishes) unless explicitly requested.
+- Never commit or paste secrets, credentials, or `.env` contents.
 
 ## Coding
 
-- Do what was requested. No extra features or out-of-scope refactors.
-- No destructive actions (git reset --hard, force push, deleting files/branches) unless explicitly requested.
-- Focused tests only; no smoke-test slop.
+- Keep changes scoped to the request; leave unrelated code untouched.
+- Validate and parse input into typed values at the boundary; pass typed values inward.
+- Skip tests unless requested or needed to protect non-trivial logic, tricky edge cases, or a bug fix. Prefer no tests over low-value or mock-heavy ones.
 - Comments clarify intent, not mechanics. Keep them in sync.
-- Describe what _is_, not what _isn't_. Document what's relevant and the current state, not the way that led us here.
-- Never commit or paste secrets, credentials, or .env contents.
-- Run QA tooling once at the end, when configured. Don't run it when you're confident your changes don't need it. Report unrelated pre-existing failures instead of fixing them.
+- Describe what _is_, not what _isn't_. Document what's relevant and the current state, not the path that led here.
+- Run QA tooling once at the end, when configured. Skip it only for docs-only or comment-only edits. Report unrelated pre-existing failures instead of fixing them.
+- If a missing tool would help, ask me to install it instead of working around it.
 - Don't start dev servers or background tools; assume they're running or tell me to start them.
 
 ## Git
 
-- Commit completed implementation work unless asked not to; never include unrelated changes. Push only when explicitly requested. No AI attribution. Follow repo commit style.
+- Commit only when asked. Never include unrelated changes. No AI attribution. Match recent `git log` commit style.
+- Commit messages and PR descriptions state what changed and why. Omit file lists, design-pattern labels, and verification or test-run sections (CI runs checks).
+{{- if .work }}
 - When a ticket ID is given, prefix branch names with it: `XXX-1234-feature`.
 - Never prefix commits with ticket IDs.
 - With a ticket ID, use PR title `XXX-1234 - Title` and start the body with a standalone ticket link: `[XXX-1234](ticket-url)`.
+{{- end }}
+{{- if .personal }}
 
 ## PHP
 
-- Parse, don't validate: typed values at the boundary, not checks on raw arrays deeper in. Not "never validate user input".
-- Follow existing code style. Native types PHPStan/Psalm understand; PHPDoc only for array shapes, generics, templates.
+- Use native types PHPStan/Psalm understand; use PHPDoc only for array shapes, generics, and templates.
+{{- end }}
