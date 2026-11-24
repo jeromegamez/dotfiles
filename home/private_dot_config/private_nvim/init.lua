@@ -1,4 +1,3 @@
-
 -- Set <space> as the leader key
 -- See `:h mapleader`
 -- NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -43,8 +42,8 @@ vim.o.confirm = true
 --
 -- See `:h vim.keymap.set()`, `:h mapping`, `:h keycodes`
 
--- Use <Esc> to exit terminal mode
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
+-- Use <Esc><Esc> to exit terminal mode
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>')
 
 -- Map <A-j>, <A-k>, <A-h>, <A-l> to navigate between windows in any modes
 vim.keymap.set({ 't', 'i' }, '<A-h>', '<C-\\><C-n><C-w>h')
@@ -73,11 +72,22 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 --
 -- See `:h nvim_create_user_command()` and `:h user-commands`
 
--- Create a command `:GitBlameLine` that print the git blame for the current line
+-- Create a command `:GitBlameLine` that prints the git blame for the current line
 vim.api.nvim_create_user_command('GitBlameLine', function()
-  local line_number = vim.fn.line('.') -- Get the current line number. See `:h line()`
   local filename = vim.api.nvim_buf_get_name(0)
-  print(vim.system({ 'git', 'blame', '-L', line_number .. ',+1', filename }):wait().stdout)
+  if filename == '' then
+    vim.notify('Buffer has no associated file', vim.log.levels.WARN)
+    return
+  end
+  local line_number = vim.fn.line('.') -- Get the current line number. See `:h line()`
+  local result = vim.system({ 'git', 'blame', '-L', line_number .. ',+1', '--', filename }, {
+    cwd = vim.fs.dirname(filename),
+  }):wait()
+  if result.code ~= 0 then
+    vim.notify(vim.trim(result.stderr or 'git blame failed'), vim.log.levels.ERROR)
+    return
+  end
+  print(result.stdout)
 end, { desc = 'Print the git blame for the current line' })
 
 -- PLUGINS

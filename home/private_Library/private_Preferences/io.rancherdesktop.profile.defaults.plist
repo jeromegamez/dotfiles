@@ -20,7 +20,7 @@
       <key>updater</key>
       <dict>
         <key>enabled</key>
-        <true/>
+        <false/>
       </dict>
       <key>autoStart</key>
       <false/>
