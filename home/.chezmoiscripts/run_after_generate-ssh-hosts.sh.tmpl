@@ -2,6 +2,13 @@
 
 set -euo pipefail
 
+umask 077
+
+{{- if eq .chezmoi.os "darwin" }}
+homebrew_bin={{ joinPath .homebrewPrefix "bin" | quote }}
+export PATH="$homebrew_bin:$PATH"
+{{- end }}
+
 account={{ .onepasswordAccount | quote }}
 out="${HOME}/.ssh/1Password/generated-hosts.conf"
 out_dir="${out%/*}"
@@ -20,16 +27,25 @@ if ((${#missing_commands[@]} > 0)); then
     exit 0
 fi
 
-tmp="$(mktemp "${TMPDIR:-/tmp}/generated-hosts.XXXXXX")"
+install -d -m 700 "$out_dir"
+tmp="$(mktemp "$out_dir/.generated-hosts.XXXXXX")"
 helper={{ joinPath .chezmoi.sourceDir "private_dot_config/chezmoi/scripts/generate_ssh_hosts.py" | quote }}
-trap 'rm -f "$tmp"' EXIT
+cleanup() {
+    if [[ -n "${tmp:-}" && -f "$tmp" ]]; then
+        rm -f -- "$tmp"
+    fi
+}
+trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 op --account "$account" --format json item list --categories "SSH Key" |
     op --account "$account" item get - --format json |
     jq -s '.' |
     python3 "$helper" >"$tmp"
 
-install -d -m 700 "$out_dir"
-install -m 600 "$tmp" "$out"
+chmod 600 "$tmp"
+mv -f "$tmp" "$out"
 
 echo "✓ Generated 1Password SSH host configuration"
