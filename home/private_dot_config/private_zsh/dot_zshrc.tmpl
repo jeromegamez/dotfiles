@@ -22,7 +22,7 @@ setopt SHARE_HISTORY            # share history between sessions
 # Enable completions (after PATH is set)
 # Regenerate completion cache once per day, track freshness via stamp file.
 zmodload zsh/datetime
-zmodload zsh/stat
+zmodload -F zsh/stat b:zstat
 autoload -Uz compinit
 _zcompdump="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 _zcompdump_stamp="$_zcompdump.lastcheck"
