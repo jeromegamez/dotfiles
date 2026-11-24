@@ -6,6 +6,9 @@ SDK_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/google-cloud-sdk"
 managed_gcloud_bin="${SDK_DIR}/bin/gcloud"
 temp_parent="${TMPDIR:-/tmp}"
 temp_parent="${temp_parent%/}"
+temp_dir=""
+created_sdk_dir=false
+install_failed=false
 
 is_verbose() {
     [[ -n "${CHEZMOI_VERBOSE:-}" ]]
@@ -18,12 +21,18 @@ log_verbose() {
 }
 
 cleanup() {
-    if [[ -n "${temp_dir:-}" && "$temp_dir" == "$temp_parent"/chezmoi-gcloud.* && -d "$temp_dir" ]]; then
+    if [[ "$install_failed" == true && "$created_sdk_dir" == true && -d "$SDK_DIR" ]]; then
+        rm -rf -- "$SDK_DIR"
+    fi
+    if [[ -n "$temp_dir" && "$temp_dir" == "$temp_parent"/chezmoi-gcloud.* && -d "$temp_dir" ]]; then
         rm -rf -- "$temp_dir"
     fi
 }
 
-trap cleanup EXIT INT TERM
+trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 # Architecture detection in template
 {{ if eq .chezmoi.arch "arm64" -}}
@@ -46,27 +55,46 @@ if [[ ! -x "$managed_gcloud_bin" ]] && ! command -v gcloud >/dev/null 2>&1; then
     log_verbose "Extracting archive..."
     tar -xzf "$archive_path" -C "$temp_dir"
 
-    sdk_source_dir=$(find "$temp_dir" -maxdepth 1 -type d -name 'google-cloud-*' | head -n 1)
+    sdk_source_dir=$(find "$temp_dir" -maxdepth 1 -type d -name 'google-cloud-*' -print -quit)
     if [[ -z "$sdk_source_dir" ]]; then
-        echo "✗ Google Cloud SDK archive missing expected directory"
+        echo "✗ Google Cloud SDK archive missing expected directory" >&2
         exit 1
     fi
 
+    if [[ ! -e "$SDK_DIR" ]]; then
+        created_sdk_dir=true
+    fi
+    install_failed=true
     mkdir -p "$SDK_DIR"
     cp -R "$sdk_source_dir/." "$SDK_DIR"
 
     log_verbose "Running installation script..."
-    bash "$SDK_DIR/install.sh" \
-        --usage-reporting false \
-        --path-update false \
-        --command-completion false \
-        --install-python false \
-        >/dev/null 2>&1
+    if is_verbose; then
+        bash "$SDK_DIR/install.sh" \
+            --usage-reporting false \
+            --path-update false \
+            --command-completion false \
+            --install-python false
+    else
+        install_output=""
+        if ! install_output=$(bash "$SDK_DIR/install.sh" \
+            --usage-reporting false \
+            --path-update false \
+            --command-completion false \
+            --install-python false 2>&1); then
+            if [[ -n "$install_output" ]]; then
+                printf '%s\n' "$install_output" >&2
+            fi
+            echo "✗ Google Cloud CLI install failed" >&2
+            exit 1
+        fi
+    fi
 
     if [[ ! -x "$managed_gcloud_bin" ]]; then
-        echo "✗ Google Cloud CLI install failed"
+        echo "✗ Google Cloud CLI install failed" >&2
         exit 1
     fi
+    install_failed=false
 
     echo "✓ Installed Google Cloud CLI"
 fi
