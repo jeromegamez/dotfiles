@@ -30,7 +30,7 @@
     sort = version:refname
 
 [alias]
-    me = log --pretty=format:\"%ad (%h) %s\" --date=short --all --no-merges --author={{ .identity.name | quote }}
+    me = log --pretty=format:\"%ad (%h) %s\" --date=short --all --no-merges --author={{ .identity.name | quote | quote }}
     oneline = log --oneline --decorate --all --graph
 
 [blame]
