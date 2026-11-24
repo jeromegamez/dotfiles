@@ -1,0 +1,70 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $raw := .chezmoi.stdin -}}
+{{- $hadInput := ne (trim $raw) "" -}}
+{{- $orig := dict -}}
+{{- if $hadInput -}}
+{{-   $orig = fromJson $raw -}}
+{{- end -}}
+{{- $cfg := deepCopy $orig -}}
+{{- $ruleDesc := "Caps Lock → Hyper Key (⌃⌥⇧⌘) (Caps Lock if alone)" -}}
+{{- $from := dict "key_code" "caps_lock" "modifiers" (dict "optional" (list "any")) -}}
+{{- $to := list (dict "key_code" "left_shift" "modifiers" (list "left_command" "left_control" "left_option")) -}}
+{{- $toIfAlone := list (dict "key_code" "caps_lock") -}}
+{{- $hyperRule := dict "description" $ruleDesc "manipulators" (list (dict "from" $from "to" $to "to_if_alone" $toIfAlone "type" "basic")) -}}
+{{- $profiles := list -}}
+{{- if and (hasKey $cfg "profiles") (kindIs "slice" (index $cfg "profiles")) (gt (len (index $cfg "profiles")) 0) -}}
+{{-   $profiles = index $cfg "profiles" -}}
+{{-   $targetIdx := -1 -}}
+{{-   range $i, $p := $profiles -}}
+{{-     if and (eq $targetIdx -1) (kindIs "map" $p) (get $p "selected") -}}
+{{-       $targetIdx = $i -}}
+{{-     end -}}
+{{-   end -}}
+{{-   if eq $targetIdx -1 -}}
+{{-     $targetIdx = 0 -}}
+{{-   end -}}
+{{-   $profile := dict -}}
+{{-   if kindIs "map" (index $profiles $targetIdx) -}}
+{{-     $profile = index $profiles $targetIdx -}}
+{{-   end -}}
+{{-   $cm := dict -}}
+{{-   if and (hasKey $profile "complex_modifications") (kindIs "map" (index $profile "complex_modifications")) -}}
+{{-     $cm = index $profile "complex_modifications" -}}
+{{-   end -}}
+{{-   $rules := list -}}
+{{-   if and (hasKey $cm "rules") (kindIs "slice" (index $cm "rules")) -}}
+{{-     $rules = index $cm "rules" -}}
+{{-   end -}}
+{{-   $newRules := list -}}
+{{-   $replaced := false -}}
+{{-   range $rules -}}
+{{-     if and (kindIs "map" .) (eq (get . "description") $ruleDesc) -}}
+{{-       $newRules = append $newRules $hyperRule -}}
+{{-       $replaced = true -}}
+{{-     else -}}
+{{-       $newRules = append $newRules . -}}
+{{-     end -}}
+{{-   end -}}
+{{-   if not $replaced -}}
+{{-     $newRules = append $newRules $hyperRule -}}
+{{-   end -}}
+{{-   $_ := set $cm "rules" $newRules -}}
+{{-   $_ := set $profile "complex_modifications" $cm -}}
+{{-   $newProfiles := list -}}
+{{-   range $i, $p := $profiles -}}
+{{-     if eq $i $targetIdx -}}
+{{-       $newProfiles = append $newProfiles $profile -}}
+{{-     else -}}
+{{-       $newProfiles = append $newProfiles $p -}}
+{{-     end -}}
+{{-   end -}}
+{{-   $_ := set $cfg "profiles" $newProfiles -}}
+{{- else -}}
+{{-   $defaultProfile := dict "name" "Default profile" "selected" true "virtual_hid_keyboard" (dict "keyboard_type_v2" "ansi") "complex_modifications" (dict "rules" (list $hyperRule)) -}}
+{{-   $_ := set $cfg "profiles" (list $defaultProfile) -}}
+{{- end -}}
+{{- if and $hadInput (deepEqual $orig $cfg) -}}
+{{- $raw -}}
+{{- else -}}
+{{- $cfg | toPrettyJson }}
+{{ end -}}
