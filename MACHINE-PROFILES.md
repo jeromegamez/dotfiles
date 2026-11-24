@@ -65,7 +65,7 @@ SSH authentication is separate from Git identity and signing. It is selected by
 SSH host configuration and the 1Password SSH agent, not by repository location.
 Forge directories are organizational only.
 
-Work's allowed-signers mapping enables local verification of SSH-signed commits
+Each profile's allowed-signers mapping enables local verification of SSH-signed commits
 and tags. It is not used to create signatures, authenticate over SSH, or decide
 a forge's verification status. Each forge maintains its own signing-key registry.
 

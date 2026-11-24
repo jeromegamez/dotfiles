@@ -75,10 +75,10 @@ administrator whether it can be enabled. See [1Password's SSH Bookmarks
 documentation](https://developer.1password.com/docs/ssh/bookmarks/) for the
 current interface and behavior.
 
-Authenticate the CLI from an interactive terminal:
+Verify CLI authentication from an interactive terminal:
 
 ```bash
-op signin
+op whoami
 ```
 
 Initialize the repository without applying it immediately. See
@@ -141,8 +141,9 @@ Switching profiles requires a fresh bootstrap. See
 [`MACHINE-PROFILES.md`](MACHINE-PROFILES.md) for the steps and credential
 boundaries.
 
-The selected profile supplies the default Git identity and signing method
-globally: personal uses GPG and work uses an SSH key held by 1Password. SSH
+The selected profile supplies the default Git identity and SSH signing key
+globally: both profiles sign commits and tags via SSH through 1Password (with
+optional unattended local SSH signing on `personal`). SSH authentication is
 authentication is selected separately by SSH host configuration and 1Password
 Bookmarks. Repositories under `~/Code/reference/`, the opposite profile's
 `~/Code/` tree, and the chezmoi source on work receive an empty identity guard.
@@ -158,10 +159,11 @@ repositories; they do not select identity or credentials.
 | Path | Purpose |
 | --- | --- |
 | `home/` | Source state rendered into the home directory |
-| `home/.chezmoiscripts/darwin/` | macOS bootstrap and configuration hooks |
+| `home/.chezmoiscripts/darwin/common/` | Shared macOS bootstrap and configuration hooks |
+| `home/.chezmoiscripts/darwin/personal/` | Personal-only macOS hooks |
 | `home/.chezmoitemplates/homebrew/` | Common and profile-specific Homebrew packages |
-| `home/.chezmoidata/` | Declarative data such as required Pi packages |
-| `scripts/lint-shell.sh` | ShellCheck and shfmt validation for scripts and rendered templates |
+| `home/.chezmoidata/` | Declarative data for identity, versions, macOS, gh, and agent tooling |
+| `scripts/lint-shell.sh` | Validation for shell scripts, Zsh configs, Python helpers, and `modify_` templates |
 | `export-checklist.md` | Manual application data to migrate between Macs |
 
 chezmoi filename conventions describe the target and its permissions. For
@@ -171,8 +173,9 @@ example, `private_dot_config/private_git/config.tmpl` renders as
 ## Tool ownership
 
 The standalone installers own chezmoi, Antigravity CLI, Codex CLI, and Pi.
-Homebrew owns applications, Node.js, `tenv` (work machines), and general
-command-line tools. `uv` owns Python runtimes and project environments.
+Homebrew owns applications, Node.js, PHP (`shivammathur/php` on `personal`),
+`tenv` (work machines), and general command-line tools. `uv` owns Python
+runtimes and project environments.
 
 The minimum required chezmoi version is recorded in
 [`.chezmoiversion`](.chezmoiversion). Newer versions remain supported.
@@ -183,15 +186,17 @@ Homebrew owns Java. A lifecycle hook registers its JDK with macOS so `java`
 works without a custom `PATH` or `JAVA_HOME`. Existing registrations are not
 replaced.
 
-The personal macOS lifecycle installs Codex CLI when it is missing. Update it
-with `codex update`.
+The personal macOS lifecycle installs Antigravity CLI (`agy`) and Codex CLI
+when missing. Update them with `agy update` and `codex update`.
 
 On personal machines, the official Pi installer pins dependencies under
 `~/.pi/agent/install`. The chezmoi-managed launcher uses Homebrew Node.js for Pi
 and its updates.
 The Pi hook migrates the previous npm installation under `~/.local/share/pi`
-when needed. Required packages are listed in
-[`home/.chezmoidata/agent-addons.yaml`](home/.chezmoidata/agent-addons.yaml).
+when needed. Required Pi, Codex, and Copilot add-ons are listed in
+[`home/.chezmoidata/agent-addons.yaml`](home/.chezmoidata/agent-addons.yaml),
+and global agent skills are declared in
+[`home/.chezmoidata/agent-skills.yaml`](home/.chezmoidata/agent-skills.yaml).
 Chezmoi installs missing components without upgrading existing ones.
 
 Selected settings for Pi and Antigravity are merged with `modify_` templates so
@@ -258,12 +263,13 @@ maintenance
 ```
 
 This calls `brew-maintenance`, upgrades chezmoi to the latest release, and runs
-`gcloud components update --quiet`, `update-aws-session-manager-plugin`, and
-`gh extensions upgrade --all` when installed. On personal machines, it also
-updates Antigravity, Codex, and Pi when installed.
-Other tools retain their confirmation prompts, and a failed step stops the
-command. It does not pull or apply dotfiles.
-`brew-maintenance` remains available for Homebrew-only updates.
+`gcloud components update --quiet`, `update-aws-session-manager-plugin`,
+`gh extensions upgrade --all`, `composer self-update`, and
+`composer global update --with-all-dependencies` when installed. On personal
+machines, it also updates Antigravity, Codex, and Pi when installed.
+Other tools retain their confirmation prompts, and failed steps are reported at
+the end rather than stopping earlier updates. It does not pull or apply
+dotfiles. `brew-maintenance` remains available for Homebrew-only updates.
 
 Apply hooks install configured runtimes and missing tools and synchronize
 declared add-ons. Global Composer packages are updated when their declarations or

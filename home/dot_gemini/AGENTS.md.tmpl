@@ -1,2 +1,5 @@
-{{ template "agents/AGENTS.md" . }}
-{{ template "agents/antigravity.md" . -}}
+{{- includeTemplate "agents/AGENTS.md" . | trim }}
+{{- with (includeTemplate "agents/antigravity.md" . | trim) }}
+
+{{ . }}
+{{- end }}

@@ -1,2 +1,5 @@
-{{ template "agents/AGENTS.md" . }}
-{{ template "agents/codex.md" . -}}
+{{- includeTemplate "agents/AGENTS.md" . | trim }}
+{{- with (includeTemplate "agents/codex.md" . | trim) }}
+
+{{ . }}
+{{- end }}

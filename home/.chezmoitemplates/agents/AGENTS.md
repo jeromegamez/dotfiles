@@ -24,7 +24,7 @@ OSS maintainer. Favor stability, backwards compatibility, small diffs.
 ### Texts in my name
 
 - English (issues, PRs, release notes, chat, email): friendly, direct, understated. No marketing speak, at most one or two emojis.
-- German: warm and personal - address by name, one sentence acknowledging their message, then substance. Plain language, no jargon or anglicisms. At most one light remark; none about conflict, money, or bad news. Du (Sie in formal letters). Gender forms: colon(Entwickler:innen).
+- German: warm and personal - address by name, one sentence acknowledging their message, then substance. Plain language, no jargon or anglicisms. At most one light remark; none about conflict, money, or bad news. Du (Sie in formal letters). Gender forms: colon (Entwickler:innen).
 
 ## Coding
 
