@@ -1,13 +1,16 @@
 {{- /* chezmoi:modify-template */ -}}
-{{- $cfg := dict -}}
-{{- if (trim .chezmoi.stdin) -}}
-{{-   $cfg = fromJson .chezmoi.stdin -}}
+{{- $raw := .chezmoi.stdin -}}
+{{- $hadInput := ne (trim $raw) "" -}}
+{{- $orig := dict -}}
+{{- if $hadInput -}}
+{{-   $orig = fromJson $raw -}}
 {{- end -}}
+{{- $cfg := deepCopy $orig -}}
 {{- $cfg = setValueAtPath "allowNonWorkspaceAccess" true $cfg -}}
 {{- $cfg = setValueAtPath "queuedMessages" "send-immediately" $cfg -}}
 {{- $cfg = setValueAtPath "toolPermission" "always-proceed" $cfg -}}
 {{- $workspaces := list -}}
-{{- if and (hasKey $cfg "trustedWorkspaces") (index $cfg "trustedWorkspaces") -}}
+{{- if and (hasKey $cfg "trustedWorkspaces") (kindIs "slice" (index $cfg "trustedWorkspaces")) -}}
 {{-   range (index $cfg "trustedWorkspaces") -}}
 {{-     $workspaces = append $workspaces . -}}
 {{-   end -}}
@@ -18,4 +21,8 @@
 {{-   end -}}
 {{- end -}}
 {{- $cfg = setValueAtPath "trustedWorkspaces" $workspaces $cfg -}}
-{{- $cfg | toPrettyJson -}}
+{{- if and $hadInput (deepEqual $orig $cfg) -}}
+{{- $raw -}}
+{{- else -}}
+{{- $cfg | toPrettyJson }}
+{{ end -}}

@@ -1,23 +1,43 @@
 {{- /* chezmoi:modify-template */ -}}
-{{- $cfg := dict -}}
-{{- if (trim .chezmoi.stdin) -}}
-{{-   $cfg = fromJson .chezmoi.stdin -}}
+{{- $raw := .chezmoi.stdin -}}
+{{- $hadInput := ne (trim $raw) "" -}}
+{{- $orig := dict -}}
+{{- if $hadInput -}}
+{{-   $orig = fromJson $raw -}}
 {{- end -}}
+{{- $cfg := deepCopy $orig -}}
 {{- $cfg = setValueAtPath "defaultProjectTrust" "always" $cfg -}}
 {{- $cfg = setValueAtPath "quietStartup" "header" $cfg -}}
 {{- $cfg = setValueAtPath "showCacheMissNotices" true $cfg -}}
 {{- $packages := list -}}
-{{- if and (hasKey $cfg "packages") (index $cfg "packages") -}}
+{{- $existingNormalized := list -}}
+{{- if and (hasKey $cfg "packages") (kindIs "slice" (index $cfg "packages")) -}}
 {{-   range (index $cfg "packages") -}}
 {{-     $packages = append $packages . -}}
+{{-     $src := "" -}}
+{{-     if kindIs "string" . -}}
+{{-       $src = . -}}
+{{-     else if and (kindIs "map" .) (hasKey . "source") (kindIs "string" (index . "source")) -}}
+{{-       $src = index . "source" -}}
+{{-     end -}}
+{{-     if ne $src "" -}}
+{{-       $norm := regexReplaceAll "^(npm:(?:@[^/]+/)?[^@]+)@.+$" $src "$1" -}}
+{{-       $existingNormalized = append $existingNormalized $norm -}}
+{{-     end -}}
 {{-   end -}}
 {{- end -}}
 {{- with .agentAddons.pi -}}
 {{-   range .packages -}}
-{{-     if not (has . $packages) -}}
+{{-     $norm := regexReplaceAll "^(npm:(?:@[^/]+/)?[^@]+)@.+$" . "$1" -}}
+{{-     if not (has $norm $existingNormalized) -}}
 {{-       $packages = append $packages . -}}
+{{-       $existingNormalized = append $existingNormalized $norm -}}
 {{-     end -}}
 {{-   end -}}
 {{- end -}}
 {{- $cfg = setValueAtPath "packages" $packages $cfg -}}
-{{- $cfg | toPrettyJson -}}
+{{- if and $hadInput (deepEqual $orig $cfg) -}}
+{{- $raw -}}
+{{- else -}}
+{{- $cfg | toPrettyJson }}
+{{ end -}}
