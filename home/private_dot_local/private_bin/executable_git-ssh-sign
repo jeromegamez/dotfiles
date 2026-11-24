@@ -1,19 +1,58 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ -n "${AGENT_UNATTENDED:-}" ]]; then
+if [[ "${AGENT_UNATTENDED:-}" == "1" ]]; then
+    personal_signing_key="${HOME}/.config/git/keys/personal-signing.pub"
     key="${HOME}/.ssh/id_ed25519_agent"
+    is_sign=false
+    uses_personal_key=false
     args=()
+
     while (($# > 0)); do
-        if [[ "$1" == "-f" && $# -gt 1 ]]; then
-            args+=("-f" "$key")
-            shift 2
-        else
-            args+=("$1")
-            shift
-        fi
+        case "$1" in
+            -Y)
+                args+=("$1")
+                if (($# > 1)); then
+                    if [[ "$2" == "sign" ]]; then
+                        is_sign=true
+                    fi
+                    args+=("$2")
+                    shift 2
+                else
+                    shift
+                fi
+                ;;
+            -f)
+                if (($# > 1)); then
+                    if [[ "$2" == "$personal_signing_key" ]]; then
+                        uses_personal_key=true
+                        args+=("-f" "$key")
+                    else
+                        args+=("-f" "$2")
+                    fi
+                    shift 2
+                else
+                    args+=("$1")
+                    shift
+                fi
+                ;;
+            -U)
+                shift
+                ;;
+            *)
+                args+=("$1")
+                shift
+                ;;
+        esac
     done
-    exec ssh-keygen "${args[@]}"
+
+    if [[ "$is_sign" == true && "$uses_personal_key" == true ]]; then
+        if [[ ! -r "$key" ]]; then
+            echo "Missing unattended signing key: $key" >&2
+            exit 1
+        fi
+        exec /usr/bin/ssh-keygen "${args[@]}"
+    fi
 fi
 
 exec /Applications/1Password.app/Contents/MacOS/op-ssh-sign "$@"

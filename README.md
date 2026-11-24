@@ -207,9 +207,10 @@ upgrade previously installed applications.
 ## Unattended agent Git signing (personal only)
 
 Interactive sessions use 1Password for SSH auth and commit/tag signing, which
-blocks when 1Password or macOS locks. On `personal` machines, set
-`AGENT_UNATTENDED=1` for unattended or overnight agent runs so local commits
-and tags do not block:
+blocks when 1Password or macOS locks. On `personal` machines, `~/.local/bin/pi`
+sets `AGENT_UNATTENDED=1` by default (pass `AGENT_UNATTENDED=0` to opt out), and
+other unattended or overnight agent runs can set `AGENT_UNATTENDED=1` so local
+commits and tags do not block:
 
 - `~/.local/bin/git-ssh-sign` delegates Git SSH signing to `ssh-keygen` with
   `~/.ssh/id_ed25519_agent` instead of `op-ssh-sign`.

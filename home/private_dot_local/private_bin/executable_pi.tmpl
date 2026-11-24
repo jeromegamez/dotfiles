@@ -3,7 +3,8 @@
 set -euo pipefail
 
 homebrew_bin={{ joinPath .homebrewPrefix "bin" | quote }}
-pi_entrypoint="$HOME/.pi/agent/bin/pi"
+primary_entrypoint="$HOME/.pi/agent/bin/pi"
+pi_entrypoint="$primary_entrypoint"
 
 # Keep the npm installation usable until migration succeeds.
 if [[ ! -x "$pi_entrypoint" || ! -f "$HOME/.pi/agent/install/current-version" ]]; then
@@ -11,16 +12,16 @@ if [[ ! -x "$pi_entrypoint" || ! -f "$HOME/.pi/agent/install/current-version" ]]
 fi
 
 if [[ ! -x "$pi_entrypoint" ]]; then
-    echo "Pi is not installed at $pi_entrypoint; run chezmoi apply" >&2
+    echo "Pi is not installed at $primary_entrypoint; run chezmoi apply" >&2
     exit 127
 fi
 
-if [[ ":$PATH:" != *":$homebrew_bin:"* ]]; then
-    export PATH="$homebrew_bin:$PATH"
+if [[ ":${PATH:-}:" != ":$homebrew_bin:"* ]]; then
+    export PATH="$homebrew_bin${PATH:+:$PATH}"
 fi
 
 {{- if .personal }}
-export AGENT_UNATTENDED=1
+export AGENT_UNATTENDED="${AGENT_UNATTENDED-1}"
 {{- end }}
 
 exec "$pi_entrypoint" "$@"
