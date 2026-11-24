@@ -1,285 +1,75 @@
 # Dotfiles
 
-Personal and work machine configuration managed with
-[chezmoi](https://www.chezmoi.io/). The repository defines shell configuration,
-developer tools, language runtimes, credentials-backed files, applications, and
-selected system preferences.
+Personal and work Apple Silicon macOS configuration managed with
+[chezmoi](https://www.chezmoi.io/). Secrets are pulled via 1Password CLI and
+never stored in this repository.
 
-This configuration targets Apple Silicon macOS. Automated package and
-application installation and system configuration use Homebrew at
-`/opt/homebrew`.
+On macOS, `chezmoi apply` installs software, changes system preferences, may
+request administrator privileges, and restarts affected services.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) before changing the repository.
-
-## How it works
-
-- **chezmoi** renders the source files under `home/` into their locations in the
-  home directory.
-- **Homebrew** installs macOS command-line tools, applications, fonts, and Mac
-  App Store applications from a generated Brewfile.
-- **uv** manages Python runtimes, projects, and packages.
-- **1Password CLI** supplies profile-specific secret values and generated SSH
-  host configuration. Private SSH keys remain in the 1Password SSH agent.
-  Secrets are not stored in this repository.
-- **macOS lifecycle scripts** install supporting tools, configure the login
-  shell, and apply selected defaults and security settings.
-
-On macOS, a full `chezmoi apply` can install software, request administrator
-privileges, change system preferences, and restart affected services. It is
-more than a file-copy operation.
+See [MACHINE-PROFILES.md](MACHINE-PROFILES.md) for profile boundaries,
+[CONTRIBUTING.md](CONTRIBUTING.md) before changing the repository, and
+[export-checklist.md](export-checklist.md) for manual data to migrate between
+Macs.
 
 ## Bootstrap
 
-Install the chezmoi binary in `~/.local/bin` with the official installer:
+Install chezmoi, Homebrew, and 1Password:
 
 ```bash
 sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "$HOME/.local/bin"
-```
-
-On Apple Silicon macOS, install [Homebrew](https://brew.sh/) and make it
-available in the current terminal:
-
-```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 brew install --cask 1password 1password-cli
 ```
 
-The dotfiles add `~/.local/bin` to `PATH`, but they have not been applied yet.
-Use the binary's full path during the bootstrap.
+Manual prerequisites before initializing chezmoi:
 
-Grant the terminal app running chezmoi **Full Disk Access** under **System
-Settings > Privacy & Security > Full Disk Access**, then quit and reopen it.
-The macOS configuration hook needs this permission to write Safari preferences.
-Without it, `defaults` can fail with `Could not write domain`, stopping the
-apply. See [Apple's file-access
-documentation](https://support.apple.com/guide/security/secddd1d86a6/web).
-
-Before initializing chezmoi, sign in to the 1Password desktop app and configure
-it:
-
-1. Enable Touch ID under Settings > Security for CLI integration.
-2. Turn on the 1Password Developer experience.
-3. Enable the 1Password SSH Agent.
-4. Enable CLI integration with the desktop app.
-5. Under the SSH Agent's advanced settings, enable **Generate SSH config files
+1. Grant the terminal app **Full Disk Access** (**System Settings > Privacy &
+   Security > Full Disk Access**), then reopen it (required for Safari
+   preferences).
+2. Sign in to the 1Password desktop app and enable Touch ID, the Developer
+   experience, the SSH Agent, CLI integration, and **Generate SSH config files
    from 1Password SSH bookmarks**.
-6. Ensure the active profile's SSH keys are available to the agent. Add
-   `ssh://user@host` URLs to keys that should be associated with specific SSH
-   hosts.
+3. Verify CLI auth with `op whoami`.
 
-The SSH-config setting creates `~/.ssh/1Password/config` and the public-key
-files referenced by this repository's generated SSH host configuration. Private
-keys remain in 1Password. If a setting is marked as managed, ask the work
-administrator whether it can be enabled. See [1Password's SSH Bookmarks
-documentation](https://developer.1password.com/docs/ssh/bookmarks/) for the
-current interface and behavior.
-
-Verify CLI authentication from an interactive terminal:
+Initialize, review, and apply (rendered previews may contain secrets; do not
+share them):
 
 ```bash
-op whoami
-```
-
-Initialize the repository without applying it immediately. See
-[Machine configuration](#machine-configuration) for the prompts:
-
-```bash
-~/.local/bin/chezmoi --verbose init \
-  https://github.com/jeromegamez/dotfiles.git
-```
-
-Review the changes before applying them:
-
-```bash
+~/.local/bin/chezmoi --verbose init https://github.com/jeromegamez/dotfiles.git
 ~/.local/bin/chezmoi --verbose diff
 ~/.local/bin/chezmoi --verbose apply --dry-run
-```
-
-Rendered previews can contain values obtained from 1Password. Treat their
-output as sensitive and do not save or share it indiscriminately.
-
-Apply the complete configuration from an interactive terminal:
-
-```bash
 ~/.local/bin/chezmoi --verbose apply
 ```
 
-On macOS, some hooks may request confirmation, administrator access, or a
-login-shell change. Open a new terminal after the bootstrap completes.
+Open a new terminal once apply completes.
 
-Before installing applications, a one-time hook checks whether Rosetta 2 is
-installed and installs it if needed. Installation requires internet access,
-accepts Apple's license automatically, and may request your administrator password.
+### Manual post-bootstrap steps
 
-### Exclude source code from Spotlight
-
-After `~/Code` exists, exclude it once on each Mac through **System Settings ->
-Spotlight -> Search Privacy**. Click the add button and select `~/Code`.
-See [Apple's Spotlight Search Privacy
-instructions](https://support.apple.com/guide/mac-help/mchl1bb43b84/mac).
-
-## Machine configuration
-
-During initialization, [`home/.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl)
-prompts once for:
-
-- a `personal` or `work` machine profile;
-- the active profile's email address;
-- on work, the public key used for SSH commit and tag signing;
-- a 1Password account and the reference to one low-privilege GitHub API PAT for
-  public-data readers and rate-limit elevation.
-
-The answers are stored in chezmoi's machine-local configuration, not in the
-repository. To change answers while keeping the same profile, run:
-
-```bash
-chezmoi --verbose init --prompt
-```
-
-Switching profiles requires a fresh bootstrap. See
-[`MACHINE-PROFILES.md`](MACHINE-PROFILES.md) for the steps and credential
-boundaries.
-
-The selected profile supplies the default Git identity and SSH signing key
-globally: both profiles sign commits and tags via SSH through 1Password (with
-optional unattended local SSH signing on `personal`). SSH authentication is
-authentication is selected separately by SSH host configuration and 1Password
-Bookmarks. Repositories under `~/Code/reference/`, the opposite profile's
-`~/Code/` tree, and the chezmoi source on work receive an empty identity guard.
-
-Organize repositories by trust profile and then forge, for example
-`~/Code/personal/github.com/owner/repository`,
-`~/Code/work/gitlab.com/group/repository`, and
-`~/Code/reference/codeberg.org/owner/repository`. Forge directories organize
-repositories; they do not select identity or credentials.
-
-## Repository layout
-
-| Path | Purpose |
-| --- | --- |
-| `home/` | Source state rendered into the home directory |
-| `home/.chezmoiscripts/darwin/common/` | Shared macOS bootstrap and configuration hooks |
-| `home/.chezmoiscripts/darwin/personal/` | Personal-only macOS hooks |
-| `home/.chezmoitemplates/homebrew/` | Common and profile-specific Homebrew packages |
-| `home/.chezmoidata/` | Declarative data for identity, versions, macOS, gh, and agent tooling |
-| `scripts/lint-shell.sh` | Validation for shell scripts, Zsh configs, Python helpers, and `modify_` templates |
-| `export-checklist.md` | Manual application data to migrate between Macs |
-
-chezmoi filename conventions describe the target and its permissions. For
-example, `private_dot_config/private_git/config.tmpl` renders as
-`~/.config/git/config`, with private permissions and template expansion.
-
-## Tool ownership
-
-The standalone installers own chezmoi, Antigravity CLI, Codex CLI, and Pi.
-Homebrew owns applications, Node.js, PHP (`shivammathur/php` on `personal`),
-`tenv` (work machines), and general command-line tools. `uv` owns Python
-runtimes and project environments.
-
-The minimum required chezmoi version is recorded in
-[`.chezmoiversion`](.chezmoiversion). Newer versions remain supported.
-Renovate proposes updates to this baseline, with automerge disabled for release
-review. `maintenance` upgrades the standalone chezmoi binary to the latest release.
-
-Homebrew owns Java. A lifecycle hook registers its JDK with macOS so `java`
-works without a custom `PATH` or `JAVA_HOME`. Existing registrations are not
-replaced.
-
-The personal macOS lifecycle installs Antigravity CLI (`agy`) and Codex CLI
-when missing. Update them with `agy update` and `codex update`.
-
-On personal machines, the official Pi installer pins dependencies under
-`~/.pi/agent/install`. The chezmoi-managed launcher uses Homebrew Node.js for Pi
-and its updates.
-The Pi hook migrates the previous npm installation under `~/.local/share/pi`
-when needed. Required Pi, Codex, and Copilot add-ons are listed in
-[`home/.chezmoidata/agent-addons.yaml`](home/.chezmoidata/agent-addons.yaml),
-and global agent skills are declared in
-[`home/.chezmoidata/agent-skills.yaml`](home/.chezmoidata/agent-skills.yaml).
-Chezmoi installs missing components without upgrading existing ones.
-
-Selected settings for Pi and Antigravity are merged with `modify_` templates so
-app-managed state in those files is preserved.
-
-GitHub Copilot (`copilot-cli`, `github-copilot-app`, and
-`~/.copilot/copilot-instructions.md`) is shared across personal and work
-machines. Other AI harnesses, agent configurations, skills, and add-ons are
-configured only on personal machines. Existing work-machine installations and
-files are not removed by this configuration. Homebrew maintenance can still
-upgrade previously installed applications.
-
-## Unattended agent Git signing (personal only)
-
-Interactive sessions use 1Password for SSH auth and commit/tag signing, which
-blocks when 1Password or macOS locks. On `personal` machines, `~/.local/bin/pi`
-sets `AGENT_UNATTENDED=1` by default (pass `AGENT_UNATTENDED=0` to opt out), and
-other unattended or overnight agent runs can set `AGENT_UNATTENDED=1` so local
-commits and tags do not block:
-
-- `~/.local/bin/git-ssh-sign` delegates Git SSH signing to `ssh-keygen` with
-  `~/.ssh/id_ed25519_agent` instead of `op-ssh-sign`.
-- SSH authentication (such as `git push`) continues to use the default
-  1Password SSH agent.
-
-On a new personal machine, generate the local key once, re-apply chezmoi (so
-its `.pub` is added to `~/.config/git/allowed_signers`), and register the
-public key on GitHub as a Signing Key:
+- Exclude `~/Code` from Spotlight (**System Settings > Spotlight > Search
+  Privacy**).
+- On `personal` machines, if using unattended agent Git signing
+  (`AGENT_UNATTENDED=1`), generate the local signing key once, re-apply
+  `allowed_signers`, and register the public key on GitHub as a Signing Key:
 
 ```bash
 ssh-keygen -t ed25519 -N "" -C "agent-unattended@jerome.gamez.name" -f ~/.ssh/id_ed25519_agent
-chezmoi apply ~/.config/git/allowed_signers
+chezmoi --verbose apply ~/.config/git/allowed_signers
 ```
+
+## Workspace conventions
+
+- Organize repositories by trust profile and forge:
+  `~/Code/<personal|work|reference>/<forge>/<owner>/<repository>`.
+- To change prompt answers within the same profile, run
+  `chezmoi --verbose init --prompt`. Switching profiles requires a fresh
+  bootstrap (see [MACHINE-PROFILES.md](MACHINE-PROFILES.md)).
 
 ## Maintenance
 
-Edit source files through chezmoi rather than changing generated targets
-directly:
-
-```bash
-chezmoi edit --apply ~/.config/zsh/.zshrc
-```
-
-Pull and apply the latest committed source state on another machine:
-
-```bash
-chezmoi --verbose update
-```
-
-To review an update before applying it, pull the source state first and then
-inspect the resulting changes:
-
-```bash
-chezmoi --verbose update --apply=false
-chezmoi --verbose diff
-chezmoi --verbose apply --dry-run
-chezmoi --verbose apply
-```
-
-After applying configuration changes, run routine tool updates with:
-
-```bash
-maintenance
-```
-
-This calls `brew-maintenance`, upgrades chezmoi to the latest release, and runs
-`gcloud components update --quiet`, `update-aws-session-manager-plugin`,
-`gh extensions upgrade --all`, `composer self-update`, and
-`composer global update --with-all-dependencies` when installed. On personal
-machines, it also updates Antigravity, Codex, and Pi when installed.
-Other tools retain their confirmation prompts, and failed steps are reported at
-the end rather than stopping earlier updates. It does not pull or apply
-dotfiles. `brew-maintenance` remains available for Homebrew-only updates.
-
-Apply hooks install configured runtimes and missing tools and synchronize
-declared add-ons. Global Composer packages are updated when their declarations or
-installation hook change.
-Keep reviewing dotfile changes before applying them. Run
-`./scripts/lint-shell.sh` when changing shell sources.
-
-Install a Pi package for local evaluation with `pi install npm:package-name`.
-Add it to `home/.chezmoidata/agent-addons.yaml` when it should be installed on
-every personal Mac.
-
-Use [`export-checklist.md`](export-checklist.md) for application data that
-cannot be reproduced automatically.
+- Edit managed files through chezmoi: `chezmoi edit --apply <target>`
+- Pull and apply updates on another Mac: `chezmoi --verbose update` (or pass
+  `--apply=false` to inspect with `diff` and `apply --dry-run` first)
+- Run routine tool updates: `maintenance` (Homebrew only: `brew-maintenance`)
+- Validate shell and template changes: `./scripts/lint-shell.sh`
