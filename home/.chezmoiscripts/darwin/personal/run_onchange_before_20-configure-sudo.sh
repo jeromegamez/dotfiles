@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
-{{ if .personal }}
+
 pam_target="/etc/pam.d/sudo_local"
 pam_tmp=""
 cleanup() {
@@ -10,6 +10,9 @@ cleanup() {
     fi
 }
 trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 pam_tmp=$(mktemp "${TMPDIR:-/tmp}/chezmoi-sudo-local.XXXXXX")
 cat <<'EOF' >"$pam_tmp"
@@ -20,4 +23,3 @@ EOF
 if ! cmp -s "$pam_tmp" "$pam_target" 2>/dev/null; then
     sudo install -o root -g wheel -m 0444 "$pam_tmp" "$pam_target"
 fi
-{{ end -}}

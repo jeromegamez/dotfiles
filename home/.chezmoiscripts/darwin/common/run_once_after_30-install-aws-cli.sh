@@ -16,7 +16,10 @@ cleanup() {
     fi
 }
 
-trap cleanup EXIT INT TERM
+trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 if [[ -x "$aws_bin" && -f "$install_metadata" ]]; then
     echo "✓ Official AWS CLI installation already exists"
