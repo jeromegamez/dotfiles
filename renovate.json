@@ -22,7 +22,8 @@
         "^(?<currentValue>\\d+\\.\\d+\\.\\d+)\\s*$"
       ],
       "datasourceTemplate": "github-releases",
-      "depNameTemplate": "twpayne/chezmoi"
+      "depNameTemplate": "twpayne/chezmoi",
+      "extractVersionTemplate": "^v?(?<version>.*)$"
     }
   ],
   "packageRules": [
