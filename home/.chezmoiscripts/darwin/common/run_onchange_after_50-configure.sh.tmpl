@@ -37,6 +37,7 @@ defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
 
 # Trackpad: enable tap to click for the current user
+defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
@@ -69,10 +70,6 @@ sudo pmset -a lidwake 1
 # Enable firewall
 sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
 sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
-
-# Require password immediately after sleep/screensaver
-defaults write com.apple.screensaver askForPassword -int 1
-defaults write com.apple.screensaver askForPasswordDelay -int 0
 {{ end -}}
 
 {{ if .personal -}}
@@ -180,7 +177,7 @@ defaults write -g NSSplitViewItemSidebarDefaultsToFloatingAppearance -bool false
 defaults write com.apple.Accessibility ReduceMotionEnabled -bool true
 defaults write com.apple.universalaccess reduceMotion -bool true
 
-for app in Finder Dock SystemUIServer Safari; do
+for app in Finder Dock SystemUIServer; do
     killall "$app" >/dev/null 2>&1 || true
 done
 
