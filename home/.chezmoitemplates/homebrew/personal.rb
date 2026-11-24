@@ -9,7 +9,7 @@ brew "streamrip" # Scriptable music downloader for Qobuz, Tidal, SoundCloud, and
 brew "yt-dlp" # Feature-rich command-line audio/video downloader
 
 cask "antigravity" # Google Antigravity agent orchestration platform
-cask "ardia-browser/tap/ardia" # Ardia browser
+cask "ardia-browser/tap/ardia", trusted: true # Ardia browser
 cask "carbon-copy-cloner" # Hard disk backup and cloning utility
 cask "cardhop" # Contacts manager
 cask "chatgpt" # ChatGPT desktop app with Codex
