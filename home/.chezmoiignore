@@ -15,12 +15,10 @@ Library/Preferences/io.rancherdesktop.profile.defaults.plist
 {{ if not .personal }}
 .chezmoiscripts/darwin/personal/**
 .agents/**
-.claude/**
 .codex/**
 .config/composer/**
 .config/gcloud/**
 .config/git/keys/personal-signing.pub
-.config/opencode/**
 .cookiecutterrc
 .gemini/**
 .local/bin/git-exclude-ai
