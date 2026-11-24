@@ -8,6 +8,8 @@ disabled = true
 
 [kubernetes]
 disabled = false
+detect_env_vars = ["KUBECONFIG", "KUBIE_ACTIVE"]
+detect_files = ["Chart.yaml", "kustomization.yaml", "helmfile.yaml"]
 
 [status]
 disabled = false
