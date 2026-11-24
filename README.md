@@ -258,16 +258,16 @@ maintenance
 ```
 
 This calls `brew-maintenance`, upgrades chezmoi to the latest release, and runs
-`gcloud components update --quiet` and `gh extensions upgrade --all` when
-installed. On personal machines, it also updates Antigravity, Codex, and Pi when
-installed.
+`gcloud components update --quiet`, `update-aws-session-manager-plugin`, and
+`gh extensions upgrade --all` when installed. On personal machines, it also
+updates Antigravity, Codex, and Pi when installed.
 Other tools retain their confirmation prompts, and a failed step stops the
 command. It does not pull or apply dotfiles.
 `brew-maintenance` remains available for Homebrew-only updates.
 
-Apply hooks already install configured runtimes and missing tools, synchronize
-declared add-ons, and update the AWS Session Manager plugin. Global Composer
-packages are updated when their declarations or installation hook change.
+Apply hooks install configured runtimes and missing tools and synchronize
+declared add-ons. Global Composer packages are updated when their declarations or
+installation hook change.
 Keep reviewing dotfile changes before applying them. Run
 `./scripts/lint-shell.sh` when changing shell sources.
 

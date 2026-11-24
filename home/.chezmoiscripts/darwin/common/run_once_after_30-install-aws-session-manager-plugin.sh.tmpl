@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+xdg_bin_dir="${XDG_BIN_DIR:-$HOME/.local/bin}"
+
+if [[ -x "$xdg_bin_dir/session-manager-plugin" ]]; then
+    exit 0
+fi
+
+updater="$xdg_bin_dir/update-aws-session-manager-plugin"
+if [[ ! -x "$updater" ]]; then
+    echo "Missing AWS Session Manager Plugin updater: $updater" >&2
+    exit 1
+fi
+
+exec "$updater"

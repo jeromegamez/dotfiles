@@ -25,6 +25,11 @@ if command -v gcloud >/dev/null 2>&1; then
     gcloud components update --quiet
 fi
 
+if [[ -x "$xdg_bin_dir/session-manager-plugin" && -x "$xdg_bin_dir/update-aws-session-manager-plugin" ]]; then
+    echo "==> session-manager-plugin update"
+    "$xdg_bin_dir/update-aws-session-manager-plugin"
+fi
+
 {{ if .personal -}}
 if [[ -x "$HOME/.pi/agent/bin/pi" || -x "${XDG_DATA_HOME:-$HOME/.local/share}/pi/bin/pi" ]]; then
     echo "==> pi update --all"
