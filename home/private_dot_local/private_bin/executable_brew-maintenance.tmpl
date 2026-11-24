@@ -2,35 +2,43 @@
 
 set -euo pipefail
 
-brew_bin="{{ joinPath .homebrewPrefix "bin" "brew" }}"
+brew_bin={{ joinPath .homebrewPrefix "bin" "brew" | quote }}
 brewfile="${XDG_CONFIG_HOME:-$HOME/.config}/homebrew/Brewfile"
 
-if [[ ! -f "$brewfile" ]]; then
-    echo "✗ Missing Brewfile: $brewfile"
+if [[ ! -x "$brew_bin" ]]; then
+    echo "✗ Missing Homebrew executable: $brew_bin" >&2
     exit 1
 fi
 
-eval "$($brew_bin shellenv)" || true
+if [[ ! -f "$brewfile" ]]; then
+    echo "✗ Missing Brewfile: $brewfile" >&2
+    exit 1
+fi
+
+eval "$("$brew_bin" shellenv)"
 
 echo "==> brew update"
-$brew_bin update
+"$brew_bin" update
 
 echo "==> brew bundle install"
-$brew_bin bundle install --no-upgrade --file="$brewfile"
+"$brew_bin" bundle install --no-upgrade --file="$brewfile"
 
 echo "==> brew upgrade"
 HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS=1 \
     HOMEBREW_NO_UPGRADE_QUIT_CASKS=1 \
-    $brew_bin upgrade --no-ask
+    "$brew_bin" upgrade --no-ask
 
 echo "==> brew autoremove"
-$brew_bin autoremove
+"$brew_bin" autoremove
 
 echo "==> brew cleanup"
-if ! $brew_bin cleanup; then
-    echo "✗ brew cleanup failed"
-    echo "Review only the paths reported by Homebrew, repair their ownership manually, and rerun brew-maintenance."
+if ! "$brew_bin" cleanup; then
+    echo "✗ brew cleanup failed" >&2
+    echo "Review only the paths reported by Homebrew, repair their ownership manually, and rerun brew-maintenance." >&2
     exit 1
 fi
+
+echo "==> brew bundle cleanup (dry-run)"
+"$brew_bin" bundle cleanup --file="$brewfile" || true
 
 echo "✓ Homebrew maintenance done"

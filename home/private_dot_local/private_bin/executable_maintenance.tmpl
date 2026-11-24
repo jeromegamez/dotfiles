@@ -2,50 +2,92 @@
 
 set -euo pipefail
 
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+
 xdg_bin_dir="${XDG_BIN_DIR:-$HOME/.local/bin}"
 
-"$xdg_bin_dir/brew-maintenance"
+{{ if eq .chezmoi.os "darwin" -}}
+homebrew_bin={{ joinPath .homebrewPrefix "bin" | quote }}
+if [[ -d "$homebrew_bin" && ":${PATH:-}:" != ":$homebrew_bin:"* ]]; then
+    export PATH="$homebrew_bin${PATH:+:$PATH}"
+fi
+{{- end }}
 
-echo "==> chezmoi upgrade"
-"$xdg_bin_dir/chezmoi" --verbose upgrade
+gcloud_bin_dir="$XDG_DATA_HOME/google-cloud-sdk/bin"
+if [[ -d "$gcloud_bin_dir" && ":${PATH:-}:" != *":$gcloud_bin_dir:"* ]]; then
+    export PATH="$gcloud_bin_dir:$PATH"
+fi
+
+failed_steps=()
+run_step() {
+    local label="$1"
+    shift
+
+    echo "==> $label"
+    if ! "$@"; then
+        echo "✗ $label failed" >&2
+        failed_steps+=("$label")
+        return 1
+    fi
+}
+
+if [[ -x "$xdg_bin_dir/brew-maintenance" ]]; then
+    run_step "brew-maintenance" "$xdg_bin_dir/brew-maintenance" || true
+fi
+
+if [[ -x "$xdg_bin_dir/chezmoi" ]]; then
+    chezmoi_github_token="${GITHUB_TOKEN:-}"
+    if [[ -z "$chezmoi_github_token" ]] && command -v gh >/dev/null 2>&1; then
+        chezmoi_github_token="$(gh auth token 2>/dev/null || true)"
+    fi
+    if [[ -n "$chezmoi_github_token" ]]; then
+        run_step "chezmoi upgrade" env GITHUB_TOKEN="$chezmoi_github_token" "$xdg_bin_dir/chezmoi" --verbose upgrade || true
+    else
+        run_step "chezmoi upgrade" "$xdg_bin_dir/chezmoi" --verbose upgrade || true
+    fi
+fi
 
 {{ if .personal -}}
 if [[ -x "$xdg_bin_dir/agy" ]]; then
-    echo "==> agy update"
-    "$xdg_bin_dir/agy" update
+    run_step "agy update" "$xdg_bin_dir/agy" update || true
 fi
 
 if [[ -x "$xdg_bin_dir/codex" ]]; then
-    echo "==> codex update"
-    "$xdg_bin_dir/codex" update
+    run_step "codex update" "$xdg_bin_dir/codex" update || true
 fi
 {{ end -}}
 if command -v gcloud >/dev/null 2>&1; then
-    echo "==> gcloud components update --quiet"
-    gcloud components update --quiet
+    run_step "gcloud components update --quiet" gcloud components update --quiet || true
 fi
 
 if [[ -x "$xdg_bin_dir/session-manager-plugin" && -x "$xdg_bin_dir/update-aws-session-manager-plugin" ]]; then
-    echo "==> session-manager-plugin update"
-    "$xdg_bin_dir/update-aws-session-manager-plugin"
+    run_step "session-manager-plugin update" "$xdg_bin_dir/update-aws-session-manager-plugin" || true
 fi
 
 {{ if .personal -}}
-if [[ -x "$HOME/.pi/agent/bin/pi" || -x "${XDG_DATA_HOME:-$HOME/.local/share}/pi/bin/pi" ]]; then
-    echo "==> pi update --all"
-    "$xdg_bin_dir/pi" update --all
+if [[ -x "$xdg_bin_dir/pi" ]] &&
+    [[ -x "$HOME/.pi/agent/bin/pi" || -x "$XDG_DATA_HOME/pi/bin/pi" ]]; then
+    run_step "pi update --all" "$xdg_bin_dir/pi" update --all || true
 fi
 {{ end -}}
 if command -v gh >/dev/null 2>&1; then
-    echo "==> gh extensions upgrade --all"
-    gh extensions upgrade --all
+    if [[ -n "${GH_TOKEN:-}" ]] || gh auth status >/dev/null 2>&1; then
+        run_step "gh extensions upgrade --all" gh extensions upgrade --all || true
+    else
+        echo "==> Skip gh extensions upgrade --all (not authenticated)"
+    fi
 fi
 
 if [[ -x "$xdg_bin_dir/composer" ]]; then
-    echo "==> composer self-update"
-    "$xdg_bin_dir/composer" self-update
-    echo "==> composer global update --with-all-dependencies"
-    "$xdg_bin_dir/composer" global update --with-all-dependencies
+    run_step "composer self-update" "$xdg_bin_dir/composer" self-update || true
+    run_step "composer global update --with-all-dependencies" "$xdg_bin_dir/composer" global update --with-all-dependencies || true
+fi
+
+if ((${#failed_steps[@]} > 0)); then
+    printf '✗ Maintenance failed for: %s\n' "${failed_steps[*]}" >&2
+    exit 1
 fi
 
 echo "✓ Maintenance done"
