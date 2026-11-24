@@ -114,17 +114,17 @@
 [pack]
     allowPackReuse = multi
 
-[includeIf "gitdir:~/Code/reference/"]
+[includeIf "gitdir/i:~/Code/reference/"]
     path = ~/.config/git/no-identity
 {{- if .personal }}
 
-[includeIf "gitdir:~/Code/work/"]
+[includeIf "gitdir/i:~/Code/work/"]
     path = ~/.config/git/no-identity
 {{- else if .work }}
 
-[includeIf "gitdir:~/Code/personal/"]
+[includeIf "gitdir/i:~/Code/personal/"]
     path = ~/.config/git/no-identity
 
-[includeIf "gitdir:~/.local/share/chezmoi/"]
+[includeIf "gitdir/i:~/.local/share/chezmoi/"]
     path = ~/.config/git/no-identity
 {{- end }}
