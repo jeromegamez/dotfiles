@@ -5,6 +5,11 @@ set -euo pipefail
 jdk_bundle={{ joinPath .homebrewPrefix "opt/openjdk/libexec/openjdk.jdk" | quote }}
 system_jdk="/Library/Java/JavaVirtualMachines/openjdk.jdk"
 
+if [[ ! -d "$jdk_bundle" ]]; then
+    echo "Missing Homebrew JDK bundle at $jdk_bundle" >&2
+    exit 1
+fi
+
 if [[ -L "$system_jdk" && "$(readlink "$system_jdk")" == "$jdk_bundle" ]]; then
     exit 0
 fi
@@ -14,4 +19,12 @@ if [[ -e "$system_jdk" || -L "$system_jdk" ]]; then
     exit 1
 fi
 
+{{ if .work -}}
+echo "Chezmoi will not register Homebrew Java automatically on work."
+echo "Ask an administrator to run:"
+printf '  sudo mkdir -p /Library/Java/JavaVirtualMachines && sudo ln -s %q %q\n' "$jdk_bundle" "$system_jdk"
+exit 0
+{{ else -}}
+sudo mkdir -p /Library/Java/JavaVirtualMachines
 sudo ln -s "$jdk_bundle" "$system_jdk"
+{{ end -}}

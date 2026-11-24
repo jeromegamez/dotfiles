@@ -21,13 +21,13 @@ trap 'exit 129' HUP
 trap 'exit 130' INT
 trap 'exit 143' TERM
 
-PHP_BIN="$(command -v php || true)"
-if [[ -z "$PHP_BIN" ]]; then
-    echo "Skipping Composer setup because PHP is not installed"
-    exit 0
+PHP_BIN={{ joinPath .homebrewPrefix "bin" "php" | quote }}
+if [[ ! -x "$PHP_BIN" ]]; then
+    echo "Missing PHP executable: $PHP_BIN" >&2
+    exit 1
 fi
 
-COMPOSER_PATH="${HOME}/.local/bin"
+COMPOSER_PATH="${XDG_BIN_DIR:-$HOME/.local/bin}"
 COMPOSER_FILE_NAME="composer"
 
 if [ ! -f "${COMPOSER_PATH}/${COMPOSER_FILE_NAME}" ]; then
@@ -52,6 +52,7 @@ if [ ! -f "${COMPOSER_PATH}/${COMPOSER_FILE_NAME}" ]; then
     "$PHP_BIN" "$installer" --install-dir="${COMPOSER_PATH}" --filename="${COMPOSER_FILE_NAME}"
 fi
 
-"$PHP_BIN" "${COMPOSER_PATH}/${COMPOSER_FILE_NAME}" global update --quiet --with-all-dependencies
+COMPOSER_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/composer" \
+    "$PHP_BIN" "${COMPOSER_PATH}/${COMPOSER_FILE_NAME}" global update --quiet --with-all-dependencies
 
 echo "✓ Updated global Composer packages"

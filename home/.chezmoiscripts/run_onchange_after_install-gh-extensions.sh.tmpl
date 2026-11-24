@@ -22,9 +22,14 @@ install_extension() {
 
     if awk -F '\t' \
         -v repository="$repository" \
-        '$2 == repository { found = 1 }
+        'tolower($2) == tolower(repository) { found = 1 }
          END { exit !found }' <<<"$installed_extensions"; then
         return
+    fi
+
+    if [[ -z "${GH_TOKEN:-}" ]] && ! "$gh_bin" auth status >/dev/null 2>&1; then
+        echo "GitHub CLI is not authenticated; run 'gh auth login' and rerun 'chezmoi apply'" >&2
+        exit 1
     fi
 
     "$gh_bin" extension install "$repository"

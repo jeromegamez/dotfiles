@@ -16,10 +16,13 @@ installer=""
 
 cleanup() {
     if [[ -n "$installer" && -f "$installer" ]]; then
-        unlink "$installer"
+        rm -f -- "$installer"
     fi
 }
 trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 if [[ ! -x "$node_bin" || ! -x "$npm_bin" ]]; then
     echo "Missing Homebrew Node.js runtime under $homebrew_bin" >&2
@@ -34,8 +37,8 @@ if [[ ! -x "$pi_entrypoint" || ! -f "$pi_agent_dir/install/current-version" ]]; 
         PI_CODING_AGENT_DIR="$pi_agent_dir" \
         sh "$installer"
     if [[ ! -x "$pi_entrypoint" || ! -f "$pi_agent_dir/install/current-version" ]]; then
-        echo "==> Skip Pi setup: no managed installation was activated"
-        exit 0
+        echo "Managed Pi installation was not activated at $pi_entrypoint" >&2
+        exit 1
     fi
 fi
 

@@ -8,9 +8,12 @@ php_versions=(
 {{- end }}
 )
 
+configured=0
+
 for version in "${php_versions[@]}"; do
     conf_dir="{{ .homebrewPrefix }}/etc/php/${version}/conf.d"
     if [[ ! -d "$conf_dir" ]]; then
+        echo "Missing PHP configuration directory: $conf_dir" >&2
         continue
     fi
 
@@ -18,6 +21,12 @@ for version in "${php_versions[@]}"; do
 memory_limit = -1
 xdebug.mode = off
 EOF
+    configured=$((configured + 1))
 done
 
-echo "✓ Configured PHP settings"
+if ((configured == 0)); then
+    echo "No PHP configuration directories were found to configure" >&2
+    exit 1
+fi
+
+echo "✓ Configured PHP settings ($configured versions)"

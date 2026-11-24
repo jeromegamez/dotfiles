@@ -4,15 +4,19 @@
 set -euo pipefail
 
 {{ with .agentAddons.pi -}}
-pi_launcher="$HOME/.local/bin/pi"
+pi_launcher="${XDG_BIN_DIR:-$HOME/.local/bin}/pi"
 settings_dir="$HOME/.pi/agent"
-required_packages={{ .packages | toJson | quote }}
+required_packages=(
+{{- range .packages }}
+    {{ . | quote }}
+{{- end }}
+)
 
 install_required_package() {
     local package="$1"
     local package_name="${package#npm:}"
 
-    if [[ "$package" != npm:* || ! "$package_name" =~ ^(@[a-z0-9._~-]+/)?[a-z0-9._~-]+$ ]]; then
+    if [[ "$package" != npm:* || ! "$package_name" =~ ^(@[a-z0-9][a-z0-9._~-]*/)?[a-z0-9][a-z0-9._~-]*$ ]]; then
         echo "Unsupported required Pi package source: $package" >&2
         exit 1
     fi
@@ -23,13 +27,15 @@ install_required_package() {
     fi
 }
 
-if [[ -x "$settings_dir/bin/pi" || -x "${XDG_DATA_HOME:-$HOME/.local/share}/pi/bin/pi" ]]; then
-    while IFS= read -r package; do
-        install_required_package "$package"
-    done < <(jq -r '.[]' <<<"$required_packages")
-else
-    echo "==> Skip Pi packages: Pi is not installed"
+if [[ ! -x "$pi_launcher" ]] ||
+    [[ ! -x "$settings_dir/bin/pi" && ! -x "${XDG_DATA_HOME:-$HOME/.local/share}/pi/bin/pi" ]]; then
+    echo "Missing Pi installation; install Pi before agent add-ons" >&2
+    exit 1
 fi
+
+for package in "${required_packages[@]}"; do
+    install_required_package "$package"
+done
 {{ end -}}
 
 {{ range $agent, $config := .agentAddons -}}
@@ -43,23 +49,24 @@ command=({{ joinPath $.homebrewPrefix "bin" "copilot" | quote }})
 {{ end -}}
 
 if [[ ! -x "${command[0]}" ]]; then
-    echo "==> Skip {{ $agent }} plugins: ${command[0]} not installed"
-else
+    echo "Missing {{ $agent }} executable: ${command[0]}" >&2
+    exit 1
+fi
 {{- range $config.marketplaces }}
 {{- $marketplaceName := default (trimSuffix ".git" (base .marketplace)) (get . "name") }}
-    marketplace_name={{ $marketplaceName | quote }}
-    if ! "${command[@]}" plugin marketplace list | awk -v name="$marketplace_name" '$1 == name || $2 == name { found=1 } END { exit !found }'; then
-        "${command[@]}" plugin marketplace add {{ .marketplace | quote }}
-    fi
+marketplace_name={{ $marketplaceName | quote }}
+marketplace_list="$("${command[@]}" plugin marketplace list)"
+if ! awk -v name="$marketplace_name" '$1 == name || $2 == name { found=1 } END { exit !found }' <<<"$marketplace_list"; then
+    "${command[@]}" plugin marketplace add {{ .marketplace | quote }}
+fi
 {{- range .plugins }}
 {{- if eq $agent "codex" }}
-    "${command[@]}" plugin add {{ printf "%s@%s" . $marketplaceName | quote }}
+"${command[@]}" plugin add {{ printf "%s@%s" . $marketplaceName | quote }}
 {{- else }}
-    "${command[@]}" plugin install {{ printf "%s@%s" . $marketplaceName | quote }}
+"${command[@]}" plugin install {{ printf "%s@%s" . $marketplaceName | quote }}
 {{- end }}
 {{- end }}
 {{- end }}
-fi
 {{ end -}}
 {{ end -}}
 echo "✓ Installed required agent add-ons"

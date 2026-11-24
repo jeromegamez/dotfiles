@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-TARGET_SHELL="{{ joinPath .homebrewPrefix "bin" "zsh" }}"
+TARGET_SHELL={{ joinPath .homebrewPrefix "bin" "zsh" | quote }}
 SHELLS_FILE="/etc/shells"
 USER_NAME="$(id -un)"
 
@@ -16,7 +16,7 @@ log_verbose() {
 CURRENT_SHELL="$(dscl . -read "/Users/$USER_NAME" UserShell | awk '{print $2}')"
 
 if [[ -z "$CURRENT_SHELL" ]]; then
-    echo "Could not read current login shell for $USER_NAME"
+    echo "Could not read current login shell for $USER_NAME" >&2
     exit 1
 fi
 
@@ -57,12 +57,12 @@ require_sudo() {
     fi
 
     if [[ "$TTY_AVAILABLE" == true ]]; then
-        echo "Need sudo to update $SHELLS_FILE"
+        echo "Need sudo to update login shell or $SHELLS_FILE"
         sudo -v
         return 0
     fi
 
-    echo "Need sudo to update $SHELLS_FILE, but no TTY available"
+    echo "Need sudo to update login shell or $SHELLS_FILE, but no TTY available" >&2
     exit 1
 }
 
@@ -87,7 +87,7 @@ prompt_confirm() {
 }
 
 if [[ ! -x "$TARGET_SHELL" ]]; then
-    echo "Target shell $TARGET_SHELL not found or not executable"
+    echo "Target shell $TARGET_SHELL not found or not executable" >&2
     exit 1
 fi
 
@@ -112,8 +112,9 @@ if [[ "$SHELLS_HAS_TARGET" != true ]]; then
 fi
 
 if [[ "$CURRENT_SHELL" != "$TARGET_SHELL" ]]; then
+    require_sudo
     echo "Changing login shell from $CURRENT_SHELL to $TARGET_SHELL"
-    chsh -s "$TARGET_SHELL"
+    sudo chsh -s "$TARGET_SHELL" "$USER_NAME"
     echo "Shell changed successfully. New login sessions use $TARGET_SHELL"
 else
     log_verbose "Login shell already set to $TARGET_SHELL"
