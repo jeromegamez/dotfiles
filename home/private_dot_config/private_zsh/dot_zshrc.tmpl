@@ -1,4 +1,5 @@
 # History configuration
+[[ -d "$XDG_STATE_HOME/zsh" ]] || mkdir -p "$XDG_STATE_HOME/zsh"
 HISTFILE="$XDG_STATE_HOME"/zsh/history
 HISTSIZE=200000 # Keep larger than SAVEHIST so duplicate expiry has room
 SAVEHIST=100000
@@ -10,7 +11,6 @@ setopt HIST_BEEP                # beep if attempting to access a history entry w
 setopt HIST_EXPIRE_DUPS_FIRST   # trim dupes first if history is full
 setopt HIST_FIND_NO_DUPS        # do not display previously found command
 setopt HIST_IGNORE_ALL_DUPS     # remove previously found command when entering it again
-setopt HIST_IGNORE_DUPS         # do not save duplicate of prior command
 setopt HIST_IGNORE_SPACE        # do not save if line starts with space
 setopt HIST_NO_STORE            # do not save history commands
 setopt HIST_REDUCE_BLANKS       # strip superfluous blanks
@@ -26,7 +26,7 @@ zmodload -F zsh/stat b:zstat
 autoload -Uz compinit
 _zcompdump="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 _zcompdump_stamp="$_zcompdump.lastcheck"
-mkdir -p "${_zcompdump:h}"
+[[ -d "${_zcompdump:h}" ]] || mkdir -p "${_zcompdump:h}"
 
 typeset -A _zcompdump_stat
 [[ -f "$_zcompdump_stamp" ]] && zstat -H _zcompdump_stat -- "$_zcompdump_stamp"
@@ -41,6 +41,7 @@ unset _zcompdump_mtime _zcompdump_stat _zcompdump _zcompdump_stamp
 
 # Completion configuration
 zstyle ':completion::complete:*' use-cache on          # cache completions for better performance
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
 zstyle ':completion:*' rehash true                     # automatically find new executables in $PATH
 zstyle ':completion:*' menu select                     # enable interactive menu selection
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'  # case-insensitive + partial matching
@@ -70,7 +71,9 @@ if command -v starship &>/dev/null; then
 fi
 
 # Load widget-wrapping plugins last; syntax highlighting must be the final one.
+{{- if eq .chezmoi.os "darwin" }}
 [[ -f "{{ .homebrewPrefix }}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
     source "{{ .homebrewPrefix }}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 [[ -f "{{ .homebrewPrefix }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && \
     source "{{ .homebrewPrefix }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+{{- end }}

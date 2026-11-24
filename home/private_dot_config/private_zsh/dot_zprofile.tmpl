@@ -4,7 +4,8 @@
 # Essential paths (needed early)
 {{ if eq .chezmoi.os "darwin" -}}
 HOMEBREW_GNUBIN_DIR="{{ .homebrewPrefix }}/opt/make/libexec/gnubin"
-path=("$HOMEBREW_GNUBIN_DIR" $path)
+[[ -d "$HOMEBREW_GNUBIN_DIR" ]] && path=("$HOMEBREW_GNUBIN_DIR" $path)
+unset HOMEBREW_GNUBIN_DIR
 {{ end }}
 
 {{ if eq .chezmoi.os "darwin" -}}
@@ -13,8 +14,6 @@ unset HOMEBREW_PATH
 if [[ -x "{{ .homebrewPrefix }}/bin/brew" ]]; then
     eval "$("{{ .homebrewPrefix }}/bin/brew" shellenv)"
 fi
-# Homebrew's shellenv prepends its prefix; keep user launchers first.
-path=("$XDG_BIN_DIR" $path)
 
 if [[ -x "$HOME/.orbstack/bin/orb" && -f "$HOME/.orbstack/shell/init.zsh" ]]; then
     source "$HOME/.orbstack/shell/init.zsh"
@@ -22,14 +21,19 @@ elif [[ -x "$HOME/.rd/bin/rdctl" ]]; then
     path+=("$HOME/.rd/bin")
     export DOCKER_HOST="unix://$HOME/.rd/docker.sock"
 fi
+
+# Keep user launchers first ahead of Homebrew, OrbStack, and Rancher Desktop.
+path=("$XDG_BIN_DIR" $path)
 {{ end }}
 
 # 1Password SSH Agent
 {{ if eq .chezmoi.os "darwin" -}}
-export SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+_op_sock="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 {{ else -}}
-export SSH_AUTH_SOCK="${HOME}/.1password/agent.sock"
-{{ end }}
+_op_sock="${HOME}/.1password/agent.sock"
+{{ end -}}
+[[ -z "${SSH_CONNECTION:-}" && -S "$_op_sock" ]] && export SSH_AUTH_SOCK="$_op_sock"
+unset _op_sock
 
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
@@ -38,12 +42,18 @@ export NODE_REPL_HISTORY="$XDG_STATE_HOME"/node_repl_history
 export NPM_CONFIG_CACHE="$XDG_CACHE_HOME"/npm
 export PHP_HISTFILE="$XDG_STATE_HOME"/php/history
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
+export TENV_ROOT="$XDG_DATA_HOME"/tenv
 
 # Tool-specific paths
 COMPOSER_BIN_DIR="${XDG_CONFIG_HOME}/composer/vendor/bin"
 [[ -d "$COMPOSER_BIN_DIR" ]] && path+=("$COMPOSER_BIN_DIR")
+unset COMPOSER_BIN_DIR
 [[ -f "$CARGO_HOME/env" ]] && source "$CARGO_HOME/env"
 [[ -f "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc" ]] && source "$XDG_DATA_HOME/google-cloud-sdk/path.zsh.inc"
+
+# Ensure XDG state subdirectories exist before tools write history files
+[[ -d "$XDG_STATE_HOME/less" ]] || mkdir -p "$XDG_STATE_HOME/less"
+[[ -d "$XDG_STATE_HOME/php" ]] || mkdir -p "$XDG_STATE_HOME/php"
 
 # See https://stackoverflow.com/a/52230415/284325
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES

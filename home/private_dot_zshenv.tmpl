@@ -4,29 +4,34 @@ path=("$XDG_BIN_DIR" $path)
 {{ if eq .chezmoi.os "darwin" -}}
 export XDG_CACHE_HOME="$HOME/Library/Caches"
 {{ else -}}
-export XDG_CACHE_HOME=$HOME/.cache
-{{- end -}}
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_STATE_HOME=$HOME/.local/state
+export XDG_CACHE_HOME="$HOME/.cache"
+{{ end -}}
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
 
 {{ if eq .chezmoi.os "darwin" -}}
 typeset -U fpath
+if (( ${fpath[(I){{ .homebrewPrefix }}/Cellar/zsh/*/share/zsh/functions]} )); then
+    fpath=(
+        "{{ .homebrewPrefix }}/opt/zsh/share/zsh/functions"
+        ${fpath:#{{ .homebrewPrefix }}/Cellar/zsh/*/share/zsh/functions}
+    )
+fi
 fpath=(
     "{{ .homebrewPrefix }}/share/zsh-completions"
     "{{ .homebrewPrefix }}/share/zsh/site-functions"
-    "{{ .homebrewPrefix }}/opt/zsh/share/zsh/functions"
-    ${fpath:#{{ .homebrewPrefix }}/Cellar/zsh/*/share/zsh/functions}
+    $fpath
 )
 
 if [[ -x "{{ joinPath .homebrewPrefix "bin" "nvim" }}" ]]; then
     export EDITOR={{ joinPath .homebrewPrefix "bin" "nvim" | quote }}
 fi
 
-if [[ -x "{{ joinPath .homebrewPrefix "bin" "zed" }}" ]]; then
+if [[ -z "${SSH_CONNECTION:-}" && -x "{{ joinPath .homebrewPrefix "bin" "zed" }}" ]]; then
     export VISUAL="{{ .homebrewPrefix }}/bin/zed --wait"
 elif [[ -n "${EDITOR:-}" ]]; then
-    export VISUAL=$EDITOR
+    export VISUAL="$EDITOR"
 fi
 {{- end }}
-ZDOTDIR=$XDG_CONFIG_HOME/zsh
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
