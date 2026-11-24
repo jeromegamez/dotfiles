@@ -3,7 +3,7 @@
 {{- if (trim .chezmoi.stdin) -}}
 {{-   $cfg = fromJson .chezmoi.stdin -}}
 {{- end -}}
-{{- $cfg = setValueAtPath "defaultProjectTrust" "trusted" $cfg -}}
+{{- $cfg = setValueAtPath "defaultProjectTrust" "always" $cfg -}}
 {{- $cfg = setValueAtPath "quietStartup" "header" $cfg -}}
 {{- $cfg = setValueAtPath "showCacheMissNotices" true $cfg -}}
 {{- $packages := list -}}
