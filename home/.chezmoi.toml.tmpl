@@ -2,51 +2,104 @@
 {{- fail "Obsolete [data.credentials] configuration detected. Remove the table from chezmoi's configuration, delete configuration backups containing it, rerun 'chezmoi init --prompt', and rotate affected credentials if the table contained plaintext values rather than 1Password references." -}}
 {{- end -}}
 
-{{- $profile := promptChoiceOnce
-    . "profile"
-    "Select this machine's profile"
-    (list "personal" "work")
+{{- $existingProfile := get . "profile" | default "" -}}
+{{- $profile := "" -}}
+{{- if ne $existingProfile "" -}}
+{{-     if not (has $existingProfile (list "personal" "work")) -}}
+{{-         fail (printf "Invalid existing profile %q; expected personal or work. See MACHINE-PROFILES.md." $existingProfile) -}}
+{{-     end -}}
+{{-     $profile = $existingProfile -}}
+{{- else -}}
+{{-     $profile = promptChoiceOnce
+            . "profile"
+            "Select this machine's profile"
+            (list "personal" "work")
 -}}
+{{- end -}}
 {{- $work := eq $profile "work" -}}
 {{- $personal := eq $profile "personal" -}}
 
-{{- $email := promptStringOnce
-    . "email"
-    (printf "%s email" (title $profile))
-    | trim
--}}
-{{- if eq $email "" -}}
-{{- fail "Email must not be empty" -}}
+{{- $email := "" -}}
+{{- if ne (get . "email" | default "") "" -}}
+{{-     $email = promptStringOnce . "email" "Email" (get . "email") -}}
+{{- else -}}
+{{-     $email = promptStringOnce . "email" "Email" -}}
+{{- end -}}
+{{- $email = $email | trim -}}
+{{- if not (regexMatch "^[^\\s@]+@[^\\s@]+$" $email) -}}
+{{-     fail "Email must be a valid non-empty email address without whitespace" -}}
 {{- end -}}
 
 {{- $workGitSigningPublicKey := "" -}}
 {{- if $work -}}
-{{- $workGitSigningPublicKey = promptStringOnce
-    . "workGitSigningPublicKey"
-    "Work SSH public key for Git commit and tag signing"
-    | trim
+{{-     if ne (get . "workGitSigningPublicKey" | default "") "" -}}
+{{-         $workGitSigningPublicKey = promptStringOnce
+                . "workGitSigningPublicKey"
+                "Work SSH public key for Git commit and tag signing"
+                (get . "workGitSigningPublicKey")
 -}}
-{{- if not (or (hasPrefix "ssh-ed25519 " $workGitSigningPublicKey) (hasPrefix "ssh-rsa " $workGitSigningPublicKey)) -}}
-{{- fail "Work Git signing public key must be an Ed25519 or RSA OpenSSH public key supported by 1Password" -}}
-{{- end -}}
+{{-     else -}}
+{{-         $workGitSigningPublicKey = promptStringOnce
+                . "workGitSigningPublicKey"
+                "Work SSH public key for Git commit and tag signing"
+-}}
+{{-     end -}}
+{{-     $workGitSigningPublicKey = $workGitSigningPublicKey | trim -}}
+{{-     if not (regexMatch "^(ssh-ed25519|ssh-rsa) [A-Za-z0-9+/=]+( [^\\r\\n]+)?$" $workGitSigningPublicKey) -}}
+{{-         fail "Work Git signing public key must be a single-line Ed25519 or RSA OpenSSH public key supported by 1Password" -}}
+{{-     end -}}
 {{- end -}}
 
-{{- $onepasswordAccount := promptStringOnce
-    . "onepasswordAccount"
-    (printf "1Password account ID or sign-in address for the %s profile" $profile)
-    | trim
+{{- $onepasswordAccount := "" -}}
+{{- if ne (get . "onepasswordAccount" | default "") "" -}}
+{{-     $onepasswordAccount = promptStringOnce
+            . "onepasswordAccount"
+            "1Password account ID or sign-in address"
+            (get . "onepasswordAccount")
 -}}
-{{- if eq $onepasswordAccount "" -}}
-{{- fail "1Password account must not be empty" -}}
-{{- end -}}
-{{- $githubRateLimitTokenReference := promptStringOnce
-    . "githubRateLimitTokenReference"
-    "1Password secret reference for the GitHub API rate-limit PAT"
+{{- else -}}
+{{-     $onepasswordAccount = promptStringOnce
+            . "onepasswordAccount"
+            "1Password account ID or sign-in address"
 -}}
-{{- $githubRateLimitTokenReference = $githubRateLimitTokenReference | trim | trimAll "\"'" -}}
-{{- if not (hasPrefix "op://" $githubRateLimitTokenReference) -}}
-{{- fail "GitHub API rate-limit PAT reference must start with op://" -}}
 {{- end -}}
+{{- $onepasswordAccount = $onepasswordAccount | trim -}}
+{{- if not (regexMatch "^\\S+$" $onepasswordAccount) -}}
+{{-     fail "1Password account must not be empty or contain whitespace" -}}
+{{- end -}}
+
+{{- $githubRateLimitTokenReference := "" -}}
+{{- if ne (get . "githubRateLimitTokenReference" | default "") "" -}}
+{{-     $githubRateLimitTokenReference = promptStringOnce
+            . "githubRateLimitTokenReference"
+            "1Password secret reference for the GitHub API rate-limit PAT"
+            (get . "githubRateLimitTokenReference")
+-}}
+{{- else -}}
+{{-     $githubRateLimitTokenReference = promptStringOnce
+            . "githubRateLimitTokenReference"
+            "1Password secret reference for the GitHub API rate-limit PAT"
+-}}
+{{- end -}}
+{{- $githubRateLimitTokenReference = $githubRateLimitTokenReference | trim | trimAll "\"'" | trim -}}
+{{- if not (regexMatch "^op://[^/\\s]+/[^/\\s]+/[^\\r\\n]+$" $githubRateLimitTokenReference) -}}
+{{-     fail "GitHub API rate-limit PAT reference must be a valid op://vault/item/field reference" -}}
+{{- end -}}
+
+verbose = true
+
+[onepassword]
+    mode = "account"
+{{- if eq .chezmoi.os "darwin" }}
+    command = "/opt/homebrew/bin/op"
+{{- end }}
+
+[scriptEnv]
+    XDG_BIN_DIR = {{ joinPath .chezmoi.homeDir ".local/bin" | quote }}
+    XDG_CACHE_HOME = {{ if eq .chezmoi.os "darwin" }}{{ joinPath .chezmoi.homeDir "Library/Caches" | quote }}{{ else }}{{ joinPath .chezmoi.homeDir ".cache" | quote }}{{ end }}
+    XDG_CONFIG_HOME = {{ joinPath .chezmoi.homeDir ".config" | quote }}
+    XDG_DATA_HOME = {{ joinPath .chezmoi.homeDir ".local/share" | quote }}
+    XDG_STATE_HOME = {{ joinPath .chezmoi.homeDir ".local/state" | quote }}
 
 [data]
     profile = {{ $profile | quote }}
