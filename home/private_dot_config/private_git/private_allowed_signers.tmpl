@@ -1,8 +1,12 @@
 {{ if .personal -}}
 {{ .email }} {{ .identity.personal.gitSigningPublicKey }}
 {{- $agentKey := joinPath .chezmoi.homeDir ".ssh/id_ed25519_agent.pub" -}}
-{{- if stat $agentKey }}
-{{ .email }} {{ include $agentKey | trim }}
+{{- with stat $agentKey }}
+{{- if eq .type "file" }}
+{{- with include $agentKey | trim }}
+{{ $.email }} {{ . }}
+{{- end }}
+{{- end }}
 {{- end }}
 {{ else if .work -}}
 {{ .email }} {{ .workGitSigningPublicKey }}

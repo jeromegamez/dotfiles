@@ -1,7 +1,5 @@
 {{ if eq .chezmoi.os "darwin" -}}
-Match exec "test -x ~/.orbstack/bin/orb"
-    Include ~/.orbstack/ssh/config
-Match all
+Include ~/.orbstack/ssh/config
 
 {{ end -}}
 Include ~/.ssh/1Password/generated-hosts.conf
@@ -9,7 +7,10 @@ Include ~/.ssh/1Password/config
 
 Host *
 {{- if eq .chezmoi.os "darwin" }}
-    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+    IdentityAgent {{ joinPath .chezmoi.homeDir "Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" | quote }}
 {{- else }}
     IdentityAgent ~/.1password/agent.sock
 {{- end }}
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+    HashKnownHosts yes

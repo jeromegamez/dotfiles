@@ -55,7 +55,7 @@
     renames = true
 
 [help]
-    autocorrect = true
+    autocorrect = prompt
 
 [merge]
     conflictstyle = zdiff3
@@ -80,13 +80,15 @@
     helper = osxkeychain
 {{- end }}
 
+{{- if and (eq .chezmoi.os "darwin") (isExecutable (joinPath .homebrewPrefix "bin" "gh")) }}
 [credential "https://github.com"]
     helper =
-    helper = !/opt/homebrew/bin/gh auth git-credential
+    helper = !{{ joinPath .homebrewPrefix "bin" "gh" }} auth git-credential
 
 [credential "https://gist.github.com"]
     helper =
-    helper = !/opt/homebrew/bin/gh auth git-credential
+    helper = !{{ joinPath .homebrewPrefix "bin" "gh" }} auth git-credential
+{{- end }}
 
 [init]
     defaultBranch = main
@@ -95,7 +97,6 @@
     all = true
     followRemoteHEAD = always
     prune = true
-    pruneTags = true
 
 [pull]
     rebase = true

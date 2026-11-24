@@ -3,7 +3,6 @@
 .AppleDouble
 .LSOverride
 ._*
-Icon
 .Spotlight-V100
 .Trashes
 .AppleDB
@@ -27,15 +26,12 @@ node_modules/
 __pycache__/
 *.py[cod]
 *$py.class
-build/
-dist/
 coverage/
 .ropeproject/
 *.lcov
 .venv/
 venv/
 ENV/
-env/
 
 # Logs and runtime
 *.log
@@ -59,8 +55,6 @@ crash.*.log
 **/.terraform/*
 *.tfstate
 *.tfstate.*
-*.tfvars
-*.tfvars.json
 override.tf
 override.tf.json
 *_override.tf
