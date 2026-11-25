@@ -37,6 +37,10 @@ if [[ -x "$xdg_bin_dir/brew-maintenance" ]]; then
     run_step "brew-maintenance" "$xdg_bin_dir/brew-maintenance" || true
 fi
 
+if command -v uv >/dev/null 2>&1; then
+    run_step "uv python upgrade" uv python upgrade || true
+fi
+
 if [[ -x "$xdg_bin_dir/chezmoi" ]]; then
     chezmoi_github_token="${GITHUB_TOKEN:-}"
     if [[ -z "$chezmoi_github_token" ]] && command -v gh >/dev/null 2>&1; then

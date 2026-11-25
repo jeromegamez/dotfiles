@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# uv-python version: {{ .versions.python.default }}
+set -euo pipefail
+
+homebrew_bin={{ joinPath .homebrewPrefix "bin" | quote }}
+uv_bin="$homebrew_bin/uv"
+python_version={{ .versions.python.default | quote }}
+
+if [[ ! -x "$uv_bin" ]]; then
+    echo "Missing uv executable: $uv_bin" >&2
+    exit 1
+fi
+
+"$uv_bin" python install --preview-features python-install-default "$python_version" --default --force
+echo "✓ Installed Python $python_version via uv"
