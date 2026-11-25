@@ -11,7 +11,9 @@ Coordinate a structured review loop with a second agent or session until both si
 Infer from the user's prompt; ask only if the target or scope is unclear.
 
 - **Scope**: uncommitted changes, branch diff against base, specific commits, or a plan/document.
-- **Reviewer**: a named existing session/thread, or a fresh review agent (prefer a different model when available).
+- **Reviewer**: a named existing session/thread if given; otherwise a fresh review delegate using a different model from the current one:
+  - In T3 Code, check `orchestrator_capabilities` first and pick in order: an enabled GPT/ChatGPT model (e.g. via `codex`), then an enabled Claude model (e.g. via `antigravity`). Run each round as a new `delegate_task` (`role: "review"`). If neither is available, tell the user instead of silently switching.
+  - In GitHub Copilot, delegate to a custom review agent configured with another model if available; otherwise tell the user.
 - **Focus**: correctness, regressions, and maintainability unless the user specifies another focus.
 - **Max rounds**: 3 by default.
 

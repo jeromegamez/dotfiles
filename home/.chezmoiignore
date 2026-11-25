@@ -15,7 +15,8 @@ Library/Preferences/io.rancherdesktop.profile.defaults.plist
 {{ end }}
 {{ if not .personal }}
 .chezmoiscripts/darwin/personal/**
-.agents/**
+.agents/AGENTS.md
+.agents/skills/memory/**
 .codex/**
 .config/composer/**
 .config/gcloud/**
