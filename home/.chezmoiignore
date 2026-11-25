@@ -11,6 +11,7 @@ Library/Preferences/io.rancherdesktop.profile.defaults.plist
 {{ end }}
 {{ if not .work }}
 .config/git/keys/work-signing.pub
+.local/bin/develocityctl
 {{ end }}
 {{ if not .personal }}
 .chezmoiscripts/darwin/personal/**

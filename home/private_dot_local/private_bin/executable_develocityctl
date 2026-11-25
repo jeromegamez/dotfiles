@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+gradle_user_home="${GRADLE_USER_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/gradle}"
+jar_path="$gradle_user_home/develocityctl/develocityctl.jar"
+
+if [[ ! -f "$jar_path" ]]; then
+    echo "Missing develocityctl JAR: $jar_path" >&2
+    exit 1
+fi
+
+exec java -XX:-UseBASE64Intrinsics -jar "$jar_path" "$@"
