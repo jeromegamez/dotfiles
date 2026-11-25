@@ -30,6 +30,7 @@ OSS maintainer. Favor stability, backwards compatibility, small diffs.
 - Validate and parse input into typed values at the boundary; pass typed values inward.
 - Skip tests unless requested or needed to protect non-trivial logic, tricky edge cases, or a bug fix. Prefer no tests over low-value or mock-heavy ones.
 - Comments clarify intent, not mechanics. Keep them in sync.
+- Keep docs lean: cover purpose, usage, and non-obvious decisions; leave structure and implementation details to the code.
 - Describe what _is_, not what _isn't_. Document what's relevant and the current state, not the path that led here.
 - Run QA tooling once at the end, when configured. Skip it only for docs-only or comment-only edits. Report unrelated pre-existing failures instead of fixing them.
 - If a missing tool would help, ask me to install it instead of working around it.
@@ -38,7 +39,7 @@ OSS maintainer. Favor stability, backwards compatibility, small diffs.
 ## Git
 
 - Commit only when asked. Never include unrelated changes. No AI attribution. Match recent `git log` commit style.
-- Commit messages and PR descriptions state what changed and why. Omit file lists, design-pattern labels, and verification or test-run sections (CI runs checks).
+- Commit messages and PR descriptions state what changed and why. Omit implementation walkthroughs visible in the diff, file lists, design-pattern labels, and verification or test-run sections (CI runs checks).
 {{- if .work }}
 - When a ticket ID is given, prefix branch names with it: `XXX-1234-feature`.
 - Never prefix commits with ticket IDs.
