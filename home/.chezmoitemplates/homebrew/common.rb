@@ -19,6 +19,7 @@ brew "gh" # GitHub command-line tool
 brew "git" # Distributed revision control system
 brew "go-task" # Task is a task runner/build tool that aims to be simpler and easier to use
 brew "gnu-tar" # GNU version of the tar archiving utility
+brew "grep" # GNU grep, egrep and fgrep
 brew "jq" # Lightweight and flexible command-line JSON processor
 brew "lazygit" # Terminal UI for Git
 brew "make" # Utility for directing compilation
@@ -27,6 +28,7 @@ brew "neovim" # Ambitious Vim-fork focused on extensibility and agility
 brew "node" # Open-source, cross-platform JavaScript runtime environment
 brew "openjdk" # Java development kit
 brew "poppler" # PDF rendering library
+brew "renovate" # Automated dependency updates. Flexible so you don't need to be
 brew "ripgrep" # Search tool like grep and The Silver Searcher
 brew "rmlint" # Extremely fast tool to remove dupes and other lint from your filesystem
 brew "shellcheck" # Static analysis tool for shell scripts
@@ -37,6 +39,7 @@ brew "uv" # Python package and project manager
 brew "wget" # Internet file retriever
 brew "xdg-ninja" # Check your $HOME for unwanted files and directories
 brew "yamllint" # Linter for YAML files
+brew "yq" # Process YAML, JSON, XML, CSV and properties documents from the CLI
 brew "zoxide" # Shell extension to navigate your filesystem faster
 brew "zizmor" # Find security issues in GitHub Actions setups
 brew "zsh-autosuggestions" # Fish-like autosuggestions for zsh
