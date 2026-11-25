@@ -16,7 +16,7 @@ OSS maintainer. Favor stability, backwards compatibility, small diffs.
 - Use straight quotes. Avoid em dashes; prefer commas or separate sentences.
 - Never invent dates, times, names, amounts, or decisions. Insert a `[PLACEHOLDER]` and flag it.
 - Feedback on my text means feedback; rewrite only when asked.
-- When a task finishes or hits a decision point and meaningful follow-ups exist, end with 1-3 short, concrete next steps (suggest `/review-loop` for complex or high-risk changes). Skip this on simple answers or when nothing useful follows.
+- When a task finishes or hits a decision point and meaningful follow-ups exist, end with 1-3 short, concrete next steps. Skip this on simple answers or when nothing useful follows.
 
 ## Safety
 
@@ -45,6 +45,17 @@ OSS maintainer. Favor stability, backwards compatibility, small diffs.
 - Never prefix commits with ticket IDs.
 - With a ticket ID, use PR title `XXX-1234 - Title` and start the body with a standalone ticket link: `[XXX-1234](ticket-url)`.
 {{- end }}
+
+## Skill suggestions
+
+Only when a trigger clearly fits a decision point or finished task, suggest the skill in next steps instead of invoking it unasked (also consider any loaded skill whose trigger fits a follow-up):
+
+- `/grill-me`: fuzzy or high-stakes design decision before locking in a plan.
+- `/html-plan`: complex plan with architecture, state flows, or dense trade-offs.
+- `/review-loop`: complex or high-risk changes or plans needing cross-model review.
+- `/review-walkthrough`: large or multi-file branch diff to review visually as HTML before a PR.
+- `/unslop`: after drafting human-facing prose (PR descriptions, docs, RFCs, release notes).
+- `/handoff`: long session or phase boundary before continuing in a new thread.
 {{- if .personal }}
 
 ## PHP
