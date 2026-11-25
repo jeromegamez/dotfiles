@@ -7,11 +7,11 @@ import re
 import sys
 from urllib.parse import urlsplit
 
-HOST_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
-HOSTNAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.:-]*$")
-USER_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._@-]*$")
+HOST_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*\Z")
+HOSTNAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.:-]*\Z")
+USER_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._@-]*\Z")
 FINGERPRINT_RE = re.compile(
-    r"^(SHA256:[A-Za-z0-9+/=]+|([0-9a-fA-F]{2}:){15}[0-9a-fA-F]{2})$"
+    r"^(SHA256:[A-Za-z0-9+/=]+|([0-9a-fA-F]{2}:){15}[0-9a-fA-F]{2})\Z"
 )
 
 
@@ -152,7 +152,7 @@ def main() -> None:
 
         port: int | None = None
         if port_str is not None:
-            if not port_str.isdigit():
+            if not (port_str.isascii() and port_str.isdigit()):
                 print(
                     f"Warning: Skipping 1Password item {title!r} with non-numeric Port",
                     file=sys.stderr,

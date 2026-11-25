@@ -154,6 +154,10 @@ while IFS= read -r -d '' py_file; do
     checked=$((checked + 1))
 done < <(find home scripts -type f -name '*.py' -print0)
 
+echo "Testing SSH generator scripts: scripts/test_ssh_generators.py"
+PYTHONPYCACHEPREFIX="$pycache_dir" python3 scripts/test_ssh_generators.py || record_failure
+checked=$((checked + 1))
+
 for modify_file in \
     home/private_dot_pi/agent/modify_private_settings.json \
     home/dot_gemini/antigravity-cli/modify_private_settings.json \

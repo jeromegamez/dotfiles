@@ -10,6 +10,13 @@ export PATH="$homebrew_bin:$PATH"
 {{- end }}
 
 account={{ .onepasswordAccount | quote }}
+{{- if .work }}
+vault="Employee"
+{{- else }}
+vault="Private"
+{{- end }}
+agent_out="${HOME}/.config/1Password/ssh/agent.toml"
+agent_dir="${agent_out%/*}"
 out="${HOME}/.ssh/1Password/generated-hosts.conf"
 out_dir="${out%/*}"
 
@@ -22,15 +29,20 @@ for required_command in "${required_commands[@]}"; do
 done
 
 if ((${#missing_commands[@]} > 0)); then
-    printf 'Skipping 1Password SSH host generation: missing required command(s): %s.\n' "${missing_commands[*]}" >&2
-    printf 'Install them and rerun chezmoi apply; leaving %s unchanged.\n' "$out" >&2
+    printf 'Skipping 1Password SSH configuration: missing required command(s): %s.\n' "${missing_commands[*]}" >&2
+    printf 'Install them and rerun chezmoi apply; leaving %s and %s unchanged.\n' "$agent_out" "$out" >&2
     exit 0
 fi
 
-install -d -m 700 "$out_dir"
+install -d -m 700 "$agent_dir" "$out_dir"
+agent_tmp="$(mktemp "$agent_dir/.agent.toml.XXXXXX")"
 tmp="$(mktemp "$out_dir/.generated-hosts.XXXXXX")"
+agent_helper={{ joinPath .chezmoi.sourceDir "private_dot_config/chezmoi/scripts/generate_ssh_agent_config.py" | quote }}
 helper={{ joinPath .chezmoi.sourceDir "private_dot_config/chezmoi/scripts/generate_ssh_hosts.py" | quote }}
 cleanup() {
+    if [[ -n "${agent_tmp:-}" && -f "$agent_tmp" ]]; then
+        rm -f -- "$agent_tmp"
+    fi
     if [[ -n "${tmp:-}" && -f "$tmp" ]]; then
         rm -f -- "$tmp"
     fi
@@ -40,12 +52,31 @@ trap 'exit 129' HUP
 trap 'exit 130' INT
 trap 'exit 143' TERM
 
-op --account "$account" --format json item list --categories "SSH Key" |
-    op --account "$account" item get - --format json |
-    jq -s '.' |
-    python3 "$helper" >"$tmp"
+op account list --format json |
+    python3 "$agent_helper" --account "$account" --vault "$vault" >"$agent_tmp"
+
+chmod 600 "$agent_tmp"
+if [[ -f "$agent_out" ]] && cmp -s "$agent_tmp" "$agent_out"; then
+    rm -f -- "$agent_tmp"
+else
+    mv -f "$agent_tmp" "$agent_out"
+fi
+
+items_json="$(op --account "$account" --format json item list --vault "$vault" --categories "SSH Key")"
+if [[ "$(jq 'length' <<<"$items_json")" -gt 0 ]]; then
+    printf '%s\n' "$items_json" |
+        op --account "$account" item get - --format json |
+        jq -s '.' |
+        python3 "$helper" >"$tmp"
+else
+    printf '[]\n' | python3 "$helper" >"$tmp"
+fi
 
 chmod 600 "$tmp"
-mv -f "$tmp" "$out"
+if [[ -f "$out" ]] && cmp -s "$tmp" "$out"; then
+    rm -f -- "$tmp"
+else
+    mv -f "$tmp" "$out"
+fi
 
-echo "✓ Generated 1Password SSH host configuration"
+echo "✓ Configured 1Password SSH agent and host configuration"
