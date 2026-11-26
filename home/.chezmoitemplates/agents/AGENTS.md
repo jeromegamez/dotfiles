@@ -57,6 +57,7 @@ Only when a trigger clearly fits a decision point or finished task, suggest the 
 - `/unslop`: after drafting human-facing prose (PR descriptions, docs, RFCs, release notes).
 - `/handoff`: long session or phase boundary before continuing in a new thread.
 {{- if .personal }}
+- `/release`: when `CHANGELOG.md` has unreleased changes ready to publish as a new version.
 
 ## PHP
 
