@@ -58,6 +58,9 @@ Only when a trigger clearly fits a decision point or finished task, suggest the 
 - `/handoff`: long session or phase boundary before continuing in a new thread.
 {{- if .personal }}
 - `/release`: when `CHANGELOG.md` has unreleased changes ready to publish as a new version.
+{{- end }}
+
+{{- if .personal }}
 
 ## PHP
 
